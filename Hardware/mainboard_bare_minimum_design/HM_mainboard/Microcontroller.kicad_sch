@@ -2308,7 +2308,7 @@
     (effects (font (size 2.54 2.159) (thickness 0.4318) bold) (justify left bottom))
     (uuid 2b250b7d-2d2e-4d5e-8011-129dec1d8f76)
   )
-  (text "Microcontroller\n" (at 19.05 119.38 0)
+  (text "Microcontroller and Bluetooth Module\n" (at 19.05 119.38 0)
     (effects (font (size 2.54 2.159) (thickness 0.4318) bold) (justify left bottom))
     (uuid 2b98aa59-89b2-4835-93be-b8d2351e6514)
   )
