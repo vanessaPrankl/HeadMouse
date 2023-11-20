@@ -1,0 +1,3 @@
+Plotted to 'C:\Users\vanes\Documents\GitHub\HeadMouse\Hardware\mainboard_bare_minimum_design\HM_mainboard\HM_mainboard.pdf'.
+
+Hinweis: Done.
