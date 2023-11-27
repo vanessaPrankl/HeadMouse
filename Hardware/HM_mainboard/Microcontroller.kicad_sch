@@ -540,6 +540,46 @@
         )
       )
     )
+    (symbol "GND_1" (power) (pin_names (offset 0)) (in_bom yes) (on_board yes)
+      (property "Reference" "#PWR" (at 0 -6.35 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "Value" "GND_1" (at 0 -3.81 0)
+        (effects (font (size 1.27 1.27)))
+      )
+      (property "Footprint" "" (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "Datasheet" "" (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "ki_keywords" "global power" (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "ki_description" "Power symbol creates a global label with name \"GND\" , ground" (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (symbol "GND_1_0_1"
+        (polyline
+          (pts
+            (xy 0 0)
+            (xy 0 -1.27)
+            (xy 1.27 -1.27)
+            (xy 0 -2.54)
+            (xy -1.27 -1.27)
+            (xy 0 -1.27)
+          )
+          (stroke (width 0) (type default))
+          (fill (type none))
+        )
+      )
+      (symbol "GND_1_1_1"
+        (pin power_in line (at 0 0 270) (length 0) hide
+          (name "GND" (effects (font (size 1.27 1.27))))
+          (number "1" (effects (font (size 1.27 1.27))))
+        )
+      )
+    )
     (symbol "esp32-thing-eagle-import:10KOHM-1/10W-1%(0603)0603" (in_bom yes) (on_board yes)
       (property "Reference" "R" (at 0 1.524 0)
         (effects (font (size 1.778 1.778)) (justify bottom))
@@ -2032,34 +2072,35 @@
     (uuid ec3a9cf1-6ff4-44b1-bfdd-b1b7359d295e)
   )
 
-  (symbol (lib_id "esp32-thing-eagle-import:GND") (at 26.67 113.03 270) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid 02b4d45d-dd21-4bef-ba15-3547302016d6)
-    (property "Reference" "#GND020" (at 26.67 113.03 0)
+  (symbol (lib_name "GND_1") (lib_id "power:GND") (at 105.41 182.88 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid 05931ac7-4e30-434e-aef3-2cc0fede0830)
+    (property "Reference" "#PWR06" (at 105.41 189.23 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Value" "GND" (at 24.13 110.49 0)
-      (effects (font (size 1.778 1.5113)) (justify left bottom))
+    (property "Value" "GND" (at 105.41 187.96 0)
+      (effects (font (size 1.27 1.27)))
     )
-    (property "Footprint" "" (at 26.67 113.03 0)
+    (property "Footprint" "" (at 105.41 182.88 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Datasheet" "" (at 26.67 113.03 0)
+    (property "Datasheet" "" (at 105.41 182.88 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid edf7f166-209e-4fc6-ae29-afcab8d42bd4))
+    (pin "1" (uuid 59b31265-2574-4ecd-978b-06f599b635c4))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c"
-          (reference "#GND020") (unit 1)
+          (reference "#PWR06") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/8a725ce3-408a-4762-9df2-b56094186e56"
-          (reference "#GND023") (unit 1)
+          (reference "#PWR019") (unit 1)
         )
-      )
-      (project "esp32-thing"
-        (path "/8d063d86-d05a-414e-91f4-3532d6707197"
-          (reference "#GND34") (unit 1)
+        (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
+          (reference "#PWR010") (unit 1)
+        )
+        (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
+          (reference "#PWR01") (unit 1)
         )
       )
     )
@@ -2099,39 +2140,6 @@
     )
   )
 
-  (symbol (lib_id "esp32-thing-eagle-import:GND") (at 105.41 185.42 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid 1adfd077-7eaa-4774-870e-1de13f27edfe)
-    (property "Reference" "#GND020" (at 105.41 185.42 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "GND" (at 102.87 187.96 0)
-      (effects (font (size 1.778 1.5113)) (justify left bottom))
-    )
-    (property "Footprint" "" (at 105.41 185.42 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 105.41 185.42 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 6a2a653f-db97-4ae1-9be3-386852be676a))
-    (instances
-      (project "HM_mainboard"
-        (path "/54a6df43-5475-46a2-9916-8b0260700d4c"
-          (reference "#GND020") (unit 1)
-        )
-        (path "/54a6df43-5475-46a2-9916-8b0260700d4c/8a725ce3-408a-4762-9df2-b56094186e56"
-          (reference "#GND022") (unit 1)
-        )
-      )
-      (project "esp32-thing"
-        (path "/8d063d86-d05a-414e-91f4-3532d6707197"
-          (reference "#GND34") (unit 1)
-        )
-      )
-    )
-  )
-
   (symbol (lib_id "esp32-thing-eagle-import:3.3V") (at 105.41 96.52 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 223a254c-5c1a-4a51-87bf-2be926b6f38e)
@@ -2160,6 +2168,40 @@
       (project "esp32-thing"
         (path "/64c5aff3-bdec-4fb6-b5ec-87e5efa2adf7"
           (reference "#SUPPLY8") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_name "GND_1") (lib_id "power:GND") (at 109.22 67.31 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid 2b25f8a3-898b-4877-a3a6-cb61a9e3c0d1)
+    (property "Reference" "#PWR06" (at 109.22 73.66 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "GND" (at 109.22 72.39 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "" (at 109.22 67.31 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 109.22 67.31 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid faa95144-2b71-4d12-a81f-5cb15ccc7fff))
+    (instances
+      (project "HM_mainboard"
+        (path "/54a6df43-5475-46a2-9916-8b0260700d4c"
+          (reference "#PWR06") (unit 1)
+        )
+        (path "/54a6df43-5475-46a2-9916-8b0260700d4c/8a725ce3-408a-4762-9df2-b56094186e56"
+          (reference "#PWR017") (unit 1)
+        )
+        (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
+          (reference "#PWR010") (unit 1)
+        )
+        (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
+          (reference "#PWR01") (unit 1)
         )
       )
     )
@@ -2201,6 +2243,40 @@
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/8a725ce3-408a-4762-9df2-b56094186e56"
           (reference "J7") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_name "GND_1") (lib_id "power:GND") (at 39.37 74.93 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid 4228620a-9871-4d4c-8568-c7ccac20fb75)
+    (property "Reference" "#PWR06" (at 39.37 81.28 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "GND" (at 39.37 80.01 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "" (at 39.37 74.93 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 39.37 74.93 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 115eb368-3582-42a4-9031-181ae5563035))
+    (instances
+      (project "HM_mainboard"
+        (path "/54a6df43-5475-46a2-9916-8b0260700d4c"
+          (reference "#PWR06") (unit 1)
+        )
+        (path "/54a6df43-5475-46a2-9916-8b0260700d4c/8a725ce3-408a-4762-9df2-b56094186e56"
+          (reference "#PWR016") (unit 1)
+        )
+        (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
+          (reference "#PWR010") (unit 1)
+        )
+        (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
+          (reference "#PWR01") (unit 1)
         )
       )
     )
@@ -2273,67 +2349,35 @@
     )
   )
 
-  (symbol (lib_id "esp32-thing-eagle-import:GND") (at 234.95 123.19 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid 5929969a-3d16-4099-9a02-8fcdcde59e79)
-    (property "Reference" "#GND021" (at 234.95 123.19 0)
+  (symbol (lib_name "GND_1") (lib_id "power:GND") (at 185.42 120.65 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid 5bf8b2d3-3773-48bb-abb6-60cce96eac7a)
+    (property "Reference" "#PWR06" (at 185.42 127 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Value" "GND" (at 232.41 125.73 0)
-      (effects (font (size 1.778 1.5113)) (justify left bottom))
+    (property "Value" "GND" (at 185.42 125.73 0)
+      (effects (font (size 1.27 1.27)))
     )
-    (property "Footprint" "" (at 234.95 123.19 0)
+    (property "Footprint" "" (at 185.42 120.65 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Datasheet" "" (at 234.95 123.19 0)
+    (property "Datasheet" "" (at 185.42 120.65 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 1f2eeb51-b98f-4bdc-bdb5-84d80ff7df11))
+    (pin "1" (uuid d5b9fb11-fed4-4d94-bcb1-6595a6760abe))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c"
-          (reference "#GND021") (unit 1)
+          (reference "#PWR06") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/8a725ce3-408a-4762-9df2-b56094186e56"
-          (reference "#GND020") (unit 1)
+          (reference "#PWR020") (unit 1)
         )
-      )
-      (project "esp32-thing"
-        (path "/8d063d86-d05a-414e-91f4-3532d6707197"
-          (reference "#GND1") (unit 1)
+        (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
+          (reference "#PWR010") (unit 1)
         )
-      )
-    )
-  )
-
-  (symbol (lib_id "esp32-thing-eagle-import:GND") (at 109.22 69.85 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid 5a355f4c-9dc1-4831-93b1-812c3e4b794a)
-    (property "Reference" "#GND020" (at 109.22 69.85 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "GND" (at 106.68 72.39 0)
-      (effects (font (size 1.778 1.5113)) (justify left bottom))
-    )
-    (property "Footprint" "" (at 109.22 69.85 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 109.22 69.85 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid eafb0552-bd6f-47f9-92df-44f3a1e598e8))
-    (instances
-      (project "HM_mainboard"
-        (path "/54a6df43-5475-46a2-9916-8b0260700d4c"
-          (reference "#GND020") (unit 1)
-        )
-        (path "/54a6df43-5475-46a2-9916-8b0260700d4c/8a725ce3-408a-4762-9df2-b56094186e56"
-          (reference "#GND021") (unit 1)
-        )
-      )
-      (project "esp32-thing"
-        (path "/8d063d86-d05a-414e-91f4-3532d6707197"
-          (reference "#GND34") (unit 1)
+        (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
+          (reference "#PWR01") (unit 1)
         )
       )
     )
@@ -2471,6 +2515,40 @@
       (project "esp32-thing"
         (path "/64c5aff3-bdec-4fb6-b5ec-87e5efa2adf7"
           (reference "#SUPPLY14") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_name "GND_1") (lib_id "power:GND") (at 234.95 120.65 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid 7a7006cd-4bac-4c94-8118-82a8616ec3a8)
+    (property "Reference" "#PWR06" (at 234.95 127 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "GND" (at 234.95 125.73 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "" (at 234.95 120.65 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 234.95 120.65 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 46d2266c-f17a-44e5-acc0-e151da3aec5f))
+    (instances
+      (project "HM_mainboard"
+        (path "/54a6df43-5475-46a2-9916-8b0260700d4c"
+          (reference "#PWR06") (unit 1)
+        )
+        (path "/54a6df43-5475-46a2-9916-8b0260700d4c/8a725ce3-408a-4762-9df2-b56094186e56"
+          (reference "#PWR021") (unit 1)
+        )
+        (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
+          (reference "#PWR010") (unit 1)
+        )
+        (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
+          (reference "#PWR01") (unit 1)
         )
       )
     )
@@ -2637,72 +2715,6 @@
     )
   )
 
-  (symbol (lib_id "esp32-thing-eagle-import:GND") (at 185.42 123.19 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid 954e7076-66d8-4a98-a4c0-3a2bf0728b7e)
-    (property "Reference" "#GND020" (at 185.42 123.19 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "GND" (at 182.88 125.73 0)
-      (effects (font (size 1.778 1.5113)) (justify left bottom))
-    )
-    (property "Footprint" "" (at 185.42 123.19 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 185.42 123.19 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 592adb1b-fa38-463d-99f0-aa8f92512a80))
-    (instances
-      (project "HM_mainboard"
-        (path "/54a6df43-5475-46a2-9916-8b0260700d4c"
-          (reference "#GND020") (unit 1)
-        )
-        (path "/54a6df43-5475-46a2-9916-8b0260700d4c/8a725ce3-408a-4762-9df2-b56094186e56"
-          (reference "#GND019") (unit 1)
-        )
-      )
-      (project "esp32-thing"
-        (path "/8d063d86-d05a-414e-91f4-3532d6707197"
-          (reference "#GND34") (unit 1)
-        )
-      )
-    )
-  )
-
-  (symbol (lib_id "esp32-thing-eagle-import:GND") (at 39.37 77.47 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid a7fadf39-a051-4e60-aaa5-16825a173560)
-    (property "Reference" "#GND020" (at 39.37 77.47 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "GND" (at 36.83 80.01 0)
-      (effects (font (size 1.778 1.5113)) (justify left bottom))
-    )
-    (property "Footprint" "" (at 39.37 77.47 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 39.37 77.47 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid cdbb4609-b702-4e14-beae-937ec6ce9542))
-    (instances
-      (project "HM_mainboard"
-        (path "/54a6df43-5475-46a2-9916-8b0260700d4c"
-          (reference "#GND020") (unit 1)
-        )
-        (path "/54a6df43-5475-46a2-9916-8b0260700d4c/8a725ce3-408a-4762-9df2-b56094186e56"
-          (reference "#GND024") (unit 1)
-        )
-      )
-      (project "esp32-thing"
-        (path "/8d063d86-d05a-414e-91f4-3532d6707197"
-          (reference "#GND34") (unit 1)
-        )
-      )
-    )
-  )
-
   (symbol (lib_id "Device:Crystal_Small") (at 40.64 113.03 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid a8f01b55-de30-4143-9906-d8899d1387e2)
@@ -2724,6 +2736,40 @@
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/8a725ce3-408a-4762-9df2-b56094186e56"
           (reference "Y1") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_name "GND_1") (lib_id "power:GND") (at 27.94 113.03 270) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid b91607b0-d43e-4699-a57a-71df776a4315)
+    (property "Reference" "#PWR06" (at 21.59 113.03 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "GND" (at 24.13 113.03 90)
+      (effects (font (size 1.27 1.27)) (justify right))
+    )
+    (property "Footprint" "" (at 27.94 113.03 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 27.94 113.03 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid d304dfa7-50ee-4f56-9fa3-145d2331a10f))
+    (instances
+      (project "HM_mainboard"
+        (path "/54a6df43-5475-46a2-9916-8b0260700d4c"
+          (reference "#PWR06") (unit 1)
+        )
+        (path "/54a6df43-5475-46a2-9916-8b0260700d4c/8a725ce3-408a-4762-9df2-b56094186e56"
+          (reference "#PWR018") (unit 1)
+        )
+        (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
+          (reference "#PWR010") (unit 1)
+        )
+        (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
+          (reference "#PWR01") (unit 1)
         )
       )
     )

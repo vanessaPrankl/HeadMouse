@@ -1475,11 +1475,11 @@
 
   (symbol (lib_id "esp32-thing-eagle-import:27OHM1/10W1%(0603)0603-RES") (at 118.11 153.67 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
-    (uuid 2f002dfd-e6bd-43ce-bf0d-6c26348aa4d6)
+    (uuid 3e9ac98a-7237-4cb0-b1fc-580cd0eff349)
     (property "Reference" "R6" (at 116.6114 158.242 0)
       (effects (font (size 1.778 1.778)) (justify left bottom))
     )
-    (property "Value" "120" (at 116.586 151.892 0)
+    (property "Value" "120 " (at 115.57 152.4 0)
       (effects (font (size 1.778 1.778)) (justify left bottom))
     )
     (property "Footprint" "Resistor_SMD:R_0201_0603Metric_Pad0.64x0.40mm_HandSolder" (at 118.11 153.67 0)
@@ -1488,8 +1488,11 @@
     (property "Datasheet" "" (at 118.11 153.67 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 9f3c69f5-42bf-4752-bf61-c984b6c4fa26))
-    (pin "2" (uuid 9bb1145d-adbd-4f6d-a84b-8e1d505f60e9))
+    (property "Mouser" "ERJ-PA3J121V" (at 118.11 153.67 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 49e2270e-2e56-4152-b609-38baf654e8c2))
+    (pin "2" (uuid 149a8539-0e52-4b6c-b8e3-436bb7f368a7))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c"
@@ -1499,7 +1502,7 @@
           (reference "R14") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "R13") (unit 1)
+          (reference "R6") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -1633,6 +1636,46 @@
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
           (reference "S3") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "esp32-thing-eagle-import:27OHM1/10W1%(0603)0603-RES") (at 59.69 152.4 90) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no)
+    (uuid 53539d97-f422-41e0-97c5-b2506382ea27)
+    (property "Reference" "R6" (at 58.1914 156.972 0)
+      (effects (font (size 1.778 1.778)) (justify left bottom))
+    )
+    (property "Value" "120 " (at 58.42 152.4 0)
+      (effects (font (size 1.778 1.778)) (justify left bottom))
+    )
+    (property "Footprint" "Resistor_SMD:R_0201_0603Metric_Pad0.64x0.40mm_HandSolder" (at 59.69 152.4 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 59.69 152.4 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Mouser" "ERJ-PA3J121V" (at 59.69 152.4 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid ceb5becc-cb21-46a4-b7d8-f8de8d2619e2))
+    (pin "2" (uuid 40507eec-87f6-4e65-a3d7-a8a84f2fe297))
+    (instances
+      (project "HM_mainboard"
+        (path "/54a6df43-5475-46a2-9916-8b0260700d4c"
+          (reference "R6") (unit 1)
+        )
+        (path "/54a6df43-5475-46a2-9916-8b0260700d4c/8a725ce3-408a-4762-9df2-b56094186e56"
+          (reference "R14") (unit 1)
+        )
+        (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
+          (reference "R5") (unit 1)
+        )
+      )
+      (project "esp32-thing"
+        (path "/64c5aff3-bdec-4fb6-b5ec-87e5efa2adf7"
+          (reference "R13") (unit 1)
         )
       )
     )
@@ -2174,13 +2217,16 @@
     (property "Reference" "R6" (at 53.1114 156.972 0)
       (effects (font (size 1.778 1.778)) (justify left bottom))
     )
-    (property "Value" "120" (at 53.086 150.622 0)
+    (property "Value" "120 " (at 53.34 151.13 0)
       (effects (font (size 1.778 1.778)) (justify left bottom))
     )
     (property "Footprint" "Resistor_SMD:R_0201_0603Metric_Pad0.64x0.40mm_HandSolder" (at 54.61 152.4 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "" (at 54.61 152.4 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Mouser" "ERJ-PA3J121V" (at 54.61 152.4 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (pin "1" (uuid 1fd10bfe-0e50-4ee3-81bd-d0db3a786b60))
@@ -2241,23 +2287,26 @@
     )
   )
 
-  (symbol (lib_id "esp32-thing-eagle-import:27OHM1/10W1%(0603)0603-RES") (at 59.69 152.4 90) (unit 1)
+  (symbol (lib_id "esp32-thing-eagle-import:27OHM1/10W1%(0603)0603-RES") (at 123.19 153.67 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
-    (uuid cb8a70c3-9a87-43ad-be8a-a85cf31277e7)
-    (property "Reference" "R6" (at 58.1914 156.972 0)
+    (uuid c67801d3-dc87-4d20-a14c-3fed4837f98a)
+    (property "Reference" "R6" (at 121.6914 158.242 0)
       (effects (font (size 1.778 1.778)) (justify left bottom))
     )
-    (property "Value" "120" (at 58.166 150.622 0)
+    (property "Value" "120 " (at 121.92 153.67 0)
       (effects (font (size 1.778 1.778)) (justify left bottom))
     )
-    (property "Footprint" "Resistor_SMD:R_0201_0603Metric_Pad0.64x0.40mm_HandSolder" (at 59.69 152.4 0)
+    (property "Footprint" "Resistor_SMD:R_0201_0603Metric_Pad0.64x0.40mm_HandSolder" (at 123.19 153.67 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Datasheet" "" (at 59.69 152.4 0)
+    (property "Datasheet" "" (at 123.19 153.67 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 6d0d909e-7673-4415-a4f8-0496c4637567))
-    (pin "2" (uuid 250f77f5-f825-4343-b123-0fcef101731f))
+    (property "Mouser" "ERJ-PA3J121V" (at 123.19 153.67 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 35279d03-ded7-48d7-a761-9e493f280951))
+    (pin "2" (uuid 2f3795b2-0048-4f14-b6d4-af547b546027))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c"
@@ -2267,7 +2316,7 @@
           (reference "R14") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "R12") (unit 1)
+          (reference "R8") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -2447,43 +2496,6 @@
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
           (reference "C15") (unit 1)
-        )
-      )
-    )
-  )
-
-  (symbol (lib_id "esp32-thing-eagle-import:27OHM1/10W1%(0603)0603-RES") (at 123.19 153.67 90) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid dc4b16f8-8854-4938-b1c7-b9f916073a0e)
-    (property "Reference" "R6" (at 121.6914 158.242 0)
-      (effects (font (size 1.778 1.778)) (justify left bottom))
-    )
-    (property "Value" "120" (at 121.666 151.892 0)
-      (effects (font (size 1.778 1.778)) (justify left bottom))
-    )
-    (property "Footprint" "Resistor_SMD:R_0201_0603Metric_Pad0.64x0.40mm_HandSolder" (at 123.19 153.67 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 123.19 153.67 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid ec1b67db-c242-4799-9454-d0652d11453c))
-    (pin "2" (uuid 377cb811-4ce3-460e-906f-39ab9f678f2b))
-    (instances
-      (project "HM_mainboard"
-        (path "/54a6df43-5475-46a2-9916-8b0260700d4c"
-          (reference "R6") (unit 1)
-        )
-        (path "/54a6df43-5475-46a2-9916-8b0260700d4c/8a725ce3-408a-4762-9df2-b56094186e56"
-          (reference "R14") (unit 1)
-        )
-        (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "R14") (unit 1)
-        )
-      )
-      (project "esp32-thing"
-        (path "/64c5aff3-bdec-4fb6-b5ec-87e5efa2adf7"
-          (reference "R13") (unit 1)
         )
       )
     )
