@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "esp32-thing")(type "KiCad")(uri "$(KIPRJMOD)/esp32-thing.pretty")(options "")(descr ""))
+)
