@@ -139,6 +139,14 @@
     (uuid ffc4584d-9f4c-4379-a56f-d0cb067c1fc3)
   )
 
+  (text_box "Open Questions:\n- Which USB-C connector?\n- Which IMU?\n- Which Shottky?"
+    (at 125.73 25.4 0) (size 34.29 19.05)
+    (stroke (width 0) (type default))
+    (fill (type none))
+    (effects (font (size 1.27 1.27)) (justify left top))
+    (uuid 2eeb4a05-57a8-4e04-abd1-d41cbb568331)
+  )
+
   (label "LED_DEV_R" (at 101.6 67.31 0) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 1340cf0c-102c-468a-a2c3-8762ab1f127f)

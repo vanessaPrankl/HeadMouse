@@ -1385,7 +1385,7 @@
   (symbol (lib_id "Device:LED_Dual_KAK") (at 120.65 137.16 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 16d1efe8-9ab9-42e1-9966-dc0327a4296c)
-    (property "Reference" "D6" (at 128.27 135.9535 90)
+    (property "Reference" "D5" (at 128.27 135.9535 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "155124RV73200" (at 128.27 138.4935 90)
@@ -1403,7 +1403,7 @@
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "D6") (unit 1)
+          (reference "D5") (unit 1)
         )
       )
     )
@@ -1437,7 +1437,7 @@
           (reference "#PWR010") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "#PWR07") (unit 1)
+          (reference "#PWR023") (unit 1)
         )
       )
     )
@@ -1446,7 +1446,7 @@
   (symbol (lib_id "Power_Protection:WE-TVS-824015043") (at 246.38 137.16 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 21485fe1-6046-40ae-b9b9-f8e206f24e4b)
-    (property "Reference" "U3" (at 248.0311 124.46 0)
+    (property "Reference" "U4" (at 248.0311 124.46 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "WE-TVS-824015043" (at 248.0311 127 0)
@@ -1467,7 +1467,7 @@
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "U3") (unit 1)
+          (reference "U4") (unit 1)
         )
       )
     )
@@ -1502,7 +1502,7 @@
           (reference "R14") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "R6") (unit 1)
+          (reference "R11") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -1555,7 +1555,7 @@
           (reference "J3") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "J3") (unit 1)
+          (reference "J4") (unit 1)
         )
       )
     )
@@ -1589,7 +1589,7 @@
           (reference "#PWR010") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "#PWR05") (unit 1)
+          (reference "#PWR021") (unit 1)
         )
       )
     )
@@ -1670,7 +1670,7 @@
           (reference "R14") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "R5") (unit 1)
+          (reference "R10") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -1709,7 +1709,7 @@
           (reference "#PWR010") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "#PWR04") (unit 1)
+          (reference "#PWR020") (unit 1)
         )
       )
     )
@@ -1743,7 +1743,7 @@
           (reference "#PWR010") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "#PWR03") (unit 1)
+          (reference "#PWR019") (unit 1)
         )
       )
     )
@@ -1777,7 +1777,7 @@
           (reference "#PWR010") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "#PWR02") (unit 1)
+          (reference "#PWR018") (unit 1)
         )
       )
     )
@@ -1811,7 +1811,7 @@
           (reference "#PWR010") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "#PWR01") (unit 1)
+          (reference "#PWR017") (unit 1)
         )
       )
     )
@@ -1844,7 +1844,7 @@
           (reference "#PWR03") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "#PWR08") (unit 1)
+          (reference "#PWR024") (unit 1)
         )
       )
     )
@@ -1878,7 +1878,7 @@
           (reference "#PWR010") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "#PWR014") (unit 1)
+          (reference "#PWR026") (unit 1)
         )
       )
     )
@@ -1924,7 +1924,7 @@
           (reference "C13") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "C14") (unit 1)
+          (reference "C8") (unit 1)
         )
       )
     )
@@ -1958,7 +1958,7 @@
           (reference "#PWR010") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "#PWR013") (unit 1)
+          (reference "#PWR025") (unit 1)
         )
       )
     )
@@ -1989,7 +1989,7 @@
           (reference "#SUPPLY08") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "#SUPPLY010") (unit 1)
+          (reference "#SUPPLY013") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -2040,7 +2040,7 @@
           (reference "C1") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "C16") (unit 1)
+          (reference "C10") (unit 1)
         )
       )
     )
@@ -2088,7 +2088,7 @@
           (reference "J2") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "J4") (unit 1)
+          (reference "J5") (unit 1)
         )
       )
     )
@@ -2136,7 +2136,7 @@
           (reference "J1") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "J5") (unit 1)
+          (reference "J6") (unit 1)
         )
       )
     )
@@ -2169,7 +2169,7 @@
           (reference "#PWR03") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "#PWR06") (unit 1)
+          (reference "#PWR022") (unit 1)
         )
       )
     )
@@ -2200,7 +2200,7 @@
           (reference "#SUPPLY08") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "#SUPPLY011") (unit 1)
+          (reference "#SUPPLY014") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -2240,7 +2240,7 @@
           (reference "R14") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "R11") (unit 1)
+          (reference "R9") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -2276,7 +2276,7 @@
           (reference "#SUPPLY08") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "#SUPPLY06") (unit 1)
+          (reference "#SUPPLY015") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -2316,7 +2316,7 @@
           (reference "R14") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "R8") (unit 1)
+          (reference "R12") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -2367,7 +2367,7 @@
           (reference "C14") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "C13") (unit 1)
+          (reference "C7") (unit 1)
         )
       )
     )
@@ -2415,7 +2415,7 @@
           (reference "J4") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "J2") (unit 1)
+          (reference "J3") (unit 1)
         )
       )
     )
@@ -2449,7 +2449,7 @@
           (reference "#PWR010") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "#PWR015") (unit 1)
+          (reference "#PWR027") (unit 1)
         )
       )
     )
@@ -2495,7 +2495,7 @@
           (reference "C12") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
-          (reference "C15") (unit 1)
+          (reference "C9") (unit 1)
         )
       )
     )
