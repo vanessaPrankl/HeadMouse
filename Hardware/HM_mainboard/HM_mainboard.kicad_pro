@@ -388,8 +388,12 @@
     }
   },
   "libraries": {
-    "pinned_footprint_libs": [],
-    "pinned_symbol_libs": []
+    "pinned_footprint_libs": [
+      "HeadMouse"
+    ],
+    "pinned_symbol_libs": [
+      "HeadMouse"
+    ]
   },
   "meta": {
     "filename": "HM_mainboard.kicad_pro",
