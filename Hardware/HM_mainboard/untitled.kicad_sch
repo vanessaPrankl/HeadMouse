@@ -531,13 +531,13 @@
       )
     )
     (symbol "esp32-thing-eagle-import:DIODE-SCHOTTKY-BAT20J" (in_bom yes) (on_board yes)
-      (property "Reference" "D" (at 2.54 0.4826 0)
-        (effects (font (size 1.778 1.5113)) (justify left bottom))
+      (property "Reference" "D1" (at 1.778 3.5814 0)
+        (effects (font (size 1.778 1.5113)) (justify right top))
       )
-      (property "Value" "" (at 2.54 -2.3114 0)
-        (effects (font (size 1.778 1.5113)) (justify left bottom))
+      (property "Value" "10BQ015" (at 0 -2.54 90)
+        (effects (font (size 1.778 1.5113)) (justify right top))
       )
-      (property "Footprint" "esp32-thing:SOD-323" (at 0 0 0)
+      (property "Footprint" "Diode_SMD:D_SMB_Handsoldering" (at 0 -3.81 0)
         (effects (font (size 1.27 1.27)) hide)
       )
       (property "Datasheet" "" (at 0 0 0)
@@ -627,13 +627,13 @@
           (stroke (width 0.1524) (type solid))
           (fill (type none))
         )
-        (pin passive line (at -2.54 0 0) (length 0)
-          (name "A" (effects (font (size 0 0))))
-          (number "A" (effects (font (size 0 0))))
-        )
         (pin passive line (at 2.54 0 180) (length 0)
           (name "C" (effects (font (size 0 0))))
-          (number "C" (effects (font (size 0 0))))
+          (number "1" (effects (font (size 0 0))))
+        )
+        (pin passive line (at -2.54 0 0) (length 0)
+          (name "A" (effects (font (size 0 0))))
+          (number "2" (effects (font (size 0 0))))
         )
       )
     )
@@ -1126,7 +1126,7 @@
           (reference "C7") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/b19d5209-4861-4a96-a3d1-daca4a23de52"
-          (reference "C4") (unit 1)
+          (reference "C3") (unit 1)
         )
       )
     )
@@ -1197,7 +1197,7 @@
           (reference "#SUPPLY04") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/b19d5209-4861-4a96-a3d1-daca4a23de52"
-          (reference "#SUPPLY06") (unit 1)
+          (reference "#SUPPLY05") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -1239,7 +1239,7 @@
           (reference "#PWR01") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/b19d5209-4861-4a96-a3d1-daca4a23de52"
-          (reference "#PWR09") (unit 1)
+          (reference "#PWR08") (unit 1)
         )
       )
     )
@@ -1277,7 +1277,7 @@
           (reference "R11") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/b19d5209-4861-4a96-a3d1-daca4a23de52"
-          (reference "R7") (unit 1)
+          (reference "R3") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -1447,7 +1447,7 @@
           (reference "#SUPPLY06") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/b19d5209-4861-4a96-a3d1-daca4a23de52"
-          (reference "#SUPPLY05") (unit 1)
+          (reference "#SUPPLY06") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -1588,7 +1588,7 @@
           (reference "#PWR01") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/b19d5209-4861-4a96-a3d1-daca4a23de52"
-          (reference "#PWR07") (unit 1)
+          (reference "#PWR09") (unit 1)
         )
       )
     )
@@ -1625,7 +1625,7 @@
           (reference "#PWR01") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/b19d5209-4861-4a96-a3d1-daca4a23de52"
-          (reference "#PWR08") (unit 1)
+          (reference "#PWR07") (unit 1)
         )
       )
     )
@@ -1640,7 +1640,7 @@
     (property "Value" "MCP73831-2" (at 82.55 140.97 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "Package_TO_SOT_SMD:SOT-23-5" (at 99.06 153.67 0)
+    (property "Footprint" "Package_TO_SOT_SMD:SOT-23-5_HandSoldering" (at 99.06 153.67 0)
       (effects (font (size 1.27 1.27) italic) (justify left) hide)
     )
     (property "Datasheet" "http://ww1.microchip.com/downloads/en/DeviceDoc/20001984g.pdf" (at 93.98 148.59 0)
@@ -1766,7 +1766,7 @@
           (reference "C7") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/b19d5209-4861-4a96-a3d1-daca4a23de52"
-          (reference "C3") (unit 1)
+          (reference "C4") (unit 1)
         )
       )
     )
@@ -1903,7 +1903,7 @@
           (reference "#SUPPLY02") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/b19d5209-4861-4a96-a3d1-daca4a23de52"
-          (reference "#SUPPLY03") (unit 1)
+          (reference "#SUPPLY02") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -2043,7 +2043,7 @@
           (reference "#SUPPLY05") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/b19d5209-4861-4a96-a3d1-daca4a23de52"
-          (reference "#SUPPLY02") (unit 1)
+          (reference "#SUPPLY03") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -2096,14 +2096,14 @@
     (property "Value" "10BQ015" (at 51.435 61.595 90)
       (effects (font (size 1.778 1.5113)) (justify right top))
     )
-    (property "Footprint" "Diode_SMD:D_SMB_Handsoldering" (at 51.435 59.055 0)
+    (property "Footprint" "Diode_SMD:D_SMB_Handsoldering" (at 51.435 62.865 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "" (at 51.435 59.055 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "A" (uuid 436c3762-fca4-4789-b686-18569d115e3e))
-    (pin "C" (uuid bb327316-f284-4849-bd11-9d32e43fe205))
+    (pin "2" (uuid 4c4ab9ab-0d0d-42d8-b75a-076a876caecd))
+    (pin "1" (uuid f4c70716-5bdd-40e6-836e-524e9e502028))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c"

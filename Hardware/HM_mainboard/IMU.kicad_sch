@@ -1139,7 +1139,7 @@
           (reference "#SUPPLY09") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "#SUPPLY027") (unit 1)
+          (reference "#SUPPLY029") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -1153,7 +1153,7 @@
   (symbol (lib_id "Device:C") (at 172.085 77.47 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 02efdf19-6937-4f94-b667-df6240ac7c5f)
-    (property "Reference" "C18" (at 172.085 71.12 90)
+    (property "Reference" "C19" (at 172.085 71.12 90)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "1uF" (at 172.085 73.66 90)
@@ -1170,7 +1170,7 @@
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "C18") (unit 1)
+          (reference "C19") (unit 1)
         )
       )
     )
@@ -1201,7 +1201,7 @@
           (reference "#PWR09") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "#PWR029") (unit 1)
+          (reference "#PWR037") (unit 1)
         )
       )
     )
@@ -1232,7 +1232,7 @@
           (reference "#SUPPLY07") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "#SUPPLY019") (unit 1)
+          (reference "#SUPPLY027") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -1268,7 +1268,7 @@
           (reference "#PWR09") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "#PWR040") (unit 1)
+          (reference "#PWR049") (unit 1)
         )
       )
     )
@@ -1299,7 +1299,7 @@
           (reference "#PWR09") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "#PWR039") (unit 1)
+          (reference "#PWR046") (unit 1)
         )
       )
     )
@@ -1331,7 +1331,7 @@
           (reference "R8") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "R3") (unit 1)
+          (reference "R17") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -1367,7 +1367,7 @@
           (reference "#SUPPLY07") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "#SUPPLY017") (unit 1)
+          (reference "#SUPPLY025") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -1404,7 +1404,7 @@
           (reference "R8") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "R18") (unit 1)
+          (reference "R20") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -1440,7 +1440,7 @@
           (reference "#SUPPLY07") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "#SUPPLY020") (unit 1)
+          (reference "#SUPPLY028") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -1477,7 +1477,7 @@
           (reference "R8") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "R16") (unit 1)
+          (reference "R15") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -1513,7 +1513,7 @@
           (reference "#PWR09") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "#PWR046") (unit 1)
+          (reference "#PWR041") (unit 1)
         )
       )
     )
@@ -1545,7 +1545,7 @@
           (reference "R8") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "R17") (unit 1)
+          (reference "R19") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -1581,7 +1581,7 @@
           (reference "#PWR09") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "#PWR042") (unit 1)
+          (reference "#PWR045") (unit 1)
         )
       )
     )
@@ -1612,7 +1612,7 @@
           (reference "#SUPPLY09") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "#SUPPLY024") (unit 1)
+          (reference "#SUPPLY022") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -1626,7 +1626,7 @@
   (symbol (lib_id "Device:C") (at 252.095 52.705 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 5b858c30-11d0-4ad2-84a4-d3257c846199)
-    (property "Reference" "C17" (at 252.095 45.085 90)
+    (property "Reference" "C20" (at 252.095 45.085 90)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "120nF" (at 252.095 47.625 90)
@@ -1643,7 +1643,7 @@
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "C17") (unit 1)
+          (reference "C20") (unit 1)
         )
       )
     )
@@ -1674,7 +1674,7 @@
           (reference "#SUPPLY010") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "#SUPPLY016") (unit 1)
+          (reference "#SUPPLY019") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -1711,7 +1711,7 @@
           (reference "R8") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "R20") (unit 1)
+          (reference "R13") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -1747,7 +1747,7 @@
           (reference "#PWR010") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "#PWR028") (unit 1)
+          (reference "#PWR035") (unit 1)
         )
       )
     )
@@ -1756,7 +1756,7 @@
   (symbol (lib_id "Device:C") (at 56.515 102.235 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 7dd6c4ea-4795-4bcb-ae33-2b9bd73ee2f9)
-    (property "Reference" "C11" (at 60.325 100.965 0)
+    (property "Reference" "C15" (at 60.325 100.965 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "0.1uF" (at 60.325 103.505 0)
@@ -1773,7 +1773,7 @@
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "C11") (unit 1)
+          (reference "C15") (unit 1)
         )
       )
     )
@@ -1804,7 +1804,7 @@
           (reference "#PWR09") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "#PWR043") (unit 1)
+          (reference "#PWR044") (unit 1)
         )
       )
     )
@@ -1813,7 +1813,7 @@
   (symbol (lib_id "HeadMouse:MC6470") (at 60.96 158.115 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 831e5c3d-1081-4b2a-b28a-733538abf3d9)
-    (property "Reference" "U6" (at 60.96 137.795 0)
+    (property "Reference" "U5" (at 60.96 137.795 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "MC6470" (at 60.96 140.335 0)
@@ -1843,7 +1843,7 @@
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "U6") (unit 1)
+          (reference "U5") (unit 1)
         )
       )
     )
@@ -1852,7 +1852,7 @@
   (symbol (lib_id "Device:C") (at 86.995 78.105 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 93be014c-7aa8-4313-8d14-cc8b90dc94ba)
-    (property "Reference" "C12" (at 90.805 76.835 0)
+    (property "Reference" "C16" (at 90.805 76.835 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "0.1uF" (at 90.805 79.375 0)
@@ -1869,7 +1869,7 @@
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "C12") (unit 1)
+          (reference "C16") (unit 1)
         )
       )
     )
@@ -1900,7 +1900,7 @@
           (reference "#SUPPLY09") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "#SUPPLY029") (unit 1)
+          (reference "#SUPPLY017") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -1936,7 +1936,7 @@
           (reference "#SUPPLY09") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "#SUPPLY018") (unit 1)
+          (reference "#SUPPLY023") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -1972,7 +1972,7 @@
           (reference "#PWR09") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "#PWR044") (unit 1)
+          (reference "#PWR043") (unit 1)
         )
       )
     )
@@ -1981,7 +1981,7 @@
   (symbol (lib_id "Device:C") (at 102.87 151.13 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid acda21cb-fd73-425f-a109-55b25de7ed63)
-    (property "Reference" "C20" (at 106.68 149.86 0)
+    (property "Reference" "C17" (at 106.68 149.86 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "0.1uF" (at 106.68 152.4 0)
@@ -1998,7 +1998,7 @@
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "C20") (unit 1)
+          (reference "C17") (unit 1)
         )
       )
     )
@@ -2007,7 +2007,7 @@
   (symbol (lib_id "HeadMouse:BNO055") (at 178.435 57.15 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid ad2ce85a-67f2-4327-9a90-d9a9f7c9acd2)
-    (property "Reference" "U5" (at 211.455 46.99 0)
+    (property "Reference" "U6" (at 211.455 46.99 0)
       (effects (font (size 1.524 1.524)))
     )
     (property "Value" "BNO055" (at 211.455 49.53 0)
@@ -2050,7 +2050,7 @@
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "U5") (unit 1)
+          (reference "U6") (unit 1)
         )
       )
     )
@@ -2081,7 +2081,7 @@
           (reference "#PWR09") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "#PWR047") (unit 1)
+          (reference "#PWR039") (unit 1)
         )
       )
     )
@@ -2112,7 +2112,7 @@
           (reference "#SUPPLY07") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "#SUPPLY022") (unit 1)
+          (reference "#SUPPLY024") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -2149,7 +2149,7 @@
           (reference "R8") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "R14") (unit 1)
+          (reference "R16") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -2186,7 +2186,7 @@
           (reference "R8") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "R19") (unit 1)
+          (reference "R12") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -2222,7 +2222,7 @@
           (reference "#PWR09") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "#PWR030") (unit 1)
+          (reference "#PWR038") (unit 1)
         )
       )
     )
@@ -2253,7 +2253,7 @@
           (reference "#SUPPLY09") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "#SUPPLY026") (unit 1)
+          (reference "#SUPPLY021") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -2290,7 +2290,7 @@
           (reference "R8") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "R15") (unit 1)
+          (reference "R14") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -2326,7 +2326,7 @@
           (reference "#SUPPLY09") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "#SUPPLY030") (unit 1)
+          (reference "#SUPPLY018") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -2362,7 +2362,7 @@
           (reference "#PWR09") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "#PWR045") (unit 1)
+          (reference "#PWR042") (unit 1)
         )
       )
     )
@@ -2424,7 +2424,7 @@
           (reference "#SUPPLY09") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "#SUPPLY025") (unit 1)
+          (reference "#SUPPLY020") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -2438,7 +2438,7 @@
   (symbol (lib_id "Device:C") (at 158.115 50.8 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid df4374e4-71b4-4daf-9493-a50f2c999a7c)
-    (property "Reference" "C19" (at 153.035 49.53 0)
+    (property "Reference" "C18" (at 153.035 49.53 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "100nF" (at 155.575 52.07 0)
@@ -2455,7 +2455,7 @@
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "C19") (unit 1)
+          (reference "C18") (unit 1)
         )
       )
     )
@@ -2486,7 +2486,7 @@
           (reference "#SUPPLY07") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "#SUPPLY021") (unit 1)
+          (reference "#SUPPLY026") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -2522,7 +2522,7 @@
           (reference "#SUPPLY09") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "#SUPPLY028") (unit 1)
+          (reference "#SUPPLY030") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -2558,7 +2558,7 @@
           (reference "#PWR09") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "#PWR031") (unit 1)
+          (reference "#PWR040") (unit 1)
         )
       )
     )
@@ -2589,7 +2589,7 @@
           (reference "#PWR09") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "#PWR049") (unit 1)
+          (reference "#PWR036") (unit 1)
         )
       )
     )
@@ -2677,7 +2677,7 @@
           (reference "R8") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "R13") (unit 1)
+          (reference "R18") (unit 1)
         )
       )
       (project "esp32-thing"
@@ -2713,7 +2713,7 @@
           (reference "#PWR09") (unit 1)
         )
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
-          (reference "#PWR041") (unit 1)
+          (reference "#PWR047") (unit 1)
         )
       )
     )
