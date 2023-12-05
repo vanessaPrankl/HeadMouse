@@ -2102,8 +2102,8 @@
     (property "Datasheet" "" (at 51.435 59.055 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "2" (uuid 4c4ab9ab-0d0d-42d8-b75a-076a876caecd))
     (pin "1" (uuid f4c70716-5bdd-40e6-836e-524e9e502028))
+    (pin "2" (uuid 4c4ab9ab-0d0d-42d8-b75a-076a876caecd))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c"
