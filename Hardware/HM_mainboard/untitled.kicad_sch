@@ -1077,14 +1077,14 @@
     (property "Datasheet" "~" (at 104.775 65.405 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Mouser" "647-F921E105KPA" (at 104.775 65.405 0)
+    (property "Mouser" "F921E105KPA" (at 104.775 65.405 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Reichelt" "" (at 104.775 65.405 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid a9cc728e-5b88-4ea5-9b5b-bcdd3e2fa196))
-    (pin "2" (uuid d48725e7-5c7b-4c81-8396-f3db9e3dd2ad))
+    (pin "1" (uuid c0e960de-9a69-47b5-81d5-0d433a21618a))
+    (pin "2" (uuid 49d2d1eb-7c11-4a0a-8815-799fbcd22d4a))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
@@ -1115,14 +1115,14 @@
     (property "Datasheet" "~" (at 137.795 65.405 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Mouser" "647-F921E105KPA" (at 137.795 65.405 0)
+    (property "Mouser" "F921E105KPA" (at 137.795 65.405 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Reichelt" "" (at 137.795 65.405 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 666bae51-d953-4292-84f6-b971bdf9648c))
-    (pin "2" (uuid c0ed34f6-9e07-4e78-bdb7-5cca77a4bbcf))
+    (pin "1" (uuid 6e89dae2-48f1-451d-92eb-0bca03938afa))
+    (pin "2" (uuid df44f687-720f-4bce-89fd-ceadc7f7d884))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
@@ -1153,14 +1153,14 @@
     (property "Datasheet" "" (at 82.55 158.75 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Mouser" "71-CRCW06032K00FKEAC" (at 82.55 158.75 0)
+    (property "Mouser" "ERJ-PA3J121V" (at 82.55 158.75 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Reichelt" "" (at 82.55 158.75 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 83f34e31-09af-4da1-8fad-19e2e2c63e09))
-    (pin "2" (uuid 98537071-d304-49b7-8bca-6dbb93cd7069))
+    (pin "1" (uuid a9735cca-8932-4aa8-8e97-bc6483f1c2db))
+    (pin "2" (uuid 273b15a5-c417-4868-9b28-3793a4dc4e05))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c"
@@ -1260,7 +1260,7 @@
     (property "Reference" "R6" (at 199.1614 135.382 0)
       (effects (font (size 1.778 1.778)) (justify left bottom))
     )
-    (property "Value" "10k/1%" (at 199.39 129.54 0)
+    (property "Value" "10k" (at 199.39 129.54 0)
       (effects (font (size 1.778 1.778)) (justify left bottom))
     )
     (property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder" (at 200.66 130.81 0)
@@ -1269,14 +1269,14 @@
     (property "Datasheet" "" (at 200.66 130.81 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Mouser" "660-RN73H1JT1002F100" (at 200.66 130.81 0)
+    (property "Mouser" "ERJ-PA3J121V" (at 200.66 130.81 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Reichelt" "" (at 200.66 130.81 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 2600dcf9-704b-44ad-9cec-63dc36fe46ff))
-    (pin "2" (uuid 99fa61cb-9228-4a16-910e-651563fa597d))
+    (pin "1" (uuid 405dc368-ad0a-4221-b73f-a9cc69a68f3f))
+    (pin "2" (uuid 4c4609d6-6270-4b7a-8587-9c99fddee9f8))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c"
@@ -1358,8 +1358,8 @@
     (property "Reichelt" "JST PH2P ST90" (at 52.07 146.05 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid ec726080-4fac-4064-97f7-d6397eecd7bb))
-    (pin "2" (uuid b6a21194-4e1b-4550-aeea-721961bf156b))
+    (pin "1" (uuid 3755368a-b28b-4a2c-9fe7-7deb0c57a302))
+    (pin "2" (uuid daba6a20-333b-400c-9be8-08279c3100cb))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/b19d5209-4861-4a96-a3d1-daca4a23de52"
@@ -1528,7 +1528,7 @@
     (property "Datasheet" "http://ww1.microchip.com/downloads/en/DeviceDoc/21373C.pdf" (at 120.015 66.675 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Mouser" "579-TC1262-3.3VDBTR" (at 120.015 59.055 0)
+    (property "Mouser" "TC1262-3.3VDBTR" (at 120.015 59.055 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Mouser Price/Stock" "https://www.mouser.at/ProductDetail/Microchip-Technology/TC1262-3.3VDBTR?qs=VDoAoI%2FEFTN6q7dfuakIrw%3D%3D" (at 120.015 59.055 0)
@@ -1537,9 +1537,9 @@
     (property "Reichelt" "" (at 120.015 59.055 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 3eddb336-fb2d-4331-bded-3523f9726d24))
-    (pin "2" (uuid fda6a76a-08a3-4f6d-83ee-87ded5126acf))
-    (pin "3" (uuid 7d4c2e5c-a4bb-4615-85de-ac4fd9a79306))
+    (pin "1" (uuid 6e1561ad-d051-44e3-86c9-65d0d152ba2b))
+    (pin "2" (uuid 26d10f3b-cbe8-47e8-ab4f-e67d29f1dd03))
+    (pin "3" (uuid b6be3c78-7937-4e26-95a6-56dca240fd06))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/b19d5209-4861-4a96-a3d1-daca4a23de52"
@@ -1567,11 +1567,8 @@
     (property "Reichelt" "" (at 64.77 148.59 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Mouser" "81-GRM188Z71A475KE5J" (at 64.77 148.59 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid f0d31e68-3cd3-4bf0-a08e-84a21ed1aff6))
-    (pin "2" (uuid 9cb9a69f-67f4-400f-ba61-8f0cdb109506))
+    (pin "1" (uuid 8e25507d-0929-4d8b-9c18-f88984597067))
+    (pin "2" (uuid f43e84fb-40d1-4224-858f-42514499df54))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
@@ -1676,7 +1673,7 @@
     (property "Datasheet" "http://ww1.microchip.com/downloads/en/DeviceDoc/20001984g.pdf" (at 93.98 148.59 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Mouser" "579-MCP73831T-2ACIOT" (at 97.79 147.32 0)
+    (property "Mouser" "MCP73831T-2ACI/OT" (at 97.79 147.32 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Mouser Price/Stock" "https://www.mouser.at/ProductDetail/Microchip-Technology/MCP73831T-2ACI-OT?qs=yUQqVecv4qvbBQBGbHx0Mw%3D%3D" (at 97.79 147.32 0)
@@ -1685,11 +1682,11 @@
     (property "Reichelt" "" (at 97.79 147.32 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 9f8a3e61-e520-403a-a9d3-0e2bb028d875))
-    (pin "2" (uuid 2be6777a-a782-4104-944e-f0ea450c830d))
-    (pin "3" (uuid ca0c3bc4-28c6-4fdb-90d8-7c2f950b7b79))
-    (pin "4" (uuid 516f81d2-778c-4013-a64d-10556eb0fd60))
-    (pin "5" (uuid 023aae12-5da8-4355-9784-f79477b7636d))
+    (pin "1" (uuid 5d57da53-1194-4485-b07c-f4ffeccad10a))
+    (pin "2" (uuid 6d0b22a6-6836-4c99-a70e-2aa5544e06f9))
+    (pin "3" (uuid 177a4e37-c994-447f-9472-b1c9ce2d9e24))
+    (pin "4" (uuid 96c4f291-62ef-45c3-8514-803a6040e169))
+    (pin "5" (uuid afb49e64-ef49-45f1-b77d-3dde3b869b2c))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/b19d5209-4861-4a96-a3d1-daca4a23de52"
@@ -1705,7 +1702,7 @@
     (property "Reference" "R6" (at 199.1614 150.622 0)
       (effects (font (size 1.778 1.778)) (justify left bottom))
     )
-    (property "Value" "10k/1%" (at 199.39 144.78 0)
+    (property "Value" "10k" (at 199.39 144.78 0)
       (effects (font (size 1.778 1.778)) (justify left bottom))
     )
     (property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder" (at 200.66 146.05 0)
@@ -1714,14 +1711,14 @@
     (property "Datasheet" "" (at 200.66 146.05 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Mouser" "660-RN73H1JT1002F100" (at 200.66 146.05 0)
+    (property "Mouser" "ERJ-PA3J121V" (at 200.66 146.05 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Reichelt" "" (at 200.66 146.05 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 68d3bbfc-26d4-40da-ab37-985d4ee303eb))
-    (pin "2" (uuid bbb4523a-64d2-4808-91ed-e8ff1eeeaa20))
+    (pin "1" (uuid 619e572c-0fe0-4f1d-a1bb-0afdbb7e849b))
+    (pin "2" (uuid 05ccee1a-a8d9-4846-961b-e480e674ca31))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c"
@@ -1800,11 +1797,8 @@
     (property "Reichelt" "" (at 139.7 144.78 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Mouser" "81-GRM188Z71A475KE5J" (at 139.7 144.78 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid d1291423-6a1b-4a70-a459-7e611e1336b8))
-    (pin "2" (uuid 72bef727-fd81-49c4-8961-38ea31de3770))
+    (pin "1" (uuid 76edd521-6e11-49d2-b273-b25fb94f5a51))
+    (pin "2" (uuid 3f80ceac-e642-4352-bb1a-7e7b56481110))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/9043a365-e24a-41b8-9f6d-decb4da0da6a"
@@ -1859,7 +1853,7 @@
     (property "Reference" "Q1" (at 59.055 47.625 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Value" "PMV27UPEAR" (at 59.055 50.165 0)
+    (property "Value" "PMOS - AS3401" (at 59.055 50.165 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Footprint" "Package_TO_SOT_SMD:SOT-23" (at 59.055 48.895 0)
@@ -1877,7 +1871,7 @@
     (property "Sim.Pins" "1=D 2=G 3=S" (at 53.975 66.675 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Digikey" "4530-AS3401CT" (at 53.975 51.435 0)
+    (property "Digikey" "AS3401" (at 53.975 51.435 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Mouser Price/Stock" "https://www.digikey.at/de/products/detail/anbon-semiconductor-int-l-limited/AS3401/16708460" (at 53.975 51.435 0)
@@ -1886,12 +1880,9 @@
     (property "Reichelt" "" (at 53.975 51.435 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Mouser" "771-PMV27UPEAR" (at 53.975 51.435 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid d491af76-7a31-4cff-bb45-cfae80549921))
-    (pin "2" (uuid 4c616ce1-03c5-49d3-8125-98ec77888bb5))
-    (pin "3" (uuid ba666cfa-b749-4895-a0e1-c7ca32d09580))
+    (pin "1" (uuid 48e903b4-6a7c-49b8-ad1d-5caff627bdc6))
+    (pin "2" (uuid f703f0e7-f349-4106-a5d3-6ae98b424aef))
+    (pin "3" (uuid 3713e297-90ad-4708-82f3-eded4267a09e))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/b19d5209-4861-4a96-a3d1-daca4a23de52"
@@ -1919,14 +1910,14 @@
     (property "Reichelt" "" (at 41.275 59.055 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Mouser" "660-RN73H1JT1002F100" (at 41.275 59.055 0)
+    (property "Mouser" "RN73H1JTTD1002F100" (at 41.275 59.055 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Mouser Price/Stock" "https://www.mouser.at/ProductDetail/KOA-Speer/RN73H1JTTD1002F100?qs=mtPtL6iy6ALCfskr2ilnpg%3D%3D" (at 41.275 59.055 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid c6941c98-a79e-439d-b08e-404ce2c5c2b2))
-    (pin "2" (uuid 463d13a0-c37b-405a-a01c-2fc4a27e5d8d))
+    (pin "1" (uuid 75b93c9b-5bf8-4b1b-8eb0-1bfa645dbfd1))
+    (pin "2" (uuid a0ca0fc2-922d-4f87-b500-803fc4c26e01))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c"
@@ -2171,7 +2162,7 @@
     (property "Datasheet" "https://eu.mouser.com/ProductDetail/Vishay-Semiconductors/VS-10BQ015-M3-5BT?qs=asPD7ZL2j3VpzaHhlDLLKA%3D%3D&gad_source=1&gclid=CjwKCAiA1MCrBhAoEiwAC2d64Qfz9GdFJXcJop1dluLSezxhXfgrxGSJlfwXR4mOBbP2oq8S6QpdJRoCLncQAvD_BwE" (at 51.435 59.055 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Mouser" "78-VS-10BQ015-M35BT" (at 51.435 59.055 0)
+    (property "Mouser" "10BQ015" (at 51.435 59.055 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Mouser Price/Stock" "https://eu.mouser.com/ProductDetail/Vishay-Semiconductors/VS-10BQ015-M3-5BT?qs=asPD7ZL2j3VpzaHhlDLLKA%3D%3D&gad_source=1&gclid=CjwKCAiA1MCrBhAoEiwAC2d64Qfz9GdFJXcJop1dluLSezxhXfgrxGSJlfwXR4mOBbP2oq8S6QpdJRoCLncQAvD_BwE" (at 51.435 59.055 0)
@@ -2180,8 +2171,8 @@
     (property "Reichelt" "" (at 51.435 59.055 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid f4c70716-5bdd-40e6-836e-524e9e502028))
-    (pin "2" (uuid 4c4ab9ab-0d0d-42d8-b75a-076a876caecd))
+    (pin "1" (uuid 6526b158-f696-4302-8455-0eb3c98bda7a))
+    (pin "2" (uuid 149a8792-10df-456d-8e57-6091cb483ad3))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c"

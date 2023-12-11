@@ -1674,7 +1674,7 @@
     (property "Datasheet" "https://www.we-online.com/components/products/datasheet/155124RV73200.pdf" (at 120.65 138.43 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Mouser" "710-155124RV73200" (at 120.65 137.16 0)
+    (property "Mouser" "155124RV73200" (at 120.65 137.16 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Mouser Price/Stock" "https://www.mouser.at/ProductDetail/Wurth-Elektronik/155124RV73200?qs=5aG0NVq1C4yQQzqaqWGYAg%3D%3D" (at 120.65 137.16 0)
@@ -1683,9 +1683,9 @@
     (property "Reichelt" "" (at 120.65 137.16 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid fbf4b898-08d9-4925-b3fa-9996f055f756))
-    (pin "2" (uuid 1c5e4af9-4598-4906-934c-cafae8b89569))
-    (pin "3" (uuid bdd3d982-bc5c-43bb-bc9a-9566f56b6c39))
+    (pin "1" (uuid d353f7cd-5317-4baa-acaa-151ea492a806))
+    (pin "2" (uuid 8ea6aaf1-da3e-49d1-809e-133144b3fce5))
+    (pin "3" (uuid 43d83ab1-0374-4156-af68-0b4690a97b89))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
@@ -1744,7 +1744,7 @@
     (property "Datasheet" "https://www.we-online.com/components/products/datasheet/824015043.pdf" (at 247.65 147.32 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Mouser" "710-824015043" (at 246.38 137.16 0)
+    (property "Mouser" "824015043" (at 246.38 137.16 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Mouser Price/Stock" "https://www.mouser.at/ProductDetail/Wurth-Elektronik/824015043?qs=amGC7iS6iy%252BoHLfbVvujhQ%3D%3D" (at 246.38 137.16 0)
@@ -1753,12 +1753,12 @@
     (property "Reichelt" "" (at 246.38 137.16 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 35dda030-a301-4364-b950-ff8bbd63b70f))
-    (pin "2" (uuid 054062fe-e01a-4e7c-8550-eaf7bda30a7c))
-    (pin "3" (uuid b912c243-fdff-4e70-80b7-59268ff274e7))
-    (pin "4" (uuid dda125b8-4681-4967-ba1d-8aa9698b97c3))
-    (pin "5" (uuid b8c2f55d-3afa-47b1-aa1e-b64f1d1ac36a))
-    (pin "6" (uuid b4c18c8d-4a5d-43f1-9cff-ea33805c05c4))
+    (pin "1" (uuid f7eee7c9-2eaa-41fd-9314-ece76ca144c6))
+    (pin "2" (uuid 70dbcfce-1b62-45f7-aabe-b809988815bb))
+    (pin "3" (uuid 51f77398-5a15-4f47-a131-3adcfc623471))
+    (pin "4" (uuid f7dd676b-bdeb-4b38-93cc-e53983374a36))
+    (pin "5" (uuid 2fc77331-d0ba-4377-a6e4-d984c8be3a6c))
+    (pin "6" (uuid 84a0d6f1-8098-4d44-949d-9f42eb9538d0))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
@@ -1851,14 +1851,14 @@
     (property "Datasheet" "" (at 118.11 153.67 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Mouser" "603-RC0603FR-10120RL" (at 118.11 153.67 0)
+    (property "Mouser" "ERJ-PA3J121V" (at 118.11 153.67 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Reichelt" "" (at 118.11 153.67 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 49e2270e-2e56-4152-b609-38baf654e8c2))
-    (pin "2" (uuid 149a8539-0e52-4b6c-b8e3-436bb7f368a7))
+    (pin "1" (uuid 8841013b-21e7-4529-80f0-f71f98e90034))
+    (pin "2" (uuid 08451f58-6c9c-45e4-bbd1-0503c922d217))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c"
@@ -1909,19 +1909,19 @@
     (property "Manufacturer_Part_Number" "450404015514" (at 200.66 925.73 0)
       (effects (font (size 1.27 1.27)) (justify left top) hide)
     )
-    (property "Mouser" "710-450404015514" (at 179.07 130.81 0)
+    (property "Mouser" "450404015514" (at 179.07 130.81 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Reichelt" "" (at 179.07 130.81 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 75b7b3eb-a442-443f-8911-ec93b355358b))
-    (pin "2" (uuid 4039ed01-0a8c-4ad7-955c-59da04176059))
-    (pin "3" (uuid 816c08d3-fe65-4464-8785-09ca0c27fd86))
-    (pin "MP1" (uuid 269da153-c7f5-4556-98c5-3438e836948b))
-    (pin "MP2" (uuid 27b87c8b-dfee-48eb-92b7-30e1016c05ca))
-    (pin "MP3" (uuid 31532661-2958-48d7-8339-ccc3ca7e264c))
-    (pin "MP4" (uuid 3933bc22-a80b-4e0c-b349-b5ac18863fe7))
+    (pin "1" (uuid 95df2b9e-bec3-43d0-8671-f2dcbbf9e512))
+    (pin "2" (uuid 7f90c14f-deb8-4b5a-a857-d925631af449))
+    (pin "3" (uuid 6e8a9540-5150-41c4-80ea-e679d66ab8f7))
+    (pin "MP1" (uuid 4ead2b24-94a7-40b3-af1f-21e652889540))
+    (pin "MP2" (uuid 146d2303-14ba-40ad-9434-e7303c849d7e))
+    (pin "MP3" (uuid 88d17e2f-bb8a-4b0a-8347-a27f15541a82))
+    (pin "MP4" (uuid 6bb9d8a0-75ff-4591-827f-21b221f7fd96))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
@@ -1980,7 +1980,7 @@
     (property "Datasheet" "https://tensility.s3.amazonaws.com/uploads/pdffiles/54-00174.pdf?X-Amz-Expires=600&X-Amz-Date=20231206T211710Z&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIS2S4WRDQDSWDRZQ%2F20231206%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-SignedHeaders=host&X-Amz-Signature=9b1a304331de7a209094883b10ea93c55c7e790e0be1d3e399b91f09e8b0233f" (at 233.68 50.8 0)
       (effects (font (size 1.27 1.27) italic) hide)
     )
-    (property "Digikey" "839-54-00174CT" (at 233.68 50.8 0)
+    (property "Digikey" "54-00174" (at 233.68 50.8 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Mouser Price/Stock" "https://www.digikey.de/de/products/detail/tensility-international-corp/54-00174/12140150" (at 233.68 50.8 0)
@@ -1989,11 +1989,11 @@
     (property "Reichelt" "" (at 233.68 50.8 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 2e7d7d61-e394-49f6-8e6c-e1a703511962))
-    (pin "2" (uuid 260b0055-fe09-473b-92b7-1bdda97411e1))
-    (pin "3" (uuid d51f8899-cbfe-4db2-a07e-77d87ce1f640))
-    (pin "4" (uuid 29d76ba0-9c46-4581-a59c-b7629842fd4b))
-    (pin "5" (uuid 8ccbaecf-4bca-44c3-8e34-57fa017891c1))
+    (pin "1" (uuid b138f0a7-d008-43da-9e64-14f8466da3ba))
+    (pin "2" (uuid e2077e9b-93ec-4bd1-bdde-8d59035064b7))
+    (pin "3" (uuid eb91e6de-fd68-4bd7-9bfb-abb8dbdcb46f))
+    (pin "4" (uuid 90794541-3042-4b30-bb5c-02a9db9c14b8))
+    (pin "5" (uuid aeacf008-2a2a-4a02-9d52-a38915ffacff))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
@@ -2018,14 +2018,14 @@
     (property "Datasheet" "" (at 59.69 152.4 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Mouser" "603-RC0603FR-10120RL" (at 59.69 152.4 0)
+    (property "Mouser" "ERJ-PA3J121V" (at 59.69 152.4 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Reichelt" "" (at 59.69 152.4 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid ceb5becc-cb21-46a4-b7d8-f8de8d2619e2))
-    (pin "2" (uuid 40507eec-87f6-4e65-a3d7-a8a84f2fe297))
+    (pin "1" (uuid e53445f2-90bf-4aba-afe4-c4a4695f3617))
+    (pin "2" (uuid 8e4db57e-00fb-493f-ae35-3f1a3ea0c522))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c"
@@ -2196,7 +2196,7 @@
     (property "Datasheet" "~" (at 123.19 62.23 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Digikey" "1276-CL10B104KB8NNNLCT" (at 123.19 62.23 0)
+    (property "Digikey" "1276-CL10B104KB8NNNLCT-ND" (at 123.19 62.23 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Farnell" "3013409" (at 123.19 62.23 0)
@@ -2211,8 +2211,8 @@
     (property "Reichelt" "" (at 123.19 62.23 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 08e967db-cd07-47ec-beeb-3fe13a60ba3c))
-    (pin "2" (uuid 3002b2f6-7bab-48af-9945-ada5f54da292))
+    (pin "1" (uuid 9ef3ebae-7500-4f72-b00d-c92b55e9caf1))
+    (pin "2" (uuid e97d1543-748d-41c7-972a-5b7861c9d3e8))
     (instances
       (project "FM3_mainboard"
         (path "/37f31dec-63fc-4634-a141-5dc5d2b60fe4"
@@ -2245,7 +2245,7 @@
     (property "Datasheet" "https://tensility.s3.amazonaws.com/uploads/pdffiles/54-00174.pdf?X-Amz-Expires=600&X-Amz-Date=20231206T211710Z&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIS2S4WRDQDSWDRZQ%2F20231206%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-SignedHeaders=host&X-Amz-Signature=9b1a304331de7a209094883b10ea93c55c7e790e0be1d3e399b91f09e8b0233f" (at 172.72 50.8 0)
       (effects (font (size 1.27 1.27) italic) hide)
     )
-    (property "Digikey" "839-54-00174CT" (at 172.72 50.8 0)
+    (property "Digikey" "54-00174" (at 172.72 50.8 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Mouser Price/Stock" "https://www.digikey.de/de/products/detail/tensility-international-corp/54-00174/12140150" (at 172.72 50.8 0)
@@ -2254,11 +2254,11 @@
     (property "Reichelt" "" (at 172.72 50.8 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 56f20f1a-6891-48c5-8e6b-03bd43656dbd))
-    (pin "2" (uuid 61c53ee1-8e72-4018-8b3e-73c7d6809003))
-    (pin "3" (uuid ec007f60-2361-4e81-bfec-c82424f96479))
-    (pin "4" (uuid 3a7e552e-899e-4bf0-91ae-453d28e9426c))
-    (pin "5" (uuid 2ac7d5cc-bda1-406f-b572-e2cd7f3c5b0f))
+    (pin "1" (uuid 4e6440e6-0b68-456f-b5fb-8e36e7dd23cc))
+    (pin "2" (uuid aa107c9e-61f6-4084-8820-5f570b6b84f2))
+    (pin "3" (uuid 8f8824e3-63dd-4861-bf5a-5dafa0bde928))
+    (pin "4" (uuid 2e5ad066-f869-4a63-af8c-c404de223605))
+    (pin "5" (uuid 4391269d-2616-467e-99de-cd1899bb578c))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
@@ -2319,7 +2319,7 @@
     (property "Datasheet" "~" (at 243.84 60.96 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Digikey" "1276-CL10B104KB8NNNLCT" (at 243.84 60.96 0)
+    (property "Digikey" "1276-CL10B104KB8NNNLCT-ND" (at 243.84 60.96 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Farnell" "3013409" (at 243.84 60.96 0)
@@ -2334,8 +2334,8 @@
     (property "Reichelt" "" (at 243.84 60.96 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid cacb1108-aa3a-4221-880c-ed7d64202b93))
-    (pin "2" (uuid f56d97f8-0c52-4097-b179-efee8368d03f))
+    (pin "1" (uuid 0b4069b9-b4c1-4bef-b6c9-472ae2a8c02d))
+    (pin "2" (uuid a7bfade5-14fc-4d5f-bef2-81a8216e0837))
     (instances
       (project "FM3_mainboard"
         (path "/37f31dec-63fc-4634-a141-5dc5d2b60fe4"
@@ -2368,7 +2368,7 @@
     (property "Datasheet" "https://tensility.s3.amazonaws.com/uploads/pdffiles/54-00174.pdf?X-Amz-Expires=600&X-Amz-Date=20231206T211710Z&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIS2S4WRDQDSWDRZQ%2F20231206%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-SignedHeaders=host&X-Amz-Signature=9b1a304331de7a209094883b10ea93c55c7e790e0be1d3e399b91f09e8b0233f" (at 113.03 52.07 0)
       (effects (font (size 1.27 1.27) italic) hide)
     )
-    (property "Digikey" "839-54-00174CT" (at 113.03 52.07 0)
+    (property "Digikey" "54-00174" (at 113.03 52.07 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Mouser Price/Stock" "https://www.digikey.de/de/products/detail/tensility-international-corp/54-00174/12140150" (at 113.03 52.07 0)
@@ -2377,11 +2377,11 @@
     (property "Reichelt" "" (at 113.03 52.07 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 1ecc3de3-f278-44d0-a43d-a207e651715c))
-    (pin "2" (uuid 307db379-da8a-47ee-827f-cbe6a9fee69c))
-    (pin "3" (uuid f40b9881-0945-44c5-89aa-c7d8f88398ec))
-    (pin "4" (uuid 7bf5a039-4552-411f-b1ae-fd61d90ae91d))
-    (pin "5" (uuid 1549f299-2cb7-47dd-8be0-97a65412acfa))
+    (pin "1" (uuid 0925052a-a678-4b6c-9ff0-90b3e8793fb2))
+    (pin "2" (uuid c7d581b2-4f2b-42a9-924b-c9b6ca09a0af))
+    (pin "3" (uuid 56994fcb-8012-4702-a2a8-51d665d743c7))
+    (pin "4" (uuid b0e04e5d-88e8-4cb1-b184-174ee61dce5e))
+    (pin "5" (uuid b647b421-2506-46e4-966d-2686b69ad29f))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
@@ -2475,14 +2475,14 @@
     (property "Datasheet" "" (at 54.61 152.4 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Mouser" "603-RC0603FR-10120RL" (at 54.61 152.4 0)
+    (property "Mouser" "ERJ-PA3J121V" (at 54.61 152.4 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Reichelt" "" (at 54.61 152.4 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 1fd10bfe-0e50-4ee3-81bd-d0db3a786b60))
-    (pin "2" (uuid 2ccd7f70-37c5-42ff-b0f5-e546f217f838))
+    (pin "1" (uuid 69158968-f2e3-4cb7-a758-fee00402b74d))
+    (pin "2" (uuid 7cd99e28-29b6-4cf4-b37e-a02b08c8f4eb))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c"
@@ -2622,14 +2622,14 @@
     (property "Datasheet" "" (at 123.19 153.67 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Mouser" "603-RC0603FR-10120RL" (at 123.19 153.67 0)
+    (property "Mouser" "ERJ-PA3J121V" (at 123.19 153.67 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Reichelt" "" (at 123.19 153.67 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 35279d03-ded7-48d7-a761-9e493f280951))
-    (pin "2" (uuid 2f3795b2-0048-4f14-b6d4-af547b546027))
+    (pin "1" (uuid b4f903a6-7248-4ee8-9b82-c6894a2a605a))
+    (pin "2" (uuid 7fd20c1b-7926-447c-967d-90e3c002b0ef))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c"
@@ -2665,7 +2665,7 @@
     (property "Datasheet" "~" (at 62.23 62.23 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Digikey" "1276-CL10B104KB8NNNLCT" (at 62.23 62.23 0)
+    (property "Digikey" "1276-CL10B104KB8NNNLCT-ND" (at 62.23 62.23 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Farnell" "3013409" (at 62.23 62.23 0)
@@ -2680,8 +2680,8 @@
     (property "Reichelt" "" (at 62.23 62.23 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid e035a643-e222-4e6e-97c4-c85988511992))
-    (pin "2" (uuid a6f3c48c-c603-45a7-b827-18dbbd12a90b))
+    (pin "1" (uuid 0c156903-9089-4393-b40a-307ba6dc1397))
+    (pin "2" (uuid 69682e84-8358-468a-b5d2-af0749473754))
     (instances
       (project "FM3_mainboard"
         (path "/37f31dec-63fc-4634-a141-5dc5d2b60fe4"
@@ -2748,7 +2748,7 @@
     (property "Datasheet" "~" (at 182.88 60.96 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Digikey" "1276-CL10B104KB8NNNLCT" (at 182.88 60.96 0)
+    (property "Digikey" "1276-CL10B104KB8NNNLCT-ND" (at 182.88 60.96 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Farnell" "3013409" (at 182.88 60.96 0)
@@ -2763,8 +2763,8 @@
     (property "Reichelt" "" (at 182.88 60.96 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid bb211fa1-b1f9-4629-9b30-1326c95d346f))
-    (pin "2" (uuid 200e529c-da2e-467a-bafd-8632d5e2012f))
+    (pin "1" (uuid 8015427d-ca3d-496a-a998-0c9361b84f7f))
+    (pin "2" (uuid 663935ae-d2d1-4263-b95a-00aa13c0a929))
     (instances
       (project "FM3_mainboard"
         (path "/37f31dec-63fc-4634-a141-5dc5d2b60fe4"
@@ -2797,7 +2797,7 @@
     (property "Datasheet" "https://www.we-online.com/components/products/datasheet/155124RV73200.pdf" (at 57.15 138.43 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Mouser" "710-155124RV73200" (at 57.15 137.16 0)
+    (property "Mouser" "155124RV73200" (at 57.15 137.16 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Mouser Price/Stock" "https://www.mouser.at/ProductDetail/Wurth-Elektronik/155124RV73200?qs=5aG0NVq1C4yQQzqaqWGYAg%3D%3D" (at 57.15 137.16 0)
@@ -2806,9 +2806,9 @@
     (property "Reichelt" "" (at 57.15 137.16 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 448743e5-af54-4aa6-8e10-c834dc9ef3a8))
-    (pin "2" (uuid 9403022c-37ba-4bfd-9338-d0f12c099c19))
-    (pin "3" (uuid 50f39c03-42fc-4032-b7bc-4078f3898d48))
+    (pin "1" (uuid e9099e52-b5be-4787-a941-92b3d207b2ec))
+    (pin "2" (uuid baa2a9e5-fac1-44da-91c1-122386c1ba61))
+    (pin "3" (uuid 2b7ca1b8-8c4a-43e8-8037-e888416f7f55))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"
@@ -2867,7 +2867,7 @@
     (property "Datasheet" "https://tensility.s3.amazonaws.com/uploads/pdffiles/54-00174.pdf?X-Amz-Expires=600&X-Amz-Date=20231206T211710Z&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIS2S4WRDQDSWDRZQ%2F20231206%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-SignedHeaders=host&X-Amz-Signature=9b1a304331de7a209094883b10ea93c55c7e790e0be1d3e399b91f09e8b0233f" (at 52.07 52.07 0)
       (effects (font (size 1.27 1.27) italic) hide)
     )
-    (property "Digikey" "839-54-00174CT" (at 52.07 52.07 0)
+    (property "Digikey" "54-00174" (at 52.07 52.07 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Mouser Price/Stock" "https://www.digikey.de/de/products/detail/tensility-international-corp/54-00174/12140150" (at 52.07 52.07 0)
@@ -2876,11 +2876,11 @@
     (property "Reichelt" "" (at 52.07 52.07 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 4cfa07bc-4ec3-4a37-9ae0-971e0e5b15d8))
-    (pin "2" (uuid 287b0dea-abda-4ea0-b8c6-ee4b2a798601))
-    (pin "3" (uuid 0dffe7f8-34d1-4276-b670-ea9bd0975eeb))
-    (pin "4" (uuid 318cc08e-99a8-48fb-8b50-124b1763e828))
-    (pin "5" (uuid 41d4dccc-d406-40e5-8955-9f3801a1d785))
+    (pin "1" (uuid c7e41787-b4be-46a4-89ce-44436f62b6b1))
+    (pin "2" (uuid f7b2691c-be8a-4189-b8e3-e5f438cff940))
+    (pin "3" (uuid 76ed82d3-00d6-440b-8fcb-4c4f2f6aca79))
+    (pin "4" (uuid 5f1e610e-bca1-4b64-afdd-5db2b9df62dc))
+    (pin "5" (uuid 4e815665-f94a-44e9-b428-c90e85a34ae5))
     (instances
       (project "HM_mainboard"
         (path "/54a6df43-5475-46a2-9916-8b0260700d4c/137c5701-d01e-40ce-919d-b371cfda41da"

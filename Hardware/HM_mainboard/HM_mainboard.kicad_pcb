@@ -3065,7 +3065,7 @@
     (at 177.292 86.36)
     (descr "SMD Crystal MicroCrystal CC7V-T1A/CM7V-T1A series http://www.microcrystal.com/images/_Product-Documentation/01_TF_ceramic_Packages/01_Datasheet/CC1V-T1A.pdf, hand-soldering, 3.2x1.5mm^2 package")
     (tags "SMD SMT crystal hand-soldering")
-    (property "Mouser" "ASDK-32.768KHz-LRT")
+    (property "Mouser" "ABS07")
     (property "Mouser Price/Stock" "https://www.mouser.at/ProductDetail/ABRACON/ABS07-32768KHZ-T?qs=3SpAxaLJ01g8GJWeO3sA3Q%3D%3D&mgh=1&gad_source=1&gclid=CjwKCAiA9ourBhAVEiwA3L5RFmcTURdfJp_IENxutYTSDuJVwm7JT5lA7J1Dl65ASlIgL4B9Xx2CFxoCmaUQAvD_BwE")
     (property "Reichelt" "")
     (property "Sheetfile" "Microcontroller.kicad_sch")
@@ -22548,7 +22548,7 @@
         (xy 147.172722 93.499999)
         (xy 147.172722 93.5)
         (xy 147.191762 93.656818)
-        (xy 147.242296 93.790062)
+        (xy 147.21415 93.715849)
         (xy 147.24778 93.804523)
         (xy 147.337517 93.93453)
         (xy 147.45576 94.039283)
@@ -22777,7 +22777,6 @@
     (members
       20195b9c-bf93-414a-bb8f-9ecc8ddc0c24
       368802ab-db43-461d-8fe5-87383b49c575
-      3fcd4105-f8ff-4031-9f7e-276a5de4a459
       7bc2ab96-99a4-4c28-9552-1faf31a52798
       d9dbbc45-bd76-4b30-8bd2-49332cd7f5ce
       dfea2954-ed14-4f1c-a77a-3bd5ec205fce
