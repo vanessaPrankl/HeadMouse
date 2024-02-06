@@ -1,8 +1,10 @@
 /* HARDWARE TEST HEADMOUSE V1 *******************************************/
 /* 
-/* Description: This is a hardware test firmware for HeadMouse board version 1.
+/* Description: This is an IMU test firmware for HeadMouse board version 1.
 /* Author: Vanessa Prankl
-/* Date: 11.01.2024
+/* Date: 06.02.202
+/*
+/* IMUs under test: MC6470, LSM6DSO, BNO055
 /* 
 /************************************************************************/
 #include <Arduino.h>
@@ -55,7 +57,7 @@ void setup() {
 
 /* MAIN ******************************************************************/
 void loop() {
-  
+
   /* Read LSM6DSO IMU params */
   Serial.print("\nAccelerometer:\n");
   Serial.print(" X = ");
