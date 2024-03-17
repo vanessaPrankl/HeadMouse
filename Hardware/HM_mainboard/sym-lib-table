@@ -1,0 +1,8 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "Espressif")(type "KiCad")(uri "${KIPRJMOD}/.sym/Espressif.kicad_sym")(options "")(descr ""))
+  (lib (name "esp32-thing-eagle-import")(type "KiCad")(uri "${KIPRJMOD}/.sym/esp32-thing/esp32-thing-eagle-import.kicad_sym")(options "")(descr ""))
+  (lib (name "LSM6DSOXTR")(type "KiCad")(uri "${KIPRJMOD}/.sym/LSM6DSOXTR.kicad_sym")(options "")(descr ""))
+  (lib (name "Wuerth_LED_155124RV73200")(type "KiCad")(uri "${KIPRJMOD}/.sym/Wuerth_LED_155124RV73200.kicad_sym")(options "")(descr ""))
+  (lib (name "HeadMouse")(type "KiCad")(uri "${KIPRJMOD}/.sym/HeadMouse.kicad_sym")(options "")(descr ""))
+)
