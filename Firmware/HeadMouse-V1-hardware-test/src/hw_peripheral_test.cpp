@@ -5,29 +5,11 @@
 /* Date: 11.01.2024
 /* 
 /************************************************************************/
-#ifdef HW_TEST 
+#include "program_selector.h"
+#ifdef HW_PERIPHERAL_TEST 
 #include <Arduino.h>
 #include <Wire.h>
-
-/* PIN DEFINITIONS ******************************************************/
-const int8_t PIN_LED_BAT_R = 6;
-const int8_t PIN_LED_BAT_G = 7;
-const int8_t PIN_LED_STATUS_R = 17;
-const int8_t PIN_LED_STATUS_G = 18;
-
-const int8_t PIN_BTN_1 = 42;
-const int8_t PIN_BTN_2 = 41;
-const int8_t PIN_BTN_3 = 40;
-const int8_t PIN_BTN_4 = 39;
-
-const int8_t PIN_VBATT_MEASURE = 4;     /* Current battery voltage */
-const int8_t PIN_BATT_STATUS = 5;       /* Pulled low if charging is active*/
-
-const int8_t PIN_I2C_SCL = 9;
-const int8_t PIN_I2C_SDA = 10;
-const int8_t PIN_LSM6DS_INT = 11;
-const int8_t PIN_MC6470_INT = 12;
-const int8_t PIN_BNO55_INT = 13;
+#include "pin_config_board_v1.h"
 
 /* FUNCTION DEFINITIONS **************************************************/
 void i2c_bus_scan(){
