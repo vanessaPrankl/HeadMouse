@@ -195,6 +195,13 @@ uint32_t MC6470_Mag_Get_Temperature(struct MC6470_Dev_t *dev, int8_t *temp){
     if(MC6470_IS_ERROR(result)) return result;
     *temp = _temp;
 
+    /* Return to old state which was active before temp measurement */
+    if(state == MC6470_MAG_CTRL_1_FS_Normal){
+        current = MC6470_MAG_CTRL_1_FS_SET(current, MC6470_MAG_CTRL_1_FS_Normal);
+        result = MC6470_Mag_I2C_Write(dev, MC6470_MAG_CTRL_1_ADDR, &current, sizeof(current));
+        if(MC6470_IS_ERROR(result)) return result;    
+    }
+    
     return result;
 }
 

@@ -36,7 +36,7 @@ uint32_t MC6470_begin(struct MC6470_Dev_t *dev)
 
     /* Init accelerometer */
     uint32_t result = MC6470_Accel_ChipIDs(dev, &found);
-    if(MC6470_IS_ERROR(result) && !found) return MC6470_Status_Null_Accel_NotFound;
+    if(MC6470_IS_ERROR(result) || !found) return MC6470_Status_Null_Accel_NotFound;
 
     result |= MC6470_Accel_set_Range_and_Resolution(dev, MC6470_ACCEL_OUTCFG_RANGE_8G, MC6470_ACCEL_OUTCFG_RES_14_Bits);
     result |= MC6470_Accel_set_OperationState(dev, MC6470_ACCEL_MODE_OPCON_Wake);
@@ -44,11 +44,14 @@ uint32_t MC6470_begin(struct MC6470_Dev_t *dev)
 
     /* Init magnetormeter */
     result = MC6470_Mag_ChipIDs(dev, &found);
-    if(MC6470_IS_ERROR(result) && !found) return MC6470_Status_Null_Mag_NotFound;
+    if(MC6470_IS_ERROR(result) || !found) return MC6470_Status_Null_Mag_NotFound;
     
-
-    
-
+    result |= MC6470_Mag_set_Operation_Mode(dev, MC6470_MAG_CTRL_1_FS_Normal);
+    result |= MC6470_Mag_set_Data_Rate(dev, MC6470_MAG_CTRL_1_ODR_10HZ);
+    result |= MC6470_Mag_set_Data_Range(dev, MC6470_MAG_CTRL_4_RS_14_BIT);
+    result |= MC6470_Mag_set_ITR_Enable(dev,  MC6470_MAG_CTRL_2_DEN_Enable);
+    result |= MC6470_Mag_set_Power_Mode(dev, MC6470_MAG_CTRL_1_PC_ActiveMode);
+    if(MC6470_IS_ERROR(result)) return MC6470_Status_ERROR;
 
     return result;
 };
