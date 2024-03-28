@@ -80,3 +80,9 @@ uint32_t MC6470_getData(struct MC6470_Dev_t *dev, MC6470_MagReading *mag_data, M
     return result;
 };
 
+uint32_t MC6470_getTemperature(struct MC6470_Dev_t *dev, int8_t *temp)
+{
+     RETURN_ERROR_IF_NULL(dev);
+     return MC6470_Mag_Get_Temperature(dev, temp);
+}
+

@@ -40,27 +40,45 @@ void setup() {
   delay(5000); 
   Serial.println("ONLINE!");
   uint32_t err = mc6470.begin();
-  Serial.println("Setup err: ");
-  Serial.print(err);
-
-  /*
+  if(err != MC6470_Status_OK){
+    Serial.println("ERR - MC6470 not reachable");
+  }else{
     Serial.println("MC6470 ready");
   }
-  else{
-    Serial.println("MC6470 not reachable");
-  }*/
 }
 
 
 /* MAIN ******************************************************************/
 void loop() {
-  blinkLED();
-  
+  uint32_t err = MC6470_Status_OK;
   MC6470_MagReading mag_data;
   MC6470_AccelReading acc_data;
+  static int i = 0;
+
+  /* Signal still alive */
+  blinkLED();
+
+  /* Read temperature every 5 cycles */
+  i++;
+  if(i >= 5){
+    int8_t temp = 0;
+    err = mc6470.getTemp(&temp);
+    if(err != MC6470_Status_OK){
+      Serial.println("ERR - cannot read data");
+    }else{
+      Serial.println("Temp: ");
+      Serial.print(temp);
+    }
+    i=0;
+  }
+  
+  /* Read magnetometer and accelerometer */
 
   /* Read MC6470 IMU params */
-  mc6470.getData(mag_data, acc_data);
+  err = mc6470.getData(mag_data, acc_data);
+  if(err != MC6470_Status_OK){
+    Serial.println("ERR - cannot read data");
+  }
 
   Serial.print("\nAccelerometer:\n");
   Serial.print(" X = ");

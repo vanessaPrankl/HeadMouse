@@ -83,6 +83,14 @@ uint32_t ArduinoMC6470::getData(MC6470_MagReading &mag_data, MC6470_AccelReading
     return result;
 };
 
+uint32_t ArduinoMC6470::getTemp(int8_t *temp)
+{
+    uint32_t result = 0;
+    result |= MC6470_getTemperature(&dev, temp);
+    return result;
+}
+
+
 uint32_t ArduinoMC6470::readIDs()
 {
     uint32_t result = 0;

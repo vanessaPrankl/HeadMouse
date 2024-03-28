@@ -65,6 +65,7 @@ uint32_t MC6470_begin(struct MC6470_Dev_t *dev);
 uint32_t MC6470_check_ids(struct MC6470_Dev_t *dev);
 
 uint32_t MC6470_getData(struct MC6470_Dev_t *dev, MC6470_MagReading *mag_data, MC6470_AccelReading *accel_data);
+uint32_t MC6470_getTemperature(struct MC6470_Dev_t *dev, int8_t *temp);
 
 extern uint32_t MC6470_I2C_Write(struct MC6470_Dev_t *dev, MC6470_Address_e address, MC6470_reg_addr reg_address, uint8_t *buffer, size_t buffer_length);
 extern uint32_t MC6470_I2C_Read(struct MC6470_Dev_t *dev, MC6470_Address_e address, MC6470_reg_addr reg_address, uint8_t *buffer, size_t buffer_length);

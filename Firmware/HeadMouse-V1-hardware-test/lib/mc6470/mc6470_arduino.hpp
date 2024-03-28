@@ -49,6 +49,7 @@ class ArduinoMC6470
         uint32_t begin();
         void setStream(Stream *output);
         uint32_t getData(MC6470_MagReading &mag_data, MC6470_AccelReading &accel_data);
+        uint32_t getTemp(int8_t *temp);
         uint32_t readIDs();
 
 
