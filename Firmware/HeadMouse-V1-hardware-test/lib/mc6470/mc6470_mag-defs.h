@@ -111,6 +111,14 @@
 #define MC6470_MAG_CTRL_2_FF_MASK                      (0b00000001 << MC6470_MAG_CTRL_2_FF_POS) /**< [4..4] FF */
 #define MC6470_MAG_CTRL_2_FF_GET(R_V)                  ((R_V & MC6470_MAG_CTRL_2_FF_MASK) >> MC6470_MAG_CTRL_2_FF_POS)
 #define MC6470_MAG_CTRL_2_FF_SET(R_V, F_V)             ((R_V & (~MC6470_MAG_CTRL_2_FF_MASK)) | ((F_V & (MC6470_MAG_CTRL_2_FF_MASK >> MC6470_MAG_CTRL_2_FF_POS)) << MC6470_MAG_CTRL_2_FF_POS))
+#define MC6470_MAG_CTRL_2_DEN_POS                       3
+#define MC6470_MAG_CTRL_2_DEN_MASK                      (0b00000001 << MC6470_MAG_CTRL_2_DEN_POS) /**< [3..3] DEN */
+#define MC6470_MAG_CTRL_2_DEN_GET(R_V)                  ((R_V & MC6470_MAG_CTRL_2_DEN_MASK) >> MC6470_MAG_CTRL_2_DEN_POS)
+#define MC6470_MAG_CTRL_2_DEN_SET(R_V, F_V)             ((R_V & (~MC6470_MAG_CTRL_2_DEN_MASK)) | ((F_V & (MC6470_MAG_CTRL_2_DEN_MASK >> MC6470_MAG_CTRL_2_DEN_POS)) << MC6470_MAG_CTRL_2_DEN_POS))
+#define MC6470_MAG_CTRL_2_DRP_POS                       2
+#define MC6470_MAG_CTRL_2_DRP_MASK                      (0b00000001 << MC6470_MAG_CTRL_2_DRP_POS) /**< [2..2] DRP */
+#define MC6470_MAG_CTRL_2_DRP_GET(R_V)                  ((R_V & MC6470_MAG_CTRL_2_DRP_MASK) >> MC6470_MAG_CTRL_2_DRP_POS)
+#define MC6470_MAG_CTRL_2_DRP_SET(R_V, F_V)             ((R_V & (~MC6470_MAG_CTRL_2_DRP_MASK)) | ((F_V & (MC6470_MAG_CTRL_2_DRP_MASK >> MC6470_MAG_CTRL_2_DRP_POS)) << MC6470_MAG_CTRL_2_DRP_POS))
 #define MC6470_MAG_CTRL_2_DTS_POS                      1
 #define MC6470_MAG_CTRL_2_DTS_MASK                     (0b00000001 << MC6470_MAG_CTRL_2_DTS_POS) /**< [1..1] DTS */
 #define MC6470_MAG_CTRL_2_DTS_GET(R_V)                 ((R_V & MC6470_MAG_CTRL_2_DTS_MASK) >> MC6470_MAG_CTRL_2_DTS_POS)
@@ -167,6 +175,11 @@
 #define MC6470_MAG_ITHR_MSB_MSB_MASK                   (0b00111111 << MC6470_MAG_ITHR_MSB_MSB_POS) /**< [5..0] MSB */
 #define MC6470_MAG_ITHR_MSB_MSB_GET(R_V)               ((R_V & MC6470_MAG_ITHR_MSB_MSB_MASK) >> MC6470_MAG_ITHR_MSB_MSB_POS)
 #define MC6470_MAG_ITHR_MSB_MSB_SET(R_V, F_V)          ((R_V & (~MC6470_MAG_ITHR_MSB_MSB_MASK)) | ((F_V & (MC6470_MAG_ITHR_MSB_MSB_MASK >> MC6470_MAG_ITHR_MSB_MSB_POS)) << MC6470_MAG_ITHR_MSB_MSB_POS))
+#define MC6470_MAG_TEMP_POS                    		   0
+#define MC6470_MAG_TEMP_MASK                   		   (0b11111111 << MC6470_MAG_TEMP_POS) /**< [7..0] TEMP */
+#define MC6470_MAG_TEMP_GET(R_V)               		   ((R_V & MC6470_MAG_TEMP_MASK) >> MC6470_MAG_TEMP_POS)
+#define MC6470_MAG_TEMP_SET(R_V, F_V)          		   ((R_V & (~MC6470_MAG_TEMP_MASK)) | ((F_V & (MC6470_MAG_TEMP_MASK >> MC6470_MAG_TEMP_POS)) << MC6470_MAG_TEMP_POS))
+
 
 /* This section defines the masks and values for registers that MUST have certain bits set. */
 #define MC6470_MAG_STATUS_ADDR_VALIDATION_VALUE        0b00000000
@@ -189,6 +202,26 @@ typedef enum
 	MC6470_MAG_STATUS_DOR_NoDataOverrun            = 0, /**< .  [MC6470_Datasheet] */
 	MC6470_MAG_STATUS_DOR_DataOverrun              = 1, /**< .  [MC6470_Datasheet] */
 } MC6470_MAG_STATUS_DOR_e;
+
+// FFU [MC6470_Datasheet] 
+typedef enum 
+{
+	MC6470_MAG_STATUS_FFU_Default                  = 0, /**< Must be set to 0.  [MC6470_Datasheet] */
+} MC6470_MAG_STATUS_FFU_e;
+
+
+// TRDY [MC6470_Datasheet] 
+typedef enum 
+{
+	MC6470_MAG_STATUS_TRDY_Default                  = 0, /**< Must be set to 0.  [MC6470_Datasheet] */
+} MC6470_MAG_STATUS_TRDY_e;
+
+
+// ORDY [MC6470_Datasheet] 
+typedef enum 
+{
+	MC6470_MAG_STATUS_ORDY_Default                  = 0, /**< Must be set to 0.  [MC6470_Datasheet] */
+} MC6470_MAG_STATUS_ORDY_e;
 
 // Power Mode Control [MC6470_Datasheet] 
 typedef enum 
@@ -237,6 +270,21 @@ typedef enum
 	MC6470_MAG_CTRL_2_FF_Default                   = 0, /**< .  [MC6470_Datasheet] */
 } MC6470_MAG_CTRL_2_FF_e;
 
+// Interrupt enable [MC6470_Datasheet] 
+typedef enum 
+{
+	MC6470_MAG_CTRL_2_DEN_Disable                   = 0, /**< .  default [MC6470_Datasheet] */
+	MC6470_MAG_CTRL_2_DEN_Enable                   = 1, /**< .  [MC6470_Datasheet] */
+} MC6470_MAG_CTRL_2_DEN_e;
+
+// Interrupt pin polarity [MC6470_Datasheet] 
+typedef enum 
+{
+	MC6470_MAG_CTRL_2_DRP_LOW                   = 0, /**< .  [MC6470_Datasheet] */
+	MC6470_MAG_CTRL_2_DRP_HIGH                   = 1, /**< .  default [MC6470_Datasheet] */
+} MC6470_MAG_CTRL_2_DRP_e;
+
+
 // DTS [MC6470_Datasheet] 
 typedef enum 
 {
@@ -277,7 +325,7 @@ typedef enum
 	MC6470_MAG_CTRL_3_TCS_Start                    = 1, /**< Start Temperature measurements  [MC6470_Datasheet] */
 } MC6470_MAG_CTRL_3_TCS_e;
 
-// Start to measure temperature in active mode. [MC6470_Datasheet] 
+// Start offset calibration in active mode. [MC6470_Datasheet] 
 typedef enum 
 {
 	MC6470_MAG_CTRL_3_OCL_Default                  = 0, /**< .  [MC6470_Datasheet] */
@@ -287,8 +335,9 @@ typedef enum
 // MMD [MC6470_Datasheet] 
 typedef enum 
 {
-	MC6470_MAG_CTRL_4_MMD_Default                  = 2, /**< .  [MC6470_Datasheet] */
+	MC6470_MAG_CTRL_4_MMD_Default                   = 2, /**< Field must be set to 2.  [MC6470_Datasheet] */
 } MC6470_MAG_CTRL_4_MMD_e;
+
 
 // Set the dynamic range of output data [MC6470_Datasheet] 
 typedef enum 

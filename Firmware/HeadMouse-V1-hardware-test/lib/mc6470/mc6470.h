@@ -40,6 +40,8 @@ struct MC6470_Dev_t
     MC6470_Address_e accel_address;
     MC6470_Address_e mag_address;
 
+    MC6470_MAG_CTRL_1_PC_e mag_power_mode;
+
     MC6470_ACCEL_OUTCFG_RES_e accel_resolution;
     MC6470_ACCEL_OUTCFG_RANGE_e accel_range;
 };

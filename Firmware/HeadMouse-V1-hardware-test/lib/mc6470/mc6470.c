@@ -18,6 +18,7 @@
  * 
  */
 
+#include <Arduino.h>
 #include "mc6470.h"
 #include "mc6470_accel.h"
 #include "mc6470_mag.h"
@@ -30,20 +31,24 @@ void MC6470_Init(struct MC6470_Dev_t *dev, MC6470_Address_e address)
 
 uint32_t MC6470_begin(struct MC6470_Dev_t *dev)
 {
-    MC6470_printf(dev, "[MC6470 Accel] Address: 0x%02X\r\n", dev->accel_address);
-    MC6470_printf(dev, "[MC6470 Mag  ] Address: 0x%02X\r\n", dev->mag_address);
-    uint32_t result = MC6470_Accel_Init(dev);
-    result |= MC6470_Mag_Init(dev);
+    RETURN_ERROR_IF_NULL(dev);
     bool found = false;
-    result |= MC6470_Accel_ChipIDs(dev, &found);
-    if(!MC6470_IS_ERROR(result))
-    {
-        result |= MC6470_Accel_get_Range_and_Resolution(dev, NULL, NULL);
-        result |= MC6470_Accel_set_Range_and_Resolution(dev, MC6470_ACCEL_OUTCFG_RANGE_8G, MC6470_ACCEL_OUTCFG_RES_14_Bits);
-    }
 
+    /* Init accelerometer */
+    uint32_t result = MC6470_Accel_ChipIDs(dev, &found);
+    if(MC6470_IS_ERROR(result) && !found) return MC6470_Status_Null_Accel_NotFound;
 
+    result |= MC6470_Accel_set_Range_and_Resolution(dev, MC6470_ACCEL_OUTCFG_RANGE_8G, MC6470_ACCEL_OUTCFG_RES_14_Bits);
     result |= MC6470_Accel_set_OperationState(dev, MC6470_ACCEL_MODE_OPCON_Wake);
+    if(MC6470_IS_ERROR(result)) return MC6470_Status_ERROR;
+
+    /* Init magnetormeter */
+    result = MC6470_Mag_ChipIDs(dev, &found);
+    if(MC6470_IS_ERROR(result) && !found) return MC6470_Status_Null_Mag_NotFound;
+    
+
+    
+
 
     return result;
 };
