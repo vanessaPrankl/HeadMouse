@@ -46,6 +46,7 @@
  * 
  */
 
+#include <Arduino.h>
 #include "stdint.h"
 #include "stdarg.h"
 #include "stdio.h"

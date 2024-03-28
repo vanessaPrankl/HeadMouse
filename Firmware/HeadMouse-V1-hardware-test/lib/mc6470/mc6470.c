@@ -18,7 +18,6 @@
  * 
  */
 
-#include <Arduino.h>
 #include "mc6470.h"
 #include "mc6470_accel.h"
 #include "mc6470_mag.h"

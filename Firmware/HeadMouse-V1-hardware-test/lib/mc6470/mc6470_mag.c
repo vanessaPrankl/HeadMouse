@@ -53,11 +53,11 @@ uint32_t MC6470_Mag_set_Power_Mode(struct MC6470_Dev_t *dev, MC6470_MAG_CTRL_1_P
     MC6470_reg_addr reg_addr = MC6470_MAG_CTRL_1_ADDR;
     MC6470_reg_value current = 0;
     
-    uint32_t result = MC6470_Accel_I2C_Read(dev, reg_addr, &current, sizeof(current));
+    uint32_t result = MC6470_Mag_I2C_Read(dev, reg_addr, &current, sizeof(current));
     if(!MC6470_IS_ERROR(result))
     {
         current = MC6470_MAG_CTRL_1_PC_SET(current, power_mode);
-        result = MC6470_Accel_I2C_Write(dev, reg_addr, &current, sizeof(current));       
+        result = MC6470_Mag_I2C_Write(dev, reg_addr, &current, sizeof(current));       
     } 
     return result;
 }  
@@ -68,11 +68,11 @@ uint32_t MC6470_Mag_set_Operation_Mode(struct MC6470_Dev_t *dev, MC6470_MAG_CTRL
     MC6470_reg_addr reg_addr = MC6470_MAG_CTRL_1_ADDR;
     MC6470_reg_value current = 0;
     
-    uint32_t result = MC6470_Accel_I2C_Read(dev, reg_addr, &current, sizeof(current));
+    uint32_t result = MC6470_Mag_I2C_Read(dev, reg_addr, &current, sizeof(current));
     if(!MC6470_IS_ERROR(result))
     {
         current = MC6470_MAG_CTRL_1_FS_SET(current, mode);
-        result = MC6470_Accel_I2C_Write(dev, reg_addr, &current, sizeof(current));       
+        result = MC6470_Mag_I2C_Write(dev, reg_addr, &current, sizeof(current));       
     } 
     return result;
 }
@@ -83,11 +83,11 @@ uint32_t MC6470_Mag_set_Data_Rate(struct MC6470_Dev_t *dev, MC6470_MAG_CTRL_1_OD
     MC6470_reg_addr reg_addr = MC6470_MAG_CTRL_1_ADDR;
     MC6470_reg_value current = 0;
     
-    uint32_t result = MC6470_Accel_I2C_Read(dev, reg_addr, &current, sizeof(current));
+    uint32_t result = MC6470_Mag_I2C_Read(dev, reg_addr, &current, sizeof(current));
     if(!MC6470_IS_ERROR(result))
     {
         current = MC6470_MAG_CTRL_1_ODR_SET(current, data_rate);
-        result = MC6470_Accel_I2C_Write(dev, reg_addr, &current, sizeof(current));       
+        result = MC6470_Mag_I2C_Write(dev, reg_addr, &current, sizeof(current));       
     } 
     return result;
 }
@@ -98,11 +98,11 @@ uint32_t MC6470_Mag_set_Data_Range(struct MC6470_Dev_t *dev, MC6470_MAG_CTRL_4_R
     MC6470_reg_addr reg_addr = MC6470_MAG_CTRL_4_ADDR;
     MC6470_reg_value current = 0;
     
-    uint32_t result = MC6470_Accel_I2C_Read(dev, reg_addr, &current, sizeof(current));
+    uint32_t result = MC6470_Mag_I2C_Read(dev, reg_addr, &current, sizeof(current));
     if(!MC6470_IS_ERROR(result))
     {
         current = MC6470_MAG_CTRL_4_RS_SET(current, data_range);
-        result = MC6470_Accel_I2C_Write(dev, reg_addr, &current, sizeof(current));       
+        result = MC6470_Mag_I2C_Write(dev, reg_addr, &current, sizeof(current));       
     } 
     return result;
 }
@@ -114,11 +114,11 @@ uint32_t MC6470_Mag_set_ITR_Enable(struct MC6470_Dev_t *dev, MC6470_MAG_CTRL_2_D
     MC6470_reg_addr reg_addr = MC6470_MAG_CTRL_2_ADDR;
     MC6470_reg_value current = 0;
     
-    uint32_t result = MC6470_Accel_I2C_Read(dev, reg_addr, &current, sizeof(current));
+    uint32_t result = MC6470_Mag_I2C_Read(dev, reg_addr, &current, sizeof(current));
     if(!MC6470_IS_ERROR(result))
     {
         current = MC6470_MAG_CTRL_2_DEN_SET(current, enable);
-        result = MC6470_Accel_I2C_Write(dev, reg_addr, &current, sizeof(current));       
+        result = MC6470_Mag_I2C_Write(dev, reg_addr, &current, sizeof(current));       
     } 
     return result;
 }
@@ -129,11 +129,11 @@ uint32_t MC6470_Mag_Start_Forced_Measurement(struct MC6470_Dev_t *dev){
     MC6470_reg_addr reg_addr = MC6470_MAG_CTRL_3_ADDR;
     MC6470_reg_value current = 0;
     
-    uint32_t result = MC6470_Accel_I2C_Read(dev, reg_addr, &current, sizeof(current));
+    uint32_t result = MC6470_Mag_I2C_Read(dev, reg_addr, &current, sizeof(current));
     if(!MC6470_IS_ERROR(result))
     {
         current = MC6470_MAG_CTRL_3_FRC_SET(current, MC6470_MAG_CTRL_3_FRC_Start);
-        result = MC6470_Accel_I2C_Write(dev, reg_addr, &current, sizeof(current));       
+        result = MC6470_Mag_I2C_Write(dev, reg_addr, &current, sizeof(current));       
     } 
     return result;
 }
@@ -201,7 +201,7 @@ uint32_t MC6470_Mag_Get_Temperature(struct MC6470_Dev_t *dev, int8_t *temp){
         result = MC6470_Mag_I2C_Write(dev, MC6470_MAG_CTRL_1_ADDR, &current, sizeof(current));
         if(MC6470_IS_ERROR(result)) return result;    
     }
-    
+
     return result;
 }
 
@@ -211,11 +211,11 @@ uint32_t MC6470_Mag_Calibrate_Offset(struct MC6470_Dev_t *dev){
     MC6470_reg_addr reg_addr = MC6470_MAG_CTRL_3_ADDR;
     MC6470_reg_value current = 0;
     
-    uint32_t result = MC6470_Accel_I2C_Read(dev, reg_addr, &current, sizeof(current));
+    uint32_t result = MC6470_Mag_I2C_Read(dev, reg_addr, &current, sizeof(current));
     if(!MC6470_IS_ERROR(result))
     {
         current = MC6470_MAG_CTRL_3_OCL_SET(current, MC6470_MAG_CTRL_3_OCL_Start);
-        result = MC6470_Accel_I2C_Write(dev, reg_addr, &current, sizeof(current));       
+        result = MC6470_Mag_I2C_Write(dev, reg_addr, &current, sizeof(current));       
     } 
     return result;
 }
@@ -231,7 +231,6 @@ uint32_t MC6470_Mag_hasData(struct MC6470_Dev_t *dev, bool *has_data)
     
     result |= MC6470_Mag_I2C_Read(dev, reg_addr, &current, sizeof(current));
     int v = MC6470_MAG_STATUS_DRDY_GET(current);
-    // MC6470_printf(dev, "[MC6470 Accel] Reg Read [0x%02X]: 0x%02X Value: %i\r\n", reg_addr, current, v);
     if(!MC6470_IS_ERROR(result))
     {
         *has_data = v;

@@ -39,12 +39,16 @@ void setup() {
 
   delay(5000); 
   Serial.println("ONLINE!");
-  if(mc6470.begin()){
+  uint32_t err = mc6470.begin();
+  Serial.println("Setup err: ");
+  Serial.print(err);
+
+  /*
     Serial.println("MC6470 ready");
   }
   else{
     Serial.println("MC6470 not reachable");
-  }
+  }*/
 }
 
 
