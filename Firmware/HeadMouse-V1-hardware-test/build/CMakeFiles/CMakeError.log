@@ -1,0 +1,87 @@
+Detecting C compiler ABI info failed to compile with the following output:
+Change Dir: C:/Users/vanes/Documents/GitHub/HeadMouse/Firmware/HeadMouse-V1-hardware-test/build/CMakeFiles/CMakeScratch/TryCompile-oewa9x
+
+Run Build Command(s):C:/ProgramData/chocolatey/bin/make.exe -f Makefile cmTC_f2bb2/fast && C:/ProgramData/chocolatey/lib/make/tools/install/bin/make.exe  -f CMakeFiles/cmTC_f2bb2.dir/build.make CMakeFiles/cmTC_f2bb2.dir/build
+make[1]: Entering directory 'C:/Users/vanes/Documents/GitHub/HeadMouse/Firmware/HeadMouse-V1-hardware-test/build/CMakeFiles/CMakeScratch/TryCompile-oewa9x'
+Building C object CMakeFiles/cmTC_f2bb2.dir/CMakeCCompilerABI.c.obj
+"C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/11.2 2022.02/bin/arm-none-eabi-gcc.exe"   -v -o CMakeFiles/cmTC_f2bb2.dir/CMakeCCompilerABI.c.obj -c C:/Users/vanes/Desktop/cmake-3.25.1-windows-x86_64/cmake-3.25.1-windows-x86_64/share/cmake-3.25/Modules/CMakeCCompilerABI.c
+Using built-in specs.
+COLLECT_GCC=C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/11.2 2022.02/bin/arm-none-eabi-gcc.exe
+Target: arm-none-eabi
+Configured with: /data/jenkins/workspace/GNU-toolchain/arm-11/src/gcc/configure --target=arm-none-eabi --prefix=/data/jenkins/workspace/GNU-toolchain/arm-11/build-mingw-arm-none-eabi/install// --with-gmp=/data/jenkins/workspace/GNU-toolchain/arm-11/build-mingw-arm-none-eabi/host-tools --with-mpfr=/data/jenkins/workspace/GNU-toolchain/arm-11/build-mingw-arm-none-eabi/host-tools --with-mpc=/data/jenkins/workspace/GNU-toolchain/arm-11/build-mingw-arm-none-eabi/host-tools --with-isl=/data/jenkins/workspace/GNU-toolchain/arm-11/build-mingw-arm-none-eabi/host-tools --disable-shared --disable-nls --disable-threads --disable-tls --enable-checking=release --enable-languages=c,c++,fortran --with-newlib --with-multilib-list=aprofile,rmprofile --with-libiconv-prefix=/data/jenkins/workspace/GNU-toolchain/arm-11/build-mingw-arm-none-eabi/host-tools --host=i686-w64-mingw32 --with-pkgversion='GNU Toolchain for the Arm Architecture 11.2-2022.02 (arm-11.16)' --with-bugurl=https://bugs.linaro.org/
+Thread model: single
+Supported LTO compression algorithms: zlib
+gcc version 11.2.1 20220111 (GNU Toolchain for the Arm Architecture 11.2-2022.02 (arm-11.16)) 
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_f2bb2.dir/CMakeCCompilerABI.c.obj' '-c' '-mcpu=arm7tdmi' '-mfloat-abi=soft' '-marm' '-mlibarch=armv4t' '-march=armv4t' '-dumpdir' 'CMakeFiles/cmTC_f2bb2.dir/'
+ c:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/bin/../libexec/gcc/arm-none-eabi/11.2.1/cc1.exe -quiet -v -iprefix c:\program files (x86)\arm gnu toolchain arm-none-eabi\11.2 2022.02\bin\../lib/gcc/arm-none-eabi/11.2.1/ -D__USES_INITFINI__ C:/Users/vanes/Desktop/cmake-3.25.1-windows-x86_64/cmake-3.25.1-windows-x86_64/share/cmake-3.25/Modules/CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles/cmTC_f2bb2.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -mcpu=arm7tdmi -mfloat-abi=soft -marm -mlibarch=armv4t -march=armv4t -version -o C:\Users\vanes\AppData\Local\Temp\cc84pDkw.s
+GNU C17 (GNU Toolchain for the Arm Architecture 11.2-2022.02 (arm-11.16)) version 11.2.1 20220111 (arm-none-eabi)
+	compiled by GNU C version 7.3-win32 20180312, GMP version 6.2.1, MPFR version 3.1.6, MPC version 1.0.3, isl version isl-0.15-1-g835ea3a-GMP
+
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+ignoring nonexistent directory "c:\program files (x86)\arm gnu toolchain arm-none-eabi\11.2 2022.02\bin\../lib/gcc/arm-none-eabi/11.2.1/../../../../arm-none-eabi/sys-include"
+ignoring duplicate directory "c:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/lib/gcc/../../lib/gcc/arm-none-eabi/11.2.1/include"
+ignoring duplicate directory "c:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/lib/gcc/../../lib/gcc/arm-none-eabi/11.2.1/include-fixed"
+ignoring nonexistent directory "c:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/lib/gcc/../../lib/gcc/arm-none-eabi/11.2.1/../../../../arm-none-eabi/sys-include"
+ignoring duplicate directory "c:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/lib/gcc/../../lib/gcc/arm-none-eabi/11.2.1/../../../../arm-none-eabi/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ c:\program files (x86)\arm gnu toolchain arm-none-eabi\11.2 2022.02\bin\../lib/gcc/arm-none-eabi/11.2.1/include
+ c:\program files (x86)\arm gnu toolchain arm-none-eabi\11.2 2022.02\bin\../lib/gcc/arm-none-eabi/11.2.1/include-fixed
+ c:\program files (x86)\arm gnu toolchain arm-none-eabi\11.2 2022.02\bin\../lib/gcc/arm-none-eabi/11.2.1/../../../../arm-none-eabi/include
+End of search list.
+GNU C17 (GNU Toolchain for the Arm Architecture 11.2-2022.02 (arm-11.16)) version 11.2.1 20220111 (arm-none-eabi)
+	compiled by GNU C version 7.3-win32 20180312, GMP version 6.2.1, MPFR version 3.1.6, MPC version 1.0.3, isl version isl-0.15-1-g835ea3a-GMP
+
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+Compiler executable checksum: e9130319bd844d450d1dd9151148462d
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_f2bb2.dir/CMakeCCompilerABI.c.obj' '-c' '-mcpu=arm7tdmi' '-mfloat-abi=soft' '-marm' '-mlibarch=armv4t' '-march=armv4t' '-dumpdir' 'CMakeFiles/cmTC_f2bb2.dir/'
+ c:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/bin/../lib/gcc/arm-none-eabi/11.2.1/../../../../arm-none-eabi/bin/as.exe -march=armv4t -mfloat-abi=soft -meabi=5 -o CMakeFiles/cmTC_f2bb2.dir/CMakeCCompilerABI.c.obj C:\Users\vanes\AppData\Local\Temp\cc84pDkw.s
+COMPILER_PATH=c:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/bin/../libexec/gcc/arm-none-eabi/11.2.1/;c:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/bin/../libexec/gcc/;c:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/bin/../lib/gcc/arm-none-eabi/11.2.1/../../../../arm-none-eabi/bin/
+LIBRARY_PATH=c:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/bin/../lib/gcc/arm-none-eabi/11.2.1/;c:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/bin/../lib/gcc/;c:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/bin/../lib/gcc/arm-none-eabi/11.2.1/../../../../arm-none-eabi/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_f2bb2.dir/CMakeCCompilerABI.c.obj' '-c' '-mcpu=arm7tdmi' '-mfloat-abi=soft' '-marm' '-mlibarch=armv4t' '-march=armv4t' '-dumpdir' 'CMakeFiles/cmTC_f2bb2.dir/CMakeCCompilerABI.c.'
+Linking C executable cmTC_f2bb2.exe
+C:/Users/vanes/Desktop/cmake-3.25.1-windows-x86_64/cmake-3.25.1-windows-x86_64/bin/cmake.exe -E rm -f CMakeFiles/cmTC_f2bb2.dir/objects.a
+"C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/11.2 2022.02/bin/arm-none-eabi-ar.exe" qc CMakeFiles/cmTC_f2bb2.dir/objects.a @CMakeFiles/cmTC_f2bb2.dir/objects1
+"C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/11.2 2022.02/bin/arm-none-eabi-gcc.exe"  -v -Wl,--whole-archive CMakeFiles/cmTC_f2bb2.dir/objects.a -Wl,--no-whole-archive -o cmTC_f2bb2.exe -Wl,--out-implib,libcmTC_f2bb2.dll.a -Wl,--major-image-version,0,--minor-image-version,0 
+Using built-in specs.
+COLLECT_GCC=C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/11.2 2022.02/bin/arm-none-eabi-gcc.exe
+COLLECT_LTO_WRAPPER=c:/program\ files\ (x86)/arm\ gnu\ toolchain\ arm-none-eabi/11.2\ 2022.02/bin/../libexec/gcc/arm-none-eabi/11.2.1/lto-wrapper.exe
+Target: arm-none-eabi
+Configured with: /data/jenkins/workspace/GNU-toolchain/arm-11/src/gcc/configure --target=arm-none-eabi --prefix=/data/jenkins/workspace/GNU-toolchain/arm-11/build-mingw-arm-none-eabi/install// --with-gmp=/data/jenkins/workspace/GNU-toolchain/arm-11/build-mingw-arm-none-eabi/host-tools --with-mpfr=/data/jenkins/workspace/GNU-toolchain/arm-11/build-mingw-arm-none-eabi/host-tools --with-mpc=/data/jenkins/workspace/GNU-toolchain/arm-11/build-mingw-arm-none-eabi/host-tools --with-isl=/data/jenkins/workspace/GNU-toolchain/arm-11/build-mingw-arm-none-eabi/host-tools --disable-shared --disable-nls --disable-threads --disable-tls --enable-checking=release --enable-languages=c,c++,fortran --with-newlib --with-multilib-list=aprofile,rmprofile --with-libiconv-prefix=/data/jenkins/workspace/GNU-toolchain/arm-11/build-mingw-arm-none-eabi/host-tools --host=i686-w64-mingw32 --with-pkgversion='GNU Toolchain for the Arm Architecture 11.2-2022.02 (arm-11.16)' --with-bugurl=https://bugs.linaro.org/
+Thread model: single
+Supported LTO compression algorithms: zlib
+gcc version 11.2.1 20220111 (GNU Toolchain for the Arm Architecture 11.2-2022.02 (arm-11.16)) 
+COMPILER_PATH=c:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/bin/../libexec/gcc/arm-none-eabi/11.2.1/;c:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/bin/../libexec/gcc/;c:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/bin/../lib/gcc/arm-none-eabi/11.2.1/../../../../arm-none-eabi/bin/
+LIBRARY_PATH=c:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/bin/../lib/gcc/arm-none-eabi/11.2.1/;c:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/bin/../lib/gcc/;c:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/bin/../lib/gcc/arm-none-eabi/11.2.1/../../../../arm-none-eabi/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_f2bb2.exe' '-mcpu=arm7tdmi' '-mfloat-abi=soft' '-marm' '-mlibarch=armv4t' '-march=armv4t' '-dumpdir' 'cmTC_f2bb2.'
+ c:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/bin/../libexec/gcc/arm-none-eabi/11.2.1/collect2.exe -plugin c:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/bin/../libexec/gcc/arm-none-eabi/11.2.1/liblto_plugin.dll -plugin-opt=c:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/bin/../libexec/gcc/arm-none-eabi/11.2.1/lto-wrapper.exe -plugin-opt=-fresolution=C:\Users\vanes\AppData\Local\Temp\ccCA7xBP.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -X -o cmTC_f2bb2.exe c:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/bin/../lib/gcc/arm-none-eabi/11.2.1/crti.o c:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/bin/../lib/gcc/arm-none-eabi/11.2.1/crtbegin.o c:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/bin/../lib/gcc/arm-none-eabi/11.2.1/crt0.o -Lc:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/bin/../lib/gcc/arm-none-eabi/11.2.1 -Lc:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/bin/../lib/gcc -Lc:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/bin/../lib/gcc/arm-none-eabi/11.2.1/../../../../arm-none-eabi/lib --whole-archive CMakeFiles/cmTC_f2bb2.dir/objects.a --no-whole-archive --out-implib libcmTC_f2bb2.dll.a --major-image-version 0 --minor-image-version 0 --start-group -lgcc -lc --end-group c:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/bin/../lib/gcc/arm-none-eabi/11.2.1/crtend.o c:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/bin/../lib/gcc/arm-none-eabi/11.2.1/crtn.o
+c:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/bin/../lib/gcc/arm-none-eabi/11.2.1/../../../../arm-none-eabi/bin/ld.exe: unrecognized option '--major-image-version'
+c:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/bin/../lib/gcc/arm-none-eabi/11.2.1/../../../../arm-none-eabi/bin/ld.exe: use the --help option for usage information
+collect2.exe: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_f2bb2.dir/build.make:101: cmTC_f2bb2.exe] Error 1
+make[1]: Leaving directory 'C:/Users/vanes/Documents/GitHub/HeadMouse/Firmware/HeadMouse-V1-hardware-test/build/CMakeFiles/CMakeScratch/TryCompile-oewa9x'
+make: *** [Makefile:127: cmTC_f2bb2/fast] Error 2
+
+
+
+
+Determining if the C compiler works failed with the following output:
+Change Dir: C:/Users/vanes/Documents/GitHub/HeadMouse/Firmware/HeadMouse-V1-hardware-test/build/CMakeFiles/CMakeScratch/TryCompile-e0db33
+
+Run Build Command(s):C:/ProgramData/chocolatey/bin/make.exe -f Makefile cmTC_c0908/fast && C:/ProgramData/chocolatey/lib/make/tools/install/bin/make.exe  -f CMakeFiles/cmTC_c0908.dir/build.make CMakeFiles/cmTC_c0908.dir/build
+make[1]: Entering directory 'C:/Users/vanes/Documents/GitHub/HeadMouse/Firmware/HeadMouse-V1-hardware-test/build/CMakeFiles/CMakeScratch/TryCompile-e0db33'
+Building C object CMakeFiles/cmTC_c0908.dir/testCCompiler.c.obj
+"C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/11.2 2022.02/bin/arm-none-eabi-gcc.exe"    -o CMakeFiles/cmTC_c0908.dir/testCCompiler.c.obj -c C:/Users/vanes/Documents/GitHub/HeadMouse/Firmware/HeadMouse-V1-hardware-test/build/CMakeFiles/CMakeScratch/TryCompile-e0db33/testCCompiler.c
+Linking C executable cmTC_c0908.exe
+C:/Users/vanes/Desktop/cmake-3.25.1-windows-x86_64/cmake-3.25.1-windows-x86_64/bin/cmake.exe -E rm -f CMakeFiles/cmTC_c0908.dir/objects.a
+"C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/11.2 2022.02/bin/arm-none-eabi-ar.exe" qc CMakeFiles/cmTC_c0908.dir/objects.a @CMakeFiles/cmTC_c0908.dir/objects1
+"C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/11.2 2022.02/bin/arm-none-eabi-gcc.exe" -Wl,--whole-archive CMakeFiles/cmTC_c0908.dir/objects.a -Wl,--no-whole-archive -o cmTC_c0908.exe -Wl,--out-implib,libcmTC_c0908.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles/cmTC_c0908.dir/linkLibs.rsp
+c:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/bin/../lib/gcc/arm-none-eabi/11.2.1/../../../../arm-none-eabi/bin/ld.exe: unrecognized option '--major-image-version'
+c:/program files (x86)/arm gnu toolchain arm-none-eabi/11.2 2022.02/bin/../lib/gcc/arm-none-eabi/11.2.1/../../../../arm-none-eabi/bin/ld.exe: use the --help option for usage information
+collect2.exe: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_c0908.dir/build.make:102: cmTC_c0908.exe] Error 1
+make[1]: Leaving directory 'C:/Users/vanes/Documents/GitHub/HeadMouse/Firmware/HeadMouse-V1-hardware-test/build/CMakeFiles/CMakeScratch/TryCompile-e0db33'
+make: *** [Makefile:127: cmTC_c0908/fast] Error 2
+
+
+
