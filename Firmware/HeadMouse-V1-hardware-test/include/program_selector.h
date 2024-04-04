@@ -12,6 +12,7 @@
 
 //#define IMU_BNO055_TEST
 //#define IMU_LSM6DSO_TEST
-#define IMU_MC6470_TEST
+//#define IMU_MC6470_TEST
+#define BLE_MOUSE_TEST
 
 
