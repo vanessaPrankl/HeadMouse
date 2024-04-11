@@ -6187,6 +6187,9 @@
   (gr_text "HeadMouse V1.0\nFH Technikum Wien" (at 195.5 121.75) (layer "B.SilkS") (tstamp 1c2b0e99-878a-4ec4-99b2-6d642661417f)
     (effects (font (size 1.5 1.5) (thickness 0.3) bold) (justify left bottom mirror))
   )
+  (gr_text "HeadMouse V1.1.0\nFH Technikum Wien" (at 167.2 99.2) (layer "F.SilkS") (tstamp 03c95175-7fa3-4f81-a185-003474827a48)
+    (effects (font (size 1.5 1.5) (thickness 0.3) bold) (justify left bottom))
+  )
 
   (segment (start 164.338 97.79) (end 164.338 97.79162) (width 0.25) (layer "F.Cu") (net 1) (tstamp 0046a5de-f60d-4fb7-85f2-2d3cb5999c06))
   (segment (start 143.5608 99.071999) (end 143.267999 99.071999) (width 0.25) (layer "F.Cu") (net 1) (tstamp 01888d46-41b2-408f-9e87-0fc54c4bf508))
