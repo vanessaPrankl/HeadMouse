@@ -7,22 +7,15 @@
 /* IMUs under test: MC6470, LSM6DSO, BNO055
 /* 
 /************************************************************************/
+#include "program_selector.h"
+
+#ifdef IMU_LSM6DSO_TEST
 #include <Arduino.h>
 #include <Wire.h>
 #include "SparkFunLSM6DSO.h"
-
-/* PIN DEFINITIONS ******************************************************/
-const int8_t PIN_I2C_SCL = 9;
-const int8_t PIN_I2C_SDA = 10;
-const int8_t PIN_LSM6DS_INT = 11;
-const int8_t PIN_MC6470_INT = 12;
-const int8_t PIN_BNO55_INT = 13;
+#include "pin_config_board_v1.h"
 
 LSM6DSO lsm6dso;
-
-
-/* FUNCTION PROTOTYPES **************************************************/
-void i2c_bus_scan();
 
 
 /* INIT *****************************************************************/
@@ -51,7 +44,6 @@ void setup() {
 
   delay(5000); 
 
-  i2c_bus_scan();
 }
 
 
@@ -83,32 +75,5 @@ void loop() {
 }
 
 
-/* FUNCTION DEFINITIONS **************************************************/
-void i2c_bus_scan(){
-  byte error, address;
-  int nDevices;
-  Serial.println("\n=== I2C Scanner ===");
-  nDevices = 0;
-  for (address = 1; address < 127; address++ )
-  {
-    Wire.beginTransmission(address);
-    error = Wire.endTransmission();
 
-    if (error == 0)
-    {
-      Serial.print("Device at address: 0x");
-      if (address < 16) Serial.print("0");
-      Serial.print(address, HEX);
-      Serial.println("");
-      nDevices++;
-    }
-    else if (error == 4)
-    {
-      Serial.print("Unknown error at address: 0x");
-      if (address < 16) Serial.print("0");
-      Serial.println(address, HEX);
-    }
-  }
-  if (nDevices == 0) Serial.println("No I2C devices found\n");
-  else Serial.println("I2C scan finished\n");
-}
+#endif
