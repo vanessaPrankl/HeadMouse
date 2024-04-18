@@ -6834,7 +6834,7 @@
 
   (footprint "Symbol:CE-Logo_8.5x6mm_SilkScreen" (layer "B.Cu")
     (tstamp c0fe3746-e872-487b-90cf-389d47936be6)
-    (at 175.43 93.38 180)
+    (at 175.43 93.38)
     (descr "CE marking")
     (tags "Logo CE certification")
     (property "Digikey" "DNP")
@@ -7089,7 +7089,7 @@
 
   (footprint "Symbol:KiCad-Logo_5mm_SilkScreen" (layer "B.Cu")
     (tstamp c2c0ecc2-bee4-4901-ba9f-4043d53b8fe8)
-    (at 186.825698 78.857938 180)
+    (at 186.825698 78.857938)
     (descr "KiCad Logo")
     (tags "Logo KiCad")
     (property "Digikey" "DNP")
