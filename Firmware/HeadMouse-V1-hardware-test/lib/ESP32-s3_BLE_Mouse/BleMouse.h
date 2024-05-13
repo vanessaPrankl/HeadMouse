@@ -7,6 +7,7 @@
 #include "BLEHIDDevice.h"
 #include "BLECharacteristic.h"
 
+#define MOUSE_NONE 0
 #define MOUSE_LEFT 1
 #define MOUSE_RIGHT 2
 #define MOUSE_MIDDLE 4

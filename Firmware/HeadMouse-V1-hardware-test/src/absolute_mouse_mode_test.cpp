@@ -1,7 +1,7 @@
 /* BLE MOUSE TEST *******************************************************/
 /* 
-/* Description: This is a test firmware for the BLE-mouse functionality 
-/*              between headmouse and a host system.
+/* Description: This is a test firmware for the BLE-mouse in absolute cursor 
+/*              position mode.
 /* Author: Vanessa Prankl
 /* Date: 04.04.2024
 /* 
