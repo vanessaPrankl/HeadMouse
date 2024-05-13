@@ -12,16 +12,35 @@
 #include <Wire.h>
 #include "timerEvent.h"
 #include "pin_config_board_v1.h"
-#include "mc6470_arduino.hpp"
 #include "BleMouse.h"
+
+#define IMU_LSM6DSO
+//#define IMU_MC6470
+
+#ifdef IMU_MC6470
+#include "mc6470_arduino.hpp"
+#endif
+
+#ifdef IMU_LSM6DSO
+#include "SparkFunLSM6DSO.h"
+#endif
+
+
 
 constexpr uint16_t BTN_DEBOUNCE_MS = 25;
 constexpr uint16_t BLINK_LED_MS = 500;
-constexpr int8_t ACCEL_OFFSET_DEG = 10;
+constexpr int8_t ACCEL_OFFSET_DEG = 5;
 
 volatile uint8_t button_click = MOUSE_NONE;
 
+#ifdef IMU_MC6470
 ArduinoMC6470 mc6470(&Wire, MC6470_ACCEL_ADDRESS_GND);
+#endif
+
+#ifdef IMU_LSM6DSO
+LSM6DSO lsm6dso;
+#endif
+
 BleMouse bleMouse("HeadMouse V1", "FH Technikum Wien", 100);
 TimerEvent timerDebounce; 
 TimerEvent timerLed;
@@ -56,22 +75,45 @@ void setup() {
   Serial.println("ONLINE!");
 
   /* Init IMU */
+#ifdef IMU_MC6470
   uint32_t err = mc6470.begin();
   if(err != MC6470_Status_OK){
     Serial.println("ERR - MC6470 not reachable");
   }else{
     Serial.println("MC6470 ready");
   }
+#endif
 
+#ifdef IMU_LSM6DSO
+  if(lsm6dso.begin(0x6A, Wire)){
+    Serial.println("LSM6DSO ready");
+  }
+  else{
+    Serial.println("LSM6DSO not reachable");
+  }
 
+  if(lsm6dso.initialize(BASIC_SETTINGS)){
+    Serial.println("LSM6DSO initialized");
+  }
+  else{
+    Serial.println("Canno init LSM6DSO");
+  }
+#endif
+
+delay(1000);
 }
 
 
 /* MAIN ******************************************************************/
 void loop() {
+
+#ifdef IMU_MC6470
   uint32_t err = MC6470_Status_OK;
   MC6470_MagReading mag_data;
   MC6470_AccelReading acc_data;
+#endif
+
+
   static int i = 0;
 
   timerDebounce.update();
@@ -85,6 +127,20 @@ void loop() {
     }
     
     /* Read accel data */
+  #ifdef IMU_LSM6DSO
+
+  float acc_data_x = 100*lsm6dso.readFloatAccelX();
+  float acc_data_y = 100*lsm6dso.readFloatAccelY();
+
+  /* Process Data */
+  if((acc_data_x <= ACCEL_OFFSET_DEG) && (acc_data_x >= -ACCEL_OFFSET_DEG)) acc_data_x = 0;
+  if((acc_data_y <= ACCEL_OFFSET_DEG) && (acc_data_y >= -ACCEL_OFFSET_DEG)) acc_data_y = 0;
+  /* Move mouse cursor */
+  bleMouse.move((unsigned char)(acc_data_x/10), (unsigned char)(acc_data_y/10),0); 
+
+  #endif
+
+  #ifdef IMU_MC6470
     err = mc6470.getData(mag_data, acc_data);
     if(err != MC6470_Status_OK){
       Serial.println("ERR - cannot read data");
@@ -105,6 +161,7 @@ void loop() {
 
     /* Move mouse cursor */
     bleMouse.move((unsigned char)(acc_data.y/2), (unsigned char)(acc_data.x/2),0);  
+  #endif
   }
         
 }
