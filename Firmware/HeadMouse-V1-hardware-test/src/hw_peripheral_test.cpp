@@ -58,33 +58,34 @@ void button_test(){
 }
 
 void battery_measurement_test(){
-  bool battery_charging = digitalRead(PIN_BATT_STATUS);
+  bool battery_charging = !digitalRead(PIN_BATT_STATUS);
   int32_t adc_value = analogRead(PIN_VBATT_MEASURE);
   float_t battery_voltage = 2 * adc_value * 3.3 / 4095; // "2*" because of 50:50 voltage divider
 
   Serial.print("Battery charging status [0=ON/1=OFF]: ");
-  Serial.println(!battery_charging);
+  Serial.println(battery_charging);
+  if(battery_charging){ /* Turn green led on */
+    digitalWrite(PIN_LED_BAT_R, LOW);  
+    digitalWrite(PIN_LED_BAT_G, HIGH); 
+  }
+  else{ /* Turn red led on */
+    digitalWrite(PIN_LED_BAT_R, HIGH);  
+    digitalWrite(PIN_LED_BAT_G, LOW); 
+  }
+  
   Serial.print("Battery voltage [V]: ");
   Serial.println(battery_voltage);
 }
 
 void led_test(){
-  digitalWrite(PIN_LED_BAT_R, HIGH);  
-  digitalWrite(PIN_LED_BAT_G, LOW); 
   digitalWrite(PIN_LED_STATUS_R, HIGH);  
   digitalWrite(PIN_LED_STATUS_G, LOW);  
 
-  delay(500);         
-
-  digitalWrite(PIN_LED_BAT_R, LOW);  
-  digitalWrite(PIN_LED_BAT_G, HIGH);  
+  delay(500);          
   digitalWrite(PIN_LED_STATUS_R, LOW);  
   digitalWrite(PIN_LED_STATUS_G, HIGH);
 
-  delay(500);         
-
-  digitalWrite(PIN_LED_BAT_R, LOW);  
-  digitalWrite(PIN_LED_BAT_G, LOW);  
+  delay(500);           
   digitalWrite(PIN_LED_STATUS_R, LOW);  
   digitalWrite(PIN_LED_STATUS_G, LOW);
 }
