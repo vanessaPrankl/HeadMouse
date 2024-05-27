@@ -23,7 +23,7 @@
 
 // Check I2C device address and correct line below (by default address is 0x29 or 0x28)
 //                                   id, address
-Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x28, &Wire);
+Adafruit_BNO055 bno = Adafruit_BNO055(0xA0, 0x28, &Wire);
 
 /**************************************************************************/
 /*
@@ -61,12 +61,12 @@ void displaySensorStatus(void)
 
   /* Display the results in the Serial Monitor */
   Serial.println("");
-  Serial.print("System Status: 0x");
-  Serial.println(system_status, HEX);
-  Serial.print("Self Test:     0x");
-  Serial.println(self_test_results, HEX);
-  Serial.print("System Error:  0x");
-  Serial.println(system_error, HEX);
+  Serial.print("System Status: 0b");
+  Serial.println(system_status, BIN);
+  Serial.print("Self Test:     0b");
+  Serial.println(self_test_results, BIN);
+  Serial.print("System Error:  0b");
+  Serial.println(system_error, BIN);
   Serial.println("");
   delay(500);
 }
@@ -114,17 +114,23 @@ void setup(void)
 
   while (!Serial) delay(10);  // wait for serial port to open!
 
-  Serial.println("Orientation Sensor Test"); Serial.println("");
+  Serial.println("Orientation Sensor Test"); 
 
-  /* Initialise the sensor */
-  if(!bno.begin())
-  {
-    /* There was a problem detecting the BNO055 ... check your connections */
-    Serial.print("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!");
-    while(1);
+  if(Wire.begin(PIN_I2C_SDA, PIN_I2C_SCL, 400000)){
+    Serial.print("I2C ready!");
   }
   else{
-      Serial.print("BNO initialized!");
+    Serial.print("Cannot start I2C...");
+  }
+  delay(10);  /* Let I2C bus come up */
+
+  /* Initialise the sensor */
+  if(bno.begin(OPERATION_MODE_AMG))
+  {
+    Serial.print("BNO055 ready!");
+  }
+  else{
+    Serial.print("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!");      
   }
   delay(1000);
 
