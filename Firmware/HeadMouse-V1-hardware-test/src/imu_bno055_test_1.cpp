@@ -38,11 +38,10 @@ void setup() //This code is executed once
   Serial.begin(115200);
   delay(2000);
 
-  pinMode(PIN_I2C_SDA, INPUT); // Disable internal pull-up
   pinMode(PIN_I2C_SCL, INPUT); // Disable internal pull-up
 
 	//Initialize I2C communication
-	if(Wire.begin(PIN_I2C_SDA, PIN_I2C_SCL, 100000)){
+	if(Wire.begin(PIN_I2C_SDA, PIN_I2C_SCL)){
     Serial.println("\nI2C ready!");
   }
   else{

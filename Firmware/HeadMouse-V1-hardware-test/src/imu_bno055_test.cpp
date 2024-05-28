@@ -61,12 +61,12 @@ void displaySensorStatus(void)
 
   /* Display the results in the Serial Monitor */
   Serial.println("");
-  Serial.print("System Status: 0b");
-  Serial.println(system_status, BIN);
+  Serial.print("System Status: 0x");
+  Serial.println(system_status, HEX);
   Serial.print("Self Test:     0b");
   Serial.println(self_test_results, BIN);
-  Serial.print("System Error:  0b");
-  Serial.println(system_error, BIN);
+  Serial.print("System Error:  0x");
+  Serial.println(system_error, HEX);
   Serial.println("");
   delay(500);
 }
@@ -112,16 +112,21 @@ void setup(void)
 {
   Serial.begin(115200);
 
+  pinMode(PIN_I2C_SDA, INPUT); // Disable internal pull-up
+  pinMode(PIN_I2C_SCL, INPUT); // Disable internal pull-up
+  Wire.setPins(PIN_I2C_SDA, PIN_I2C_SCL);
+
   while (!Serial) delay(10);  // wait for serial port to open!
 
   Serial.println("Orientation Sensor Test"); 
+  //Wire.setPins(PIN_I2C_SDA, PIN_I2C_SCL);
 
-  if(Wire.begin(PIN_I2C_SDA, PIN_I2C_SCL, 400000)){
+  /*if(Wire.begin(0x28, PIN_I2C_SDA, PIN_I2C_SCL, 100000)){
     Serial.print("I2C ready!");
   }
   else{
     Serial.print("Cannot start I2C...");
-  }
+  }*/
   delay(10);  /* Let I2C bus come up */
 
   /* Initialise the sensor */
@@ -130,7 +135,7 @@ void setup(void)
     Serial.print("BNO055 ready!");
   }
   else{
-    Serial.print("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!");      
+    Serial.print("Cannot connect to BNO05\n");      
   }
   delay(1000);
 
