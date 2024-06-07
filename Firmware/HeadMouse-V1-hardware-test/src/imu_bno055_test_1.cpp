@@ -39,6 +39,8 @@ void setup() //This code is executed once
   delay(2000);
 
   pinMode(PIN_I2C_SCL, INPUT); // Disable internal pull-up
+  pinMode(PIN_I2C_SDA, INPUT); // Disable internal pull-up
+
 
 	//Initialize I2C communication
 	if(Wire.begin(PIN_I2C_SDA, PIN_I2C_SCL)){
@@ -49,12 +51,12 @@ void setup() //This code is executed once
   }
 
 	//Initialization of the BNO055
-	if(BNO055_Zero_U8X  != BNO_Init(&myBNO)) //Assigning the structure to hold information about the device
+	if(BNO055_Zero_U8X  == BNO_Init(&myBNO)) //Assigning the structure to hold information about the device
   {
-    Serial.println("\nBNO055 ready!");
+	Serial.println("\nCannot connect to BNO055"); 
   }
   else{
-    Serial.println("\nCannot connect to BNO055");      
+    Serial.println("\nBNO055 ready!");
   }
   delay(1000);
 	//Configuration to NDoF mode

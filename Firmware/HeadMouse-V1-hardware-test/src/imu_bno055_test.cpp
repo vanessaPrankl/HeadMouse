@@ -23,7 +23,7 @@
 
 // Check I2C device address and correct line below (by default address is 0x29 or 0x28)
 //                                   id, address
-Adafruit_BNO055 bno = Adafruit_BNO055(0xA0, 0x28, &Wire);
+Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x28, &Wire);
 
 /**************************************************************************/
 /*
@@ -119,18 +119,9 @@ void setup(void)
   while (!Serial) delay(10);  // wait for serial port to open!
 
   Serial.println("Orientation Sensor Test"); 
-  //Wire.setPins(PIN_I2C_SDA, PIN_I2C_SCL);
-
-  /*if(Wire.begin(0x28, PIN_I2C_SDA, PIN_I2C_SCL, 100000)){
-    Serial.print("I2C ready!");
-  }
-  else{
-    Serial.print("Cannot start I2C...");
-  }*/
-  delay(10);  /* Let I2C bus come up */
 
   /* Initialise the sensor */
-  if(bno.begin(OPERATION_MODE_AMG))
+  if(bno.begin())
   {
     Serial.print("BNO055 ready!");
   }
@@ -158,6 +149,7 @@ void loop(void)
 {
   /* Get a new sensor event */
   sensors_event_t event;
+
   bno.getEvent(&event);
 
   /* Display the floating point data */
@@ -167,6 +159,10 @@ void loop(void)
   Serial.print(event.orientation.y, 4);
   Serial.print("\tZ: ");
   Serial.print(event.orientation.z, 4);
+
+  displayCalStatus();
+
+  displaySensorStatus();
 
   /* Wait the specified delay before requesting nex data */
   delay(BNO055_SAMPLERATE_DELAY_MS);
