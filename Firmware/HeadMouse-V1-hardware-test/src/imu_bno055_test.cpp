@@ -19,7 +19,7 @@
 
 
 /* Set the delay between fresh samples */
-#define BNO055_SAMPLERATE_DELAY_MS (100)
+#define BNO055_SAMPLERATE_DELAY_MS (50)
 
 // Check I2C device address and correct line below (by default address is 0x29 or 0x28)
 //                                   id, address
@@ -136,7 +136,7 @@ void setup(void)
   /* Optional: Display current status */
   displaySensorStatus();
 
-  bno.setExtCrystalUse(true);
+  // bno.setExtCrystalUse(true);
 }
 
 /**************************************************************************/
@@ -162,7 +162,6 @@ void loop(void)
 
   displayCalStatus();
 
-  displaySensorStatus();
 
   /* Wait the specified delay before requesting nex data */
   delay(BNO055_SAMPLERATE_DELAY_MS);
