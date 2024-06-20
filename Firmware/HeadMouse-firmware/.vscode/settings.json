@@ -1,0 +1,13 @@
+{
+    "cmake.sourceDirectory": "C:/Users/vanes/Documents/GitHub/HeadMouse/Firmware/HeadMouse-V1-hardware-test/.pio/libdeps/espressiv/Adafruit BusIO",
+    "files.associations": {
+        "array": "cpp",
+        "deque": "cpp",
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "unordered_set": "cpp",
+        "vector": "cpp",
+        "string_view": "cpp",
+        "initializer_list": "cpp"
+    }
+}
