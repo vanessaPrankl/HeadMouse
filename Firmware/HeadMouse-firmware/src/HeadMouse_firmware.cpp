@@ -13,9 +13,7 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BNO055.h>
 #include <utility/imumaths.h>
-
-/* Set the delay between fresh samples */
-#define BNO055_SAMPLERATE_DELAY_MS (50)
+#include "logging.cpp"
 
 // Check I2C device address and correct line below (by default address is 0x29 or 0x28)
 //                                   id, address
@@ -33,7 +31,7 @@ void setup() {
   Serial.begin(115200);
   while (!Serial) delay(10);  // wait for serial port to open!
 
-  Serial.println("Orientation Sensor Test"); 
+  Serial.println("HeadMouse V1"); 
 
   bleMouse.begin();
 
@@ -44,10 +42,10 @@ void setup() {
   /* Initialise the sensor */
   if(bno.begin())
   {
-    Serial.print("BNO055 ready!");
+    log_message(LOG_DEBUG, "BNO055 ready!");
   }
   else{
-    Serial.print("Cannot connect to BNO05\n");      
+    log_message(LOG_WARNING, "Cannot connect to BNO055");
   }
   delay(1000);
 
@@ -77,6 +75,7 @@ void loop() {
     event_buf.orientation.y = event.orientation.y;
     event_buf.orientation.z = event.orientation.z;
   }
+
 
   /* Display the floating point data 
   Serial.print("\nX: ");
