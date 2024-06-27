@@ -1,7 +1,8 @@
 #pragma once
 
 enum err {
+    OK,
     ERR_CONNECTION_FAILED,
-    ERR_GENERIC,
-    ERR_NONE
+    ERR_OUT_OF_RANGE,
+    ERR_GENERIC    
 };
