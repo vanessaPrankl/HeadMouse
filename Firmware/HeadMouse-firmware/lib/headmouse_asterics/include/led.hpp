@@ -1,5 +1,8 @@
 #pragma once
 
+/*! *********************************************************
+* @brief Enum to define available LED states
+*************************************************************/
 enum ledState {
     RED,
     GREEN,
