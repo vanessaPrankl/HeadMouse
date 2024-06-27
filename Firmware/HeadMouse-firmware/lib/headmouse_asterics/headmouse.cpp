@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <utility/imumaths.h>
-#include "./api/headmouse.hpp"
+#include "headmouse.hpp"
 #include "hm_board_config_v1_0.hpp"
 #include "default_preferences.hpp"
 #include "BleMouse.h"
@@ -20,9 +20,7 @@ using namespace _headmouse;
 /*! *********************************************************
 * @brief Default HeadMouse constructor
 *************************************************************/
-HeadMouse::HeadMouse(){
-    _preferences.mode = 
-}
+HeadMouse::HeadMouse(){}
 
 /*! *********************************************************
 * @brief Update IMU data and translate it into mouse movements
@@ -72,7 +70,7 @@ void HeadMouse::_updateBtnActions(){
 
     log_message(LOG_DEBUG, "Button values [0=pressed/1=open]: %d, %d, %d, %d", btn_1, btn_2, btn_3, btn_4);
 }
-
+ 
 /*! *********************************************************
 * @brief Initialize microcontroller pins of HeadMouse
 * @return None
@@ -101,11 +99,16 @@ void HeadMouse::_initPins(){
 
 /*! *********************************************************
 * @brief Initialize HeadMouse hardware components 
-* @return ERR_xxx if something went wrong, ERR_NONE otherwise.
+* @return ERR_xxx if something went wrong, OK otherwise.
 *************************************************************/
-err HeadMouse::init(){
+err HeadMouse::init(HmPreferences preferences){
     err error = ERR_GENERIC;
 
+    /* Setup HM preferences */
+    error = setPreferences(preferences);
+    if(error) return error;
+
+    /* Start serial interface if logging is active */
 #if defined(LOG_LEVEL_DEBUG) || defined(LOG_LEVEL_INFO) || defined(LOG_LEVEL_WARNING) || defined(LOG_LEVEL_ERROR)
     Serial.begin(SERIAL_BAUD_RATE);
     while (!Serial) delay(10);  /* Wait for serial port to open */
@@ -120,22 +123,14 @@ err HeadMouse::init(){
 
     /* Initialise IMU */
     if(bno.begin()){
-        error = ERR_NONE;
         log_message(LOG_DEBUG, "BNO055 ready!");
     }
     else{
-        error = ERR_CONNECTION_FAILED;
         log_message(LOG_WARNING, "Cannot connect to BNO055");
+        return ERR_CONNECTION_FAILED;
     }
 
-#if defined(LOG_LEVEL_DEBUG) || defined(LOG_LEVEL_INFO)
-    /* Display some basic information on this sensor */
-    displaySensorDetails();
-
-    /* Optional: Display current status */
-    displaySensorStatus();
-#endif
-    return error;
+    return OK;
 }
 
 err HeadMouse::update(){
@@ -150,30 +145,89 @@ err HeadMouse::switchPairedDevice(){
 
 }
 
+/* Setter */
+
+/*! *********************************************************
+* @brief Set HeadMouse device preferences
+* @param preferences Struct containing device preferences.
+* @return ERR_xxx if something went wrong, OK otherwise.
+*************************************************************/
+err HeadMouse::setPreferences(HmPreferences preferences){
+    setMode(preferences.mode);
+    setSensitivity(preferences.sensititvity);
+    for(int i=0; i<3; i++){
+        err error = setButtonAction(preferences.buttons[i].pin, preferences.buttons[i].action);
+        if(error) return error;
+    }
+    return OK;
+}
+
+/*! *********************************************************
+* @brief Set HeadMouse motion sensitivity
+* @param sensitivity Sensititvity level for head motion detection
+* @return None
+*************************************************************/
+void HeadMouse::setSensitivity(devSensitivity sensititvity){
+    _preferences.sensititvity = sensititvity;
+}
+
+/*! *********************************************************
+* @brief Set HeadMouse operation mode
+* @param mode Device operation mode
+* @return None
+*************************************************************/
+void HeadMouse::setMode(devMode mode){
+    _preferences.mode = mode;
+}
+
+/*! *********************************************************
+* @brief Set HeadMouse button pins and according device actions.
+* @param pinNr uC pin number of button
+* @param action Device action associated with button
+* @return ERR_OUT_OF_RANGE if pin is no button, OK otherwise.
+*************************************************************/
+err HeadMouse::setButtonAction(pin pinNr, btnAction action){
+    /* Check if pin is actually a button */
+    if((pinNr == PIN_BTN_1) || (pinNr == PIN_BTN_1) || (pinNr == PIN_BTN_1) || (pinNr == PIN_BTN_1))
+    {
+        _preferences.buttons[pinNr-1].pin = pinNr;
+        _preferences.buttons[pinNr-1].action = action;
+        return OK; //TODO
+    }
+    return ERR_OUT_OF_RANGE;
+}
+
 /* Getter */
-HmStatus HeadMouse::get_status(err*){
+HmStatus HeadMouse::getDevStatus(err*){
 
 }
-batStatus HeadMouse::getBatStatus(err*){
 
 }
 bool HeadMouse::isCalibrated(err*){
 
 }
-bool HeadMouse::isConnected(err*){
 
+/*! *********************************************************
+* @brief Check if device is connected to host via bluetooth.
+* @return TRUE, if connected, FALSE otherwise.
+*************************************************************/
+bool HeadMouse::isConnected(){
+    if(bleMouse.isConnected()){
+       return true;
+    }
+    return false;
 }
+
+/*! *********************************************************
+* @brief Check if device battery is currently charging.
+* @note Charging means that the power supply is connected and the battery is not full.
+* @return TRUE, if charging, FALSE otherwise.
+*************************************************************/
 bool HeadMouse::isCharging(){
+    _status.is_charging = !digitalRead(PIN_BATT_STATUS);
+    log_message(LOG_DEBUG_BAT, "Bat is charging: %d", _status.is_charging);
 
+    return _status.is_charging;
 }
 
-/* Setter */
-err HeadMouse::setSensitivity(devSensitivity){
 
-}
-err HeadMouse::setMode(devMode){
-
-}
-err HeadMouse::setButtonAction(uint8_t, btnAction){
-
-}
