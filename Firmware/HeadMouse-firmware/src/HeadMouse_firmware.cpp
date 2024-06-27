@@ -15,11 +15,7 @@
 #include <utility/imumaths.h>
 #include "logging.cpp"
 
-// Check I2C device address and correct line below (by default address is 0x29 or 0x28)
-//                                   id, address
-Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x28, &Wire);
-
-BleMouse bleMouse("HeadMouse V1", "FH Technikum Wien", 100);
+Headmouse
 
 void displaySensorDetails(void);
 void displayCalStatus(void);
@@ -28,26 +24,7 @@ void displaySensorStatus(void);
 /* INIT *****************************************************************/
 void setup() {
 
-  Serial.begin(115200);
-  while (!Serial) delay(10);  // wait for serial port to open!
-
-  Serial.println("HeadMouse V1"); 
-
-  bleMouse.begin();
-
-  pinMode(PIN_I2C_SDA, INPUT); // Disable internal pull-up
-  pinMode(PIN_I2C_SCL, INPUT); // Disable internal pull-up
-  Wire.setPins(PIN_I2C_SDA, PIN_I2C_SCL);
-
-  /* Initialise the sensor */
-  if(bno.begin())
-  {
-    log_message(LOG_DEBUG, "BNO055 ready!");
-  }
-  else{
-    log_message(LOG_WARNING, "Cannot connect to BNO055");
-  }
-  delay(1000);
+  
 
   /* Display some basic information on this sensor */
   displaySensorDetails();
@@ -60,46 +37,7 @@ void setup() {
 
 /* MAIN ******************************************************************/
 void loop() {
-  static int first_run = true;
-  int move_mouse_y = 0;
-  int move_mouse_x = 0;
-  static sensors_event_t event_buf;
-
-  sensors_event_t event;
-
-  /* Get a new sensor event */
-  bno.getEvent(&event);
-  if(first_run){
-    first_run = false;
-    event_buf.orientation.x = event.orientation.x;
-    event_buf.orientation.y = event.orientation.y;
-    event_buf.orientation.z = event.orientation.z;
-  }
-
-
-  /* Display the floating point data 
-  Serial.print("\nX: ");
-  Serial.print(event.orientation.x, 4);
-  Serial.print("\tY: ");
-  Serial.print(event.orientation.y, 4);
-  Serial.print("\tZ: ");
-  Serial.print(event.orientation.z, 4);*/
-
-  //displayCalStatus();
-
-  /* Process data */
-  move_mouse_x = (int)(50*event.orientation.x) - (int)(50*event_buf.orientation.x);
-  move_mouse_y = (int)(50*event_buf.orientation.y) - (int)(50*event.orientation.y);
-
-  /* Move mouse cursor */
-  if(bleMouse.isConnected()){
-    bleMouse.move((unsigned char)(move_mouse_x), (unsigned char)(move_mouse_y),0);  
-  }
-
-  /* Store orientation values into buffer for later on comparison */
-  event_buf.orientation.x = event.orientation.x;
-  event_buf.orientation.y = event.orientation.y;
-  //event_buf.orientation.z = event.orientation.z;
+  
 
 }
 

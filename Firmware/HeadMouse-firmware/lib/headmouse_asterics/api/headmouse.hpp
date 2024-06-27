@@ -9,21 +9,31 @@
 
 typedef class HeadMouse {
     private:
-    HmStatus status;
-    HmPreferences preferences;
-    ledState led_bat = RED;
-    ledState led_status = BLINK_RED;
-    err updateMovements();
-    err updateBtnActions();
+    /* Attributes */
+    HmStatus _status;
+    HmPreferences _preferences;
+    ledState _led_bat = RED;
+    ledState _led_status = BLINK_RED;
+    sensors_event_t _imu_data;
+
+    /* Methods */
+    err _updateMovements();
+    void _updateBtnActions();  
+    void _updateLeds();
+    void _initPins();
    
     public:
+    /* Constructors */
+    HeadMouse(){}
+
+    /* Methods */
     err init();
     err update();
     err pairNewDevice();
     err switchPairedDevice();
 
     /* Getter */
-    HmStatus get_status(err*);
+    HmStatus getStatus(err*);
     batStatus getBatStatus(err*);
     bool isCalibrated(err*);
     bool isConnected(err*);
