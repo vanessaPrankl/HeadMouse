@@ -1,10 +1,11 @@
 #pragma once
 
-#include "../include/status.hpp"
-#include "../include/actions.hpp"
-#include "../include/preferences.hpp"
-#include "../include/error.hpp"
-#include "../include/led.hpp"
+#include "./include/status.hpp"
+#include "./include/actions.hpp"
+#include "./include/preferences.hpp"
+#include "./include/error.hpp"
+#include "./include/led.hpp"
+#include "Adafruit_Sensor.h"
 
 
 typedef class HeadMouse {
@@ -27,20 +28,21 @@ typedef class HeadMouse {
     HeadMouse(){}
 
     /* Methods */
-    err init();
+    err init(HmPreferences);
     err update();
     err pairNewDevice();
     err switchPairedDevice();
 
     /* Getter */
-    HmStatus getStatus(err*);
+    HmStatus getDevStatus(err*);
     batStatus getBatStatus(err*);
     bool isCalibrated(err*);
-    bool isConnected(err*);
+    bool isConnected();
     bool isCharging();
 
     /* Setter */
-    err setSensitivity(devSensitivity);
-    err setMode(devMode);
-    err setButtonAction(uint8_t, btnAction);
+    err setPreferences(HmPreferences);
+    void setSensitivity(devSensitivity);
+    void setMode(devMode);
+    err setButtonAction(pin, btnAction);
 };
