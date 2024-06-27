@@ -14,12 +14,14 @@ enum LogLevel {
     LOG_INFO,
     LOG_WARNING,
     LOG_ERROR,
-    LOG_CRITICAL
 };
 
 void log_message(LogLevel level, const char *format, ...) {
     char buffer[256];
-
+    va_list args;
+    va_start(args, format);
+    vsprintf(buffer, format, args);
+    va_end(args);
 
     switch (level) {
         #if LOG_LEVEL_DEBUG
