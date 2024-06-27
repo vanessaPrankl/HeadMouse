@@ -190,11 +190,15 @@ err HeadMouse::setButtonAction(pin pinNr, btnAction action){
     /* Check if pin is actually a button */
     if((pinNr == PIN_BTN_1) || (pinNr == PIN_BTN_1) || (pinNr == PIN_BTN_1) || (pinNr == PIN_BTN_1))
     {
+        log_message(LOG_INFO, "Set pin %d to action %d", pinNr, action);
         _preferences.buttons[pinNr-1].pin = pinNr;
         _preferences.buttons[pinNr-1].action = action;
         return OK; //TODO
     }
-    return ERR_OUT_OF_RANGE;
+    else{
+        log_message(LOG_ERROR, "Pin %d not a button", pinNr);
+        return ERR_OUT_OF_RANGE;
+    }
 }
 
 /* Getter */
@@ -202,14 +206,20 @@ HmStatus HeadMouse::getDevStatus(err*){
 
 }
 
+BatStatus HeadMouse::getBatStatus(err*){
+    int32_t adc_value = analogRead(PIN_VBATT_MEASURE);
+    float_t voltage = 2 * adc_value * 3.3 / 4095; // "2*" because of 50:50 voltage divider
+    if(voltage >= )
+
+    return _status.bat_status;
 }
 
 /*! *********************************************************
 * @brief Check if gyro calibration of IMU has been finished.
-* @param err Pointer to error var, if IMU not reachable.
+* @note If IMU communication fails, there is no handle in this function.
 * @return TRUE, if finished, FALSE otherwise.
 *************************************************************/
-bool HeadMouse::isCalibrated(err*){
+bool HeadMouse::isCalibrated(){
     /* Get the four calibration values (0..3) */
     /* Any sensor data reporting 0 should be ignored, */
     /* 3 means 'fully calibrated" */
