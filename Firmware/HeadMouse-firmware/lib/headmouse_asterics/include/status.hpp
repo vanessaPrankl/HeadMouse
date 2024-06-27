@@ -2,8 +2,9 @@
 
 /*! *********************************************************
 * @brief Enum to define battery levels
+* @enum {BatStatus}
 *************************************************************/
-enum batStatus {
+enum BatStatus {
     BAT_LOW,    
     BAT_OK,
     BAT_HIGH
@@ -20,5 +21,5 @@ typedef struct HmStatus {
     bool is_connected = false;
     bool is_charging = false;
     bool is_calibrated = false;
-    batStatus bat_status = BAT_LOW;
+    BatStatus bat_status = BAT_LOW;
 };

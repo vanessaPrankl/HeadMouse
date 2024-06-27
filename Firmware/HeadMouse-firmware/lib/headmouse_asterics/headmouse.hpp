@@ -35,7 +35,7 @@ typedef class HeadMouse {
 
     /* Getter */
     HmStatus getDevStatus(err*);
-    batStatus getBatStatus(err*);
+    BatStatus getBatStatus(err*);
     bool isCalibrated(err*);
     bool isConnected();
     bool isCharging();
