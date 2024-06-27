@@ -1,4 +1,4 @@
-/* CIRCUIT BOARD V1 PIN CONFIG *********************************************/
+/* CIRCUIT BOARD V1.0 PIN CONFIG *********************************************/
 /* 
 /* Description: This is a hardware pin config file for HeadMouse board version 1.
 /* Author: Vanessa Prankl
@@ -39,7 +39,10 @@ constexpr pin PIN_BNO55_INT = 13;
 constexpr int32_t BNO055_SENSOR_ID = 55;
 constexpr uint8_t BNO055_I2C_ADDRESS = 0x28;
 
-/* Device config */
+/* Serial communication config */
+constexpr uint32_t SERIAL_BAUD_RATE = 115200;
+
+/* BLE Device config */
 constexpr char DEVICE_NAME[] = "HeadMouse V1";
 constexpr char DEVICE_MANUFACTURER[] = "FH Technikum Wien";
 constexpr uint8_t BAT_LEVEL_DUMMY = 100;
