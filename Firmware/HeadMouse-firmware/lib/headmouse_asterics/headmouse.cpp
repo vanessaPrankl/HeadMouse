@@ -203,8 +203,24 @@ HmStatus HeadMouse::getDevStatus(err*){
 }
 
 }
-bool HeadMouse::isCalibrated(err*){
 
+/*! *********************************************************
+* @brief Check if gyro calibration of IMU has been finished.
+* @param err Pointer to error var, if IMU not reachable.
+* @return TRUE, if finished, FALSE otherwise.
+*************************************************************/
+bool HeadMouse::isCalibrated(err*){
+    /* Get the four calibration values (0..3) */
+    /* Any sensor data reporting 0 should be ignored, */
+    /* 3 means 'fully calibrated" */
+    uint8_t system, gyro, accel, mag;
+    system = gyro = accel = mag = 0;
+    bno.getCalibration(&system, &gyro, &accel, &mag);
+
+    log_message(LOG_DEBUG_IMU, "Calibration Sys: %d, GYR: %d, ACC: %d, MAG: %d", system, gyro, accel, mag);
+
+    if(gyro == 3) return true;
+    return false;
 }
 
 /*! *********************************************************
