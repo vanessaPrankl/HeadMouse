@@ -10,5 +10,6 @@
         "string_view": "cpp",
         "initializer_list": "cpp"
     },
-    "C_Cpp.errorSquiggles": "enabled"
+    "C_Cpp.errorSquiggles": "enabled",
+    "makefile.compileCommandsPath": ".vscode/compile_commands.json"
 }
