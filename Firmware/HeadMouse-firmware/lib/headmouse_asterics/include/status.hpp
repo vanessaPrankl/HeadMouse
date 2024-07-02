@@ -1,8 +1,16 @@
 #pragma once
 
+/************************************************************
+* Battery level voltage defintions
+*************************************************************/
+constexpr float BAT_FULL_V = 4.2;
+constexpr float BAT_HIGH_V = 3.9;
+constexpr float BAT_OK_V = 3.6;
+constexpr float BAT_LOW_V = 3.4;
+
+
 /*! *********************************************************
 * @brief Enum to define battery levels
-* @enum {BatStatus}
 *************************************************************/
 enum BatStatus {
     BAT_LOW,    
