@@ -11,7 +11,7 @@
 #define LOG_LEVEL_WARNING   1
 #define LOG_LEVEL_ERROR     1
 
-/* DEVICE CONFID DEFAULTS ********************************************/
+/* DEVICE CONFIG DEFAULTS ********************************************/
 constexpr devMode HM_DEF_MODE = RELATIVE;
 constexpr devSensitivity HM_DEF_SENSITIVITY = SENSITIVITY_4;
 constexpr btnAction HM_DEF_ACTION_BTN_1 = MOUSE_RIGHT;
