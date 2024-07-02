@@ -13,16 +13,16 @@ enum devMode {
 * @brief Enum to define available sensitivity levels
 *************************************************************/
 enum devSensitivity {
-    SENSITIVITY_0,
-    SENSITIVITY_1,
-    SENSITIVITY_2,
-    SENSITIVITY_3,
-    SENSITIVITY_4,
-    SENSITIVITY_5,
-    SENSITIVITY_6,
-    SENSITIVITY_7,
-    SENSITIVITY_8,
-    SENSITIVITY_9
+    SENSITIVITY_0 = 0,
+    SENSITIVITY_1 = 10,
+    SENSITIVITY_2 = 20,
+    SENSITIVITY_3 = 30,
+    SENSITIVITY_4 = 40,
+    SENSITIVITY_5 = 50,
+    SENSITIVITY_6 = 60,
+    SENSITIVITY_7 = 70,
+    SENSITIVITY_8 = 80,
+    SENSITIVITY_9 = 90
 };
 
 /*! *********************************************************
