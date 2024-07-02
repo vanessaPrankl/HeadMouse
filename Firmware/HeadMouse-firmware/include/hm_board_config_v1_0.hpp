@@ -23,7 +23,7 @@ constexpr pin PIN_BTN_3 = 40;
 constexpr pin PIN_BTN_4 = 39;
 
 /* Battery */
-constexpr pin PIN_VBATT_MEASURE = 4;     /* Current battery voltage */
+constexpr pin PIN_VBATT_MEASURE = 4;     /* To measure current battery voltage */
 constexpr pin PIN_BATT_STATUS = 5;       /* Pulled low if charging is active*/
 
 /* I2C */

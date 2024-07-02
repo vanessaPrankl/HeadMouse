@@ -202,14 +202,34 @@ err HeadMouse::setButtonAction(pin pinNr, btnAction action){
 }
 
 /* Getter */
-HmStatus HeadMouse::getDevStatus(err*){
 
+/*! *********************************************************
+* @brief Update current device status.
+*       (battery, IMU calibration, charging active, BLE connection)
+* @return Device status struct
+*************************************************************/
+HmStatus HeadMouse::getDevStatus(){
+    _status.bat_status = getBatStatus();
+    _status.is_calibrated = isCalibrated();
+    _status.is_charging = isCharging();
+    _status.is_connected = isConnected();
+
+    return _status;
 }
 
-BatStatus HeadMouse::getBatStatus(err*){
+/*! *********************************************************
+* @brief Read current battery voltage and convert it to 
+*        according battery status.
+* @return Battery status
+*************************************************************/
+BatStatus HeadMouse::getBatStatus(){
     int32_t adc_value = analogRead(PIN_VBATT_MEASURE);
     float_t voltage = 2 * adc_value * 3.3 / 4095; // "2*" because of 50:50 voltage divider
-    if(voltage >= )
+    if(voltage >= BAT_FULL_V)       _status.bat_status = BAT_FULL;
+    else if(voltage >= BAT_HIGH_V)  _status.bat_status = BAT_HIGH;
+    else if(voltage >= BAT_OK_V)    _status.bat_status = BAT_OK;
+    else if(voltage >= BAT_LOW_V)   _status.bat_status = BAT_LOW;
+    else                            _status.bat_status = BAT_CRITICAL;
 
     return _status.bat_status;
 }
@@ -230,7 +250,7 @@ bool HeadMouse::isCalibrated(){
     log_message(LOG_DEBUG_IMU, "Calibration Sys: %d, GYR: %d, ACC: %d, MAG: %d", system, gyro, accel, mag);
 
     if(gyro == 3) return true;
-    return false;
+    else return false;
 }
 
 /*! *********************************************************
@@ -241,7 +261,7 @@ bool HeadMouse::isConnected(){
     if(bleMouse.isConnected()){
        return true;
     }
-    return false;
+    else return false;
 }
 
 /*! *********************************************************
