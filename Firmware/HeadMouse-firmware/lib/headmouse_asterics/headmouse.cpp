@@ -21,56 +21,9 @@ using namespace _headmouse;
 * @brief Default HeadMouse constructor
 *************************************************************/
 HeadMouse::HeadMouse(){}
-
-/*! *********************************************************
-* @brief Update IMU data and translate it into mouse movements
-*************************************************************/
-err HeadMouse::_updateMovements(){
-    static int first_run = true;
-    int move_mouse_y = 0;
-    int move_mouse_x = 0;
-    sensors_event_t _imu_data;
-
-    sensors_event_t new_imu_data;
-
-    /* Get a new sensor event */
-    bno.getEvent(&new_imu_data);
-    if(first_run){
-        first_run = false;
-        _imu_data.orientation.x = new_imu_data.orientation.x;
-        _imu_data.orientation.y = new_imu_data.orientation.y;
-        _imu_data.orientation.z = new_imu_data.orientation.z;
-    }
-
-    log_message(LOG_DEBUG, "IMU orientation data: X: %.2f, Y: %.2f, Z: %.2f\n", new_imu_data.orientation.x, new_imu_data.orientation.y, new_imu_data.orientation.z);
-
-    //displayCalStatus();
-
-    /* Process data */
-    move_mouse_x = (int)(50*new_imu_data.orientation.x) - (int)(50*_imu_data.orientation.x);
-    move_mouse_y = (int)(50*_imu_data.orientation.y) - (int)(50*new_imu_data.orientation.y);
-
-    /* Move mouse cursor */
-    if(bleMouse.isConnected()){
-        bleMouse.move((unsigned char)(move_mouse_x), (unsigned char)(move_mouse_y),0);  
-    }
-
-    /* Store orientation values into buffer for later on comparison */
-    _imu_data.orientation.x = new_imu_data.orientation.x;
-    _imu_data.orientation.y = new_imu_data.orientation.y;
-
-}
-void HeadMouse::_updateBtnActions(){
-    /* TODO Create interrupt based button action detection */
-
-    bool btn_1 = digitalRead(PIN_BTN_1);
-    bool btn_2 = digitalRead(PIN_BTN_2);
-    bool btn_3 = digitalRead(PIN_BTN_3);
-    bool btn_4 = digitalRead(PIN_BTN_4);
-
-    log_message(LOG_DEBUG, "Button values [0=pressed/1=open]: %d, %d, %d, %d", btn_1, btn_2, btn_3, btn_4);
-}
  
+/* PRIVATE METHODS **************************************************/
+
 /*! *********************************************************
 * @brief Initialize microcontroller pins of HeadMouse
 * @return None
@@ -96,6 +49,8 @@ void HeadMouse::_initPins(){
     pinMode(PIN_I2C_SCL, INPUT); // Disable internal pull-up, external pull-ups set
     Wire.setPins(PIN_I2C_SDA, PIN_I2C_SCL); 
 }
+
+/* PUBLIC METHODS */
 
 /*! *********************************************************
 * @brief Initialize HeadMouse hardware components 
@@ -133,11 +88,54 @@ err HeadMouse::init(HmPreferences preferences){
     return OK;
 }
 
-err HeadMouse::update(){
-    err error = ERR_GENERIC;
+/*! *********************************************************
+* @brief Update IMU data and translate it into mouse movements
+*************************************************************/
+err HeadMouse::updateMovements(){
+    static int first_run = true;
+    int move_mouse_y = 0;
+    int move_mouse_x = 0;
+    sensors_event_t _imu_data;
+    sensors_event_t new_imu_data;
 
+    /* Get a new sensor event */
+    bno.getEvent(&new_imu_data);
+    if(first_run){
+        first_run = false;
+        _imu_data.orientation.x = new_imu_data.orientation.x;
+        _imu_data.orientation.y = new_imu_data.orientation.y;
+        _imu_data.orientation.z = new_imu_data.orientation.z;
+    }
+
+    log_message(LOG_DEBUG, "IMU orientation data: X: %.2f, Y: %.2f, Z: %.2f\n", new_imu_data.orientation.x, new_imu_data.orientation.y, new_imu_data.orientation.z);
+
+    //displayCalStatus();
+
+    /* Process data */
+    move_mouse_x = (int)(_preferences.sensititvity*new_imu_data.orientation.x) - (int)(_preferences.sensititvity*_imu_data.orientation.x);
+    move_mouse_y = (int)(_preferences.sensititvity*_imu_data.orientation.y) - (int)(_preferences.sensititvity*new_imu_data.orientation.y);
+
+    /* Move mouse cursor */
+    if(bleMouse.isConnected()){
+        bleMouse.move((unsigned char)(move_mouse_x), (unsigned char)(move_mouse_y),0);  
+    }
+
+    /* Store orientation values into buffer for later on comparison */
+    _imu_data.orientation.x = new_imu_data.orientation.x;
+    _imu_data.orientation.y = new_imu_data.orientation.y;
 
 }
+void HeadMouse::updateBtnActions(){
+    /* TODO Create interrupt based button action detection */
+
+    bool btn_1 = digitalRead(PIN_BTN_1);
+    bool btn_2 = digitalRead(PIN_BTN_2);
+    bool btn_3 = digitalRead(PIN_BTN_3);
+    bool btn_4 = digitalRead(PIN_BTN_4);
+
+    log_message(LOG_DEBUG, "Button values [0=pressed/1=open]: %d, %d, %d, %d", btn_1, btn_2, btn_3, btn_4);
+}
+
 err HeadMouse::pairNewDevice(){
 
 }
@@ -145,7 +143,7 @@ err HeadMouse::switchPairedDevice(){
 
 }
 
-/* Setter */
+/* SETTER */
 
 /*! *********************************************************
 * @brief Set HeadMouse device preferences
@@ -201,7 +199,60 @@ err HeadMouse::setButtonAction(pin pinNr, btnAction action){
     }
 }
 
-/* Getter */
+
+/*! *********************************************************
+* @brief Set led action 
+* @param led_type Battery or status led
+* @param led_state Led action type 
+* @return None
+*************************************************************/
+void  HeadMouse::setLed(ledType led_type, ledState led_state){
+    pin pin_led_green;
+    pin pin_led_red;
+
+    /* Select led to control */
+    if(led_type == LED_STATUS){
+        _led_bat = led_state;
+        pin_led_green = PIN_LED_STATUS_G;
+        pin_led_red = PIN_LED_STATUS_R;
+    }
+    else{   /* LED_BATTERY */
+        _led_status = led_state;
+        pin_led_green = PIN_LED_BAT_G;
+        pin_led_red = PIN_LED_BAT_R;
+    }
+
+    /* Select led action */
+    switch(led_state){
+        case RED:
+            digitalWrite(PIN_LED_BAT_R, HIGH);  
+            digitalWrite(PIN_LED_BAT_G, LOW); 
+        break;
+
+        case GREEN:
+            digitalWrite(PIN_LED_BAT_R, LOW);  
+            digitalWrite(PIN_LED_BAT_G, HIGH); 
+        break;
+
+        case ORANGE:
+            digitalWrite(PIN_LED_BAT_R, HIGH);  
+            digitalWrite(PIN_LED_BAT_G, HIGH); 
+        break;
+
+        case BLINK_RED:     /* TODO implement timer */
+        break;
+
+        case BLINK_GREEN:   /* TODO implement timer */
+        break;
+
+        case BLINK_ORANGE:  /* TODO implement timer */
+        break;
+
+    }
+}
+
+
+/* GETTER */
 
 /*! *********************************************************
 * @brief Update current device status.
