@@ -11,3 +11,11 @@ enum ledState {
     BLINK_GREEN,
     BLINK_ORANGE
 };
+
+/*! *********************************************************
+* @brief Enum to define available LEDs
+*************************************************************/
+enum ledType {
+    LED_BATTERY,
+    LED_STATUS
+}
