@@ -18,9 +18,6 @@ typedef class HeadMouse {
     sensors_event_t _imu_data;
 
     /* Methods */
-    err _updateMovements();
-    void _updateBtnActions();  
-    void _updateLeds();
     void _initPins();
    
     public:
@@ -29,9 +26,17 @@ typedef class HeadMouse {
 
     /* Methods */
     err init(HmPreferences);
-    err update();
+    err updateMovements();
+    void updateBtnActions();
     err pairNewDevice();
     err switchPairedDevice();
+
+    /* Setter */
+    err setPreferences(HmPreferences);
+    void setSensitivity(devSensitivity);
+    void setMode(devMode);
+    err setButtonAction(pin, btnAction);
+    void setLed(ledType, ledState);
 
     /* Getter */
     HmStatus getDevStatus();
@@ -39,10 +44,4 @@ typedef class HeadMouse {
     bool isCalibrated();
     bool isConnected();
     bool isCharging();
-
-    /* Setter */
-    err setPreferences(HmPreferences);
-    void setSensitivity(devSensitivity);
-    void setMode(devMode);
-    err setButtonAction(pin, btnAction);
 };
