@@ -29,6 +29,7 @@ HeadMouse::HeadMouse(){}
 * @return None
 *************************************************************/
 void HeadMouse::_initPins(){
+    bool error = true;
     /* Init LEDs */
     pinMode(PIN_LED_BAT_R, OUTPUT);
     pinMode(PIN_LED_BAT_G, OUTPUT);
@@ -47,7 +48,10 @@ void HeadMouse::_initPins(){
     /* Init I2C connection for IMU */
     pinMode(PIN_I2C_SDA, INPUT); // Disable internal pull-up, external pull-ups set
     pinMode(PIN_I2C_SCL, INPUT); // Disable internal pull-up, external pull-ups set
-    Wire.setPins(PIN_I2C_SDA, PIN_I2C_SCL); 
+    if(!Wire.setPins(PIN_I2C_SDA, PIN_I2C_SCL)){
+        _status.is_error = true;
+        log_message(LOG_ERROR, "Cannot init I2C bus.");
+    } 
 }
 
 
@@ -120,6 +124,8 @@ void HeadMouse::_batStatusInterpreter(){
             is_charging_buf = _status.is_charging;
             first_run_bat_state = true; /* Make sure new battery charge level is recognized after charging has finished */
             _setLed(LED_BATTERY, BLINK_ORANGE);
+            log_message(LOG_INFO, "Battery charging active.");
+
         }
     }
     /* Signal battery charge level */
@@ -130,21 +136,27 @@ void HeadMouse::_batStatusInterpreter(){
         switch(_status.bat_status){
             case BAT_LOW:
                 _setLed(LED_BATTERY, RED);
+                log_message(LOG_INFO, "Battery changed to LOW.");
             break;
 
             case BAT_OK:
                 _setLed(LED_BATTERY, ORANGE);
+                log_message(LOG_INFO, "Battery changed to OK.");
             break;
 
             case BAT_HIGH:
                 _setLed(LED_BATTERY, GREEN);
+                log_message(LOG_INFO, "Battery changed to HIGH.");
             break;
 
             case BAT_FULL:
                 _setLed(LED_BATTERY, GREEN);
+                log_message(LOG_INFO, "Battery changed to FULL.");
             break;
 
-            default: /* Ignore this case */
+            default:
+                _status.is_error = true;
+                log_message(LOG_WARNING, "Battery state unknown.");
             break;
         }
     }    
