@@ -41,11 +41,7 @@ void setup() {
 
 /* MAIN ******************************************************************/
 void loop() {
+    hm.updateDevStatus();
     hm.updateMovements();
-    hm.updateBtnActions();
-
-    
-
-  
-
+    //hm.updateBtnActions();
 }

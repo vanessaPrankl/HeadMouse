@@ -124,7 +124,6 @@ void HeadMouse::_batStatusInterpreter(){
             first_run_bat_state = true; /* Make sure new battery charge level is recognized after charging has finished */
             _setLed(LED_BATTERY, BLINK_ORANGE);
             log_message(LOG_INFO, "Battery charging active.");
-
         }
     }
     /* Signal battery charge level */
@@ -291,15 +290,14 @@ err HeadMouse::updateMovements(){
     move_mouse_x = (int)(_preferences.sensititvity*new_imu_data.orientation.x) - (int)(_preferences.sensititvity*_imu_data.orientation.x);
     move_mouse_y = (int)(_preferences.sensititvity*_imu_data.orientation.y) - (int)(_preferences.sensititvity*new_imu_data.orientation.y);
 
-    /* Move mouse cursor */
-    if(bleMouse.isConnected()){
-        bleMouse.move((unsigned char)(move_mouse_x), (unsigned char)(move_mouse_y),0);  
-    }
-
     /* Store orientation values into buffer for later on comparison */
     _imu_data.orientation.x = new_imu_data.orientation.x;
     _imu_data.orientation.y = new_imu_data.orientation.y;
 
+    /* Move mouse cursor */
+    if(_status.is_connected){
+        bleMouse.move((unsigned char)(move_mouse_x), (unsigned char)(move_mouse_y),0);  
+    }
 }
 
 void HeadMouse::updateBtnActions(){

@@ -18,4 +18,4 @@ enum ledState {
 enum ledType {
     LED_BATTERY,
     LED_STATUS
-}
+};
