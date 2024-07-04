@@ -103,7 +103,7 @@ void  HeadMouse::_setLed(ledType led_type, ledState led_state){
 }
 
 /*! *********************************************************
-* @brief Interprete device state and set according battery 
+* @brief Interprete battery state and set according battery 
 *       led action.
 * @return None
 *************************************************************/
@@ -156,7 +156,45 @@ void HeadMouse::_batStatusInterpreter(){
 * @return None
 *************************************************************/
 void HeadMouse::_devStatusInterpreter(){
+    static bool first_run_is_calibrated = true;
+    static bool first_run_is_connected = true;
+    static bool is_connected_buf = false;
+
     
+    /* Check if error occured */
+    if(_status.is_error){
+        
+        if(_status.is_error){
+            _setLed(LED_STATUS, BLINK_RED);
+            log_message(LOG_ERROR, "Error occured, restart device to reset error.");
+        }
+        while(1);   /* Device restart needed to reset error */
+    }
+    
+    /* Check if device calibration is active (only needed once during startup) */
+    if(!_status.is_calibrated){
+        if(first_run_is_calibrated){
+            first_run_is_calibrated = false;
+            _setLed(LED_STATUS, BLINK_ORANGE);
+            log_message(LOG_INFO, "Calibrating...");
+        }
+        return;
+    }
+    /* Check BLE connection */
+    else if((_status.is_connected != is_connected_buf) || first_run_is_connected){
+        first_run_is_connected = false;
+        is_connected_buf = _status.is_connected;
+
+        if(_status.is_connected){
+            _setLed(LED_STATUS, GREEN);
+            log_message(LOG_INFO, "Device connected.");
+        }
+        else{
+            _setLed(LED_STATUS, BLINK_GREEN);
+            log_message(LOG_INFO, "Device not connected.");
+        }
+        
+    }      
 }
 
 /* PUBLIC METHODS */
