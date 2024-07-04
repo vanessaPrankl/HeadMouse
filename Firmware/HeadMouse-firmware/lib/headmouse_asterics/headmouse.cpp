@@ -236,14 +236,32 @@ err HeadMouse::init(HmPreferences preferences){
 
     /* Initialise IMU */
     if(bno.begin()){
-        log_message(LOG_DEBUG, "BNO055 ready!");
+        log_message(LOG_DEBUG_IMU, "BNO055 ready!");
     }
     else{
-        log_message(LOG_WARNING, "Cannot connect to BNO055");
+        log_message(LOG_ERROR, "Cannot connect to BNO055");
         return ERR_CONNECTION_FAILED;
     }
 
     return OK;
+}
+
+
+/*! *********************************************************
+* @brief Update current device status.
+*       (battery, IMU calibration, charging active, BLE connection)
+* @return Device status struct
+*************************************************************/
+HmStatus HeadMouse::updateDevStatus(){
+    _status.bat_status = getBatStatus();
+    _status.is_calibrated = isCalibrated();
+    _status.is_charging = isCharging();
+    _status.is_connected = isConnected();
+
+    _batStatusInterpreter();
+    _devStatusInterpreter();
+
+    return _status;
 }
 
 /*! *********************************************************
@@ -265,7 +283,7 @@ err HeadMouse::updateMovements(){
         _imu_data.orientation.z = new_imu_data.orientation.z;
     }
 
-    log_message(LOG_DEBUG, "IMU orientation data: X: %.2f, Y: %.2f, Z: %.2f\n", new_imu_data.orientation.x, new_imu_data.orientation.y, new_imu_data.orientation.z);
+    log_message(LOG_DEBUG_IMU, "IMU orientation data: X: %.2f, Y: %.2f, Z: %.2f\n", new_imu_data.orientation.x, new_imu_data.orientation.y, new_imu_data.orientation.z);
 
     //displayCalStatus();
 
@@ -283,6 +301,7 @@ err HeadMouse::updateMovements(){
     _imu_data.orientation.y = new_imu_data.orientation.y;
 
 }
+
 void HeadMouse::updateBtnActions(){
     /* TODO Create interrupt based button action detection */
 
@@ -359,23 +378,6 @@ err HeadMouse::setButtonAction(pin pinNr, btnAction action){
 
 
 /* GETTER */
-
-/*! *********************************************************
-* @brief Update current device status.
-*       (battery, IMU calibration, charging active, BLE connection)
-* @return Device status struct
-*************************************************************/
-HmStatus HeadMouse::updateDevStatus(){
-    _status.bat_status = getBatStatus();
-    _status.is_calibrated = isCalibrated();
-    _status.is_charging = isCharging();
-    _status.is_connected = isConnected();
-
-    _batStatusInterpreter();
-    _devStatusInterpreter();
-
-    return _status;
-}
 
 /*! *********************************************************
 * @brief Read current battery voltage and convert it to 

@@ -29,6 +29,7 @@ typedef class HeadMouse {
 
     /* Methods */
     err init(HmPreferences);
+    HmStatus updateDevStatus();
     err updateMovements();
     void updateBtnActions();
     err pairNewDevice();
@@ -41,7 +42,6 @@ typedef class HeadMouse {
     err setButtonAction(pin, btnAction);
 
     /* Getter */
-    HmStatus updateDevStatus();
     BatStatus getBatStatus();
     bool isCalibrated();
     bool isConnected();
