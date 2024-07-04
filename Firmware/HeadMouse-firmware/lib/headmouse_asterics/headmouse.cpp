@@ -29,7 +29,6 @@ HeadMouse::HeadMouse(){}
 * @return None
 *************************************************************/
 void HeadMouse::_initPins(){
-    bool error = true;
     /* Init LEDs */
     pinMode(PIN_LED_BAT_R, OUTPUT);
     pinMode(PIN_LED_BAT_G, OUTPUT);
