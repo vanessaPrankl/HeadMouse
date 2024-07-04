@@ -19,6 +19,9 @@ typedef class HeadMouse {
 
     /* Methods */
     void _initPins();
+    void _setLed(ledType, ledState);
+    void _batStatusInterpreter();
+    void _devStatusInterpreter();
    
     public:
     /* Constructors */
@@ -36,10 +39,9 @@ typedef class HeadMouse {
     void setSensitivity(devSensitivity);
     void setMode(devMode);
     err setButtonAction(pin, btnAction);
-    void setLed(ledType, ledState);
 
     /* Getter */
-    HmStatus getDevStatus();
+    HmStatus updateDevStatus();
     BatStatus getBatStatus();
     bool isCalibrated();
     bool isConnected();

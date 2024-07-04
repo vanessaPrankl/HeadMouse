@@ -50,6 +50,115 @@ void HeadMouse::_initPins(){
     Wire.setPins(PIN_I2C_SDA, PIN_I2C_SCL); 
 }
 
+
+/*! *********************************************************
+* @brief Set led action 
+* @param led_type Battery or status led
+* @param led_state Led action type 
+* @return None
+*************************************************************/
+void  HeadMouse::_setLed(ledType led_type, ledState led_state){
+    pin pin_led_green;
+    pin pin_led_red;
+
+    /* Select led to control */
+    if(led_type == LED_STATUS){
+        _led_bat = led_state;
+        pin_led_green = PIN_LED_STATUS_G;
+        pin_led_red = PIN_LED_STATUS_R;
+    }
+    else{   /* LED_BATTERY */
+        _led_status = led_state;
+        pin_led_green = PIN_LED_BAT_G;
+        pin_led_red = PIN_LED_BAT_R;
+    }
+
+    /* Select led action */
+    switch(led_state){
+        case RED:
+            digitalWrite(PIN_LED_BAT_R, HIGH);  
+            digitalWrite(PIN_LED_BAT_G, LOW); 
+        break;
+
+        case GREEN:
+            digitalWrite(PIN_LED_BAT_R, LOW);  
+            digitalWrite(PIN_LED_BAT_G, HIGH); 
+        break;
+
+        case ORANGE:
+            digitalWrite(PIN_LED_BAT_R, HIGH);  
+            digitalWrite(PIN_LED_BAT_G, HIGH); 
+        break;
+
+        case BLINK_RED:     /* TODO implement timer */
+        break;
+
+        case BLINK_GREEN:   /* TODO implement timer */
+        break;
+
+        case BLINK_ORANGE:  /* TODO implement timer */
+        break;
+
+    }
+}
+
+/*! *********************************************************
+* @brief Interprete device state and set according battery 
+*       led action.
+* @return None
+*************************************************************/
+void HeadMouse::_batStatusInterpreter(){
+    static bool first_run_bat_state = true;
+    static bool first_run_is_charging = true;
+    static BatStatus bat_state_buf = BAT_LOW;
+    static bool is_charging_buf = false;
+    
+    /* Signal battery charging state */
+    if(_status.is_charging){
+        if((_status.is_charging != is_charging_buf) || first_run_is_charging){  
+            first_run_is_charging = false;
+            is_charging_buf = _status.is_charging;
+            first_run_bat_state = true; /* Make sure new battery charge level is recognized after charging has finished */
+            _setLed(LED_BATTERY, BLINK_ORANGE);
+        }
+    }
+    /* Signal battery charge level */
+    else if((_status.bat_status != bat_state_buf) || first_run_bat_state){
+        first_run_bat_state = false;
+        bat_state_buf = _status.bat_status;
+
+        switch(_status.bat_status){
+            case BAT_LOW:
+                _setLed(LED_BATTERY, RED);
+            break;
+
+            case BAT_OK:
+                _setLed(LED_BATTERY, ORANGE);
+            break;
+
+            case BAT_HIGH:
+                _setLed(LED_BATTERY, GREEN);
+            break;
+
+            case BAT_FULL:
+                _setLed(LED_BATTERY, GREEN);
+            break;
+
+            default: /* Ignore this case */
+            break;
+        }
+    }    
+}
+
+/*! *********************************************************
+* @brief Interprete device state and set according status 
+*       led action.
+* @return None
+*************************************************************/
+void HeadMouse::_devStatusInterpreter(){
+    
+}
+
 /* PUBLIC METHODS */
 
 /*! *********************************************************
@@ -200,58 +309,6 @@ err HeadMouse::setButtonAction(pin pinNr, btnAction action){
 }
 
 
-/*! *********************************************************
-* @brief Set led action 
-* @param led_type Battery or status led
-* @param led_state Led action type 
-* @return None
-*************************************************************/
-void  HeadMouse::setLed(ledType led_type, ledState led_state){
-    pin pin_led_green;
-    pin pin_led_red;
-
-    /* Select led to control */
-    if(led_type == LED_STATUS){
-        _led_bat = led_state;
-        pin_led_green = PIN_LED_STATUS_G;
-        pin_led_red = PIN_LED_STATUS_R;
-    }
-    else{   /* LED_BATTERY */
-        _led_status = led_state;
-        pin_led_green = PIN_LED_BAT_G;
-        pin_led_red = PIN_LED_BAT_R;
-    }
-
-    /* Select led action */
-    switch(led_state){
-        case RED:
-            digitalWrite(PIN_LED_BAT_R, HIGH);  
-            digitalWrite(PIN_LED_BAT_G, LOW); 
-        break;
-
-        case GREEN:
-            digitalWrite(PIN_LED_BAT_R, LOW);  
-            digitalWrite(PIN_LED_BAT_G, HIGH); 
-        break;
-
-        case ORANGE:
-            digitalWrite(PIN_LED_BAT_R, HIGH);  
-            digitalWrite(PIN_LED_BAT_G, HIGH); 
-        break;
-
-        case BLINK_RED:     /* TODO implement timer */
-        break;
-
-        case BLINK_GREEN:   /* TODO implement timer */
-        break;
-
-        case BLINK_ORANGE:  /* TODO implement timer */
-        break;
-
-    }
-}
-
-
 /* GETTER */
 
 /*! *********************************************************
@@ -259,11 +316,14 @@ void  HeadMouse::setLed(ledType led_type, ledState led_state){
 *       (battery, IMU calibration, charging active, BLE connection)
 * @return Device status struct
 *************************************************************/
-HmStatus HeadMouse::getDevStatus(){
+HmStatus HeadMouse::updateDevStatus(){
     _status.bat_status = getBatStatus();
     _status.is_calibrated = isCalibrated();
     _status.is_charging = isCharging();
     _status.is_connected = isConnected();
+
+    _batStatusInterpreter();
+    _devStatusInterpreter();
 
     return _status;
 }
