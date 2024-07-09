@@ -29,7 +29,7 @@ enum BatStatus {
 *                   FALSE otherwise.
 * @param bat_status Stores current battery level 
 *************************************************************/
-typedef struct HmStatus {
+struct HmStatus {
     bool is_error = false;
     bool is_connected = false;
     bool is_charging = false;

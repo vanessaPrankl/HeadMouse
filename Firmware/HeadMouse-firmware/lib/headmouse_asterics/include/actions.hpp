@@ -7,4 +7,4 @@ enum actions {
     CLICK,
     PRESS,
     RELEASE
-}
+};
