@@ -23,7 +23,7 @@ void setup() {
   preferences.buttons[0].pin = PIN_BTN_1;
   preferences.buttons[1].pin = PIN_BTN_2;
   preferences.buttons[2].pin = PIN_BTN_3;
-  preferences.buttons[3].pin = PIN_BTN_4;
+  preferences.buttons[3].pin = 234;
   preferences.buttons[0].action = HM_DEF_ACTION_BTN_1;
   preferences.buttons[1].action = HM_DEF_ACTION_BTN_2;
   preferences.buttons[2].action = HM_DEF_ACTION_BTN_3;
@@ -32,6 +32,7 @@ void setup() {
   log_init_serial();
   log_message(LOG_INFO, "Headmouse V1 - Serial interface up and running");
 
+  log_message(LOG_INFO, "Starting setup...");
   error = hm.init(preferences);
   if(error == ERR_NONE)  log_message(LOG_INFO, "Setup done");
   else{

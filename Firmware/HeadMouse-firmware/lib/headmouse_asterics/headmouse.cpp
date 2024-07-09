@@ -72,18 +72,18 @@ void  HeadMouse::_setLed(ledType led_type, ledState led_state){
     /* Select led action */
     switch(led_state){
         case RED:
-            digitalWrite(PIN_LED_BAT_R, HIGH);  
-            digitalWrite(PIN_LED_BAT_G, LOW); 
-        break;
-
-        case GREEN:
             digitalWrite(PIN_LED_BAT_R, LOW);  
             digitalWrite(PIN_LED_BAT_G, HIGH); 
         break;
 
-        case ORANGE:
+        case GREEN:
             digitalWrite(PIN_LED_BAT_R, HIGH);  
-            digitalWrite(PIN_LED_BAT_G, HIGH); 
+            digitalWrite(PIN_LED_BAT_G, LOW); 
+        break;
+
+        case ORANGE:
+            digitalWrite(PIN_LED_BAT_R, LOW);  
+            digitalWrite(PIN_LED_BAT_G, LOW); 
         break;
 
         case BLINK_RED:     /* TODO implement timer */
@@ -92,13 +92,13 @@ void  HeadMouse::_setLed(ledType led_type, ledState led_state){
         break;
 
         case BLINK_GREEN:   /* TODO implement timer */
-        digitalWrite(PIN_LED_BAT_R, LOW);  
-            digitalWrite(PIN_LED_BAT_G, HIGH); 
+        digitalWrite(PIN_LED_BAT_R, HIGH);  
+            digitalWrite(PIN_LED_BAT_G, LOW); 
         break;
 
         case BLINK_ORANGE:  /* TODO implement timer */
-        digitalWrite(PIN_LED_BAT_R, HIGH);  
-            digitalWrite(PIN_LED_BAT_G, HIGH); 
+        digitalWrite(PIN_LED_BAT_R, LOW);  
+            digitalWrite(PIN_LED_BAT_G, LOW); 
         break;
 
     }
@@ -223,27 +223,27 @@ err HeadMouse::init(HmPreferences preferences){
     /* Setup HM preferences */
     error = setPreferences(preferences);
     if(error != ERR_NONE) {
-        log_message(LOG_ERROR, "Invalid preferences");
+        log_message(LOG_ERROR, "...Invalid preferences");
         _status.is_error = true;
         return error;
     }
-    log_message(LOG_INFO, "Preferences initialized");
+    log_message(LOG_INFO, "...Preferences initialized");
 
     /* Init uC peripherals */
     _initPins();
-    log_message(LOG_INFO, "Pins initialized");
+    log_message(LOG_INFO, "...Pins initialized");
 
     /* Start ble task manager for bluetooth mouse communication */
     bleMouse.begin();  
-    log_message(LOG_INFO, "BLE server initialized"); 
+    log_message(LOG_INFO, "...BLE server initialized"); 
 
     /* Initialise IMU */
     if(bno.begin()){
-        log_message(LOG_INFO, "BNO055 initialized");
+        log_message(LOG_INFO, "...BNO055 initialized");
     }
     else{
         _status.is_error = true;
-        log_message(LOG_ERROR, "Cannot connect to BNO055");
+        log_message(LOG_ERROR, "...Cannot connect to BNO055");
         return ERR_CONNECTION_FAILED;
     }
 
@@ -290,7 +290,7 @@ err HeadMouse::updateMovements(){
         _imu_data.orientation.z = new_imu_data.orientation.z;
     }
 
-    log_message(LOG_DEBUG_IMU, "\nIMU orientation data: X: %.2f, Y: %.2f, Z: %.2f\n", new_imu_data.orientation.x, new_imu_data.orientation.y, new_imu_data.orientation.z);
+    log_message(LOG_DEBUG_IMU, "IMU orientation data: X: %.2f, Y: %.2f, Z: %.2f\n", new_imu_data.orientation.x, new_imu_data.orientation.y, new_imu_data.orientation.z);
 
     //displayCalStatus();
 
@@ -319,7 +319,7 @@ void HeadMouse::updateBtnActions(){
     bool btn_3 = digitalRead(PIN_BTN_3);
     bool btn_4 = digitalRead(PIN_BTN_4);
 
-    log_message(LOG_DEBUG, "\nButton values [0=pressed/1=open]: %d, %d, %d, %d", btn_1, btn_2, btn_3, btn_4);
+    log_message(LOG_DEBUG, "Button values [0=pressed/1=open]: %d, %d, %d, %d", btn_1, btn_2, btn_3, btn_4);
 }
 
 err HeadMouse::pairNewDevice(){
@@ -353,7 +353,7 @@ err HeadMouse::setPreferences(HmPreferences preferences){
 *************************************************************/
 void HeadMouse::setSensitivity(devSensitivity sensititvity){
     _preferences.sensititvity = sensititvity;
-    log_message(LOG_INFO, "Sensitivity set to %d", _preferences.sensititvity);
+    log_message(LOG_INFO, "...Sensitivity set to %d", _preferences.sensititvity);
 }
 
 /*! *********************************************************
@@ -363,7 +363,7 @@ void HeadMouse::setSensitivity(devSensitivity sensititvity){
 *************************************************************/
 void HeadMouse::setMode(devMode mode){
     _preferences.mode = mode;
-    log_message(LOG_INFO, "Mode set to %d", _preferences.mode);
+    log_message(LOG_INFO, "...Mode set to %d", _preferences.mode);
 }
 
 /*! *********************************************************
@@ -376,13 +376,13 @@ err HeadMouse::setButtonAction(pin pinNr, btnAction action){
     /* Check if pin is actually a button */
     if((pinNr == PIN_BTN_1) || (pinNr == PIN_BTN_2) || (pinNr == PIN_BTN_3) || (pinNr == PIN_BTN_4))
     {
-        log_message(LOG_INFO, "\nSet pin %d to action %d", pinNr, action);
+        log_message(LOG_INFO, "...Set pin %d to action %d", pinNr, action);
         _preferences.buttons[pinNr-1].pin = pinNr;
         _preferences.buttons[pinNr-1].action = action;
         return ERR_NONE; //TODO
     }
     else{
-        log_message(LOG_ERROR, "\nPin %d not a button", pinNr);
+        log_message(LOG_ERROR, "...Pin %d not a button", pinNr);
         return ERR_OUT_OF_RANGE;
     }
 }
@@ -420,7 +420,7 @@ bool HeadMouse::isCalibrated(){
     system = gyro = accel = mag = 0;
     bno.getCalibration(&system, &gyro, &accel, &mag);
 
-    log_message(LOG_DEBUG_IMU, "\nCalibration Sys: %d, GYR: %d, ACC: %d, MAG: %d", system, gyro, accel, mag);
+    log_message(LOG_DEBUG_IMU, "Calibration Sys: %d, GYR: %d, ACC: %d, MAG: %d", system, gyro, accel, mag);
 
     if(gyro == 3) return true;
     else return false;
