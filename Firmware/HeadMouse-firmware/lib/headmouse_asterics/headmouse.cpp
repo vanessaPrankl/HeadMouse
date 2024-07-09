@@ -2,12 +2,10 @@
 #include <Wire.h>
 #include <utility/imumaths.h>
 #include "headmouse.hpp"
-#include "hm_board_config_v1_0.hpp"
-#include "default_preferences.hpp"
 #include "BleMouse.h"
 #include "Adafruit_Sensor.h"
 #include "Adafruit_BNO055.h"
-#include "logging.cpp"
+#include "logging.hpp"
 
 namespace _headmouse{
 
@@ -16,11 +14,6 @@ BleMouse bleMouse(DEVICE_NAME, DEVICE_MANUFACTURER, BAT_LEVEL_DUMMY);
 }
 
 using namespace _headmouse;
-
-/*! *********************************************************
-* @brief Default HeadMouse constructor
-*************************************************************/
-HeadMouse::HeadMouse(){}
  
 /* PRIVATE METHODS **************************************************/
 
@@ -94,12 +87,18 @@ void  HeadMouse::_setLed(ledType led_type, ledState led_state){
         break;
 
         case BLINK_RED:     /* TODO implement timer */
+        digitalWrite(PIN_LED_BAT_R, HIGH);  
+            digitalWrite(PIN_LED_BAT_G, LOW); 
         break;
 
         case BLINK_GREEN:   /* TODO implement timer */
+        digitalWrite(PIN_LED_BAT_R, LOW);  
+            digitalWrite(PIN_LED_BAT_G, HIGH); 
         break;
 
         case BLINK_ORANGE:  /* TODO implement timer */
+        digitalWrite(PIN_LED_BAT_R, HIGH);  
+            digitalWrite(PIN_LED_BAT_G, HIGH); 
         break;
 
     }
@@ -169,6 +168,7 @@ void HeadMouse::_devStatusInterpreter(){
     static bool first_run_is_calibrated = true;
     static bool first_run_is_connected = true;
     static bool is_connected_buf = false;
+    static bool is_calibrated_buf = false;
 
     
     /* Check if error occured */
@@ -186,12 +186,16 @@ void HeadMouse::_devStatusInterpreter(){
         if(first_run_is_calibrated){
             first_run_is_calibrated = false;
             _setLed(LED_STATUS, BLINK_ORANGE);
-            log_message(LOG_INFO, "Calibrating...");
+            log_message(LOG_INFO, "IMU calibration started...");
         }
         return;
     }
-    /* Check BLE connection */
-    else if((_status.is_connected != is_connected_buf) || first_run_is_connected){
+    else if(_status.is_calibrated && !is_calibrated_buf){
+        is_calibrated_buf = true;
+        log_message(LOG_INFO, "IMU calibration finished.");
+    }
+    /* Check BLE connection after IMU calibration has finished */
+    if(is_calibrated_buf && ((_status.is_connected != is_connected_buf) || first_run_is_connected)){
         first_run_is_connected = false;
         is_connected_buf = _status.is_connected;
 
@@ -218,31 +222,32 @@ err HeadMouse::init(HmPreferences preferences){
 
     /* Setup HM preferences */
     error = setPreferences(preferences);
-    if(error) return error;
-
-    /* Start serial interface if logging is active */
-#if defined(LOG_LEVEL_DEBUG) || defined(LOG_LEVEL_INFO) || defined(LOG_LEVEL_WARNING) || defined(LOG_LEVEL_ERROR)
-    Serial.begin(SERIAL_BAUD_RATE);
-    while (!Serial) delay(10);  /* Wait for serial port to open */
-    Serial.println("HeadMouse V1"); 
-#endif
+    if(error != ERR_NONE) {
+        log_message(LOG_ERROR, "Invalid preferences");
+        _status.is_error = true;
+        return error;
+    }
+    log_message(LOG_INFO, "Preferences initialized");
 
     /* Init uC peripherals */
     _initPins();
+    log_message(LOG_INFO, "Pins initialized");
 
     /* Start ble task manager for bluetooth mouse communication */
-    bleMouse.begin();   
+    bleMouse.begin();  
+    log_message(LOG_INFO, "BLE server initialized"); 
 
     /* Initialise IMU */
     if(bno.begin()){
-        log_message(LOG_DEBUG_IMU, "BNO055 ready!");
+        log_message(LOG_INFO, "BNO055 initialized");
     }
     else{
+        _status.is_error = true;
         log_message(LOG_ERROR, "Cannot connect to BNO055");
         return ERR_CONNECTION_FAILED;
     }
 
-    return OK;
+    return ERR_NONE;
 }
 
 
@@ -256,6 +261,9 @@ HmStatus HeadMouse::updateDevStatus(){
     _status.is_calibrated = isCalibrated();
     _status.is_charging = isCharging();
     _status.is_connected = isConnected();
+
+    log_message(LOG_DEBUG, "Status: \nisCharging: %d\nBatStatus: %d, \nisCalibrated: %d, \nisConnected: %d", 
+    _status.is_charging, _status.bat_status, _status.is_calibrated, _status.is_connected);
 
     _batStatusInterpreter();
     _devStatusInterpreter();
@@ -282,7 +290,7 @@ err HeadMouse::updateMovements(){
         _imu_data.orientation.z = new_imu_data.orientation.z;
     }
 
-    log_message(LOG_DEBUG_IMU, "IMU orientation data: X: %.2f, Y: %.2f, Z: %.2f\n", new_imu_data.orientation.x, new_imu_data.orientation.y, new_imu_data.orientation.z);
+    log_message(LOG_DEBUG_IMU, "\nIMU orientation data: X: %.2f, Y: %.2f, Z: %.2f\n", new_imu_data.orientation.x, new_imu_data.orientation.y, new_imu_data.orientation.z);
 
     //displayCalStatus();
 
@@ -297,7 +305,10 @@ err HeadMouse::updateMovements(){
     /* Move mouse cursor */
     if(_status.is_connected){
         bleMouse.move((unsigned char)(move_mouse_x), (unsigned char)(move_mouse_y),0);  
+        return ERR_CONNECTION_FAILED;
     }
+
+    return ERR_NONE;
 }
 
 void HeadMouse::updateBtnActions(){
@@ -308,14 +319,14 @@ void HeadMouse::updateBtnActions(){
     bool btn_3 = digitalRead(PIN_BTN_3);
     bool btn_4 = digitalRead(PIN_BTN_4);
 
-    log_message(LOG_DEBUG, "Button values [0=pressed/1=open]: %d, %d, %d, %d", btn_1, btn_2, btn_3, btn_4);
+    log_message(LOG_DEBUG, "\nButton values [0=pressed/1=open]: %d, %d, %d, %d", btn_1, btn_2, btn_3, btn_4);
 }
 
 err HeadMouse::pairNewDevice(){
-
+    return ERR_GENERIC;
 }
 err HeadMouse::switchPairedDevice(){
-
+    return ERR_GENERIC;
 }
 
 /* SETTER */
@@ -328,11 +339,11 @@ err HeadMouse::switchPairedDevice(){
 err HeadMouse::setPreferences(HmPreferences preferences){
     setMode(preferences.mode);
     setSensitivity(preferences.sensititvity);
-    for(int i=0; i<3; i++){
+    for(int i=0; i<=3; i++){
         err error = setButtonAction(preferences.buttons[i].pin, preferences.buttons[i].action);
-        if(error) return error;
+        if(error != ERR_NONE) return error;
     }
-    return OK;
+    return ERR_NONE;
 }
 
 /*! *********************************************************
@@ -342,6 +353,7 @@ err HeadMouse::setPreferences(HmPreferences preferences){
 *************************************************************/
 void HeadMouse::setSensitivity(devSensitivity sensititvity){
     _preferences.sensititvity = sensititvity;
+    log_message(LOG_INFO, "Sensitivity set to %d", _preferences.sensititvity);
 }
 
 /*! *********************************************************
@@ -351,6 +363,7 @@ void HeadMouse::setSensitivity(devSensitivity sensititvity){
 *************************************************************/
 void HeadMouse::setMode(devMode mode){
     _preferences.mode = mode;
+    log_message(LOG_INFO, "Mode set to %d", _preferences.mode);
 }
 
 /*! *********************************************************
@@ -361,15 +374,15 @@ void HeadMouse::setMode(devMode mode){
 *************************************************************/
 err HeadMouse::setButtonAction(pin pinNr, btnAction action){
     /* Check if pin is actually a button */
-    if((pinNr == PIN_BTN_1) || (pinNr == PIN_BTN_1) || (pinNr == PIN_BTN_1) || (pinNr == PIN_BTN_1))
+    if((pinNr == PIN_BTN_1) || (pinNr == PIN_BTN_2) || (pinNr == PIN_BTN_3) || (pinNr == PIN_BTN_4))
     {
-        log_message(LOG_INFO, "Set pin %d to action %d", pinNr, action);
+        log_message(LOG_INFO, "\nSet pin %d to action %d", pinNr, action);
         _preferences.buttons[pinNr-1].pin = pinNr;
         _preferences.buttons[pinNr-1].action = action;
-        return OK; //TODO
+        return ERR_NONE; //TODO
     }
     else{
-        log_message(LOG_ERROR, "Pin %d not a button", pinNr);
+        log_message(LOG_ERROR, "\nPin %d not a button", pinNr);
         return ERR_OUT_OF_RANGE;
     }
 }
@@ -407,7 +420,7 @@ bool HeadMouse::isCalibrated(){
     system = gyro = accel = mag = 0;
     bno.getCalibration(&system, &gyro, &accel, &mag);
 
-    log_message(LOG_DEBUG_IMU, "Calibration Sys: %d, GYR: %d, ACC: %d, MAG: %d", system, gyro, accel, mag);
+    log_message(LOG_DEBUG_IMU, "\nCalibration Sys: %d, GYR: %d, ACC: %d, MAG: %d", system, gyro, accel, mag);
 
     if(gyro == 3) return true;
     else return false;
@@ -431,7 +444,6 @@ bool HeadMouse::isConnected(){
 *************************************************************/
 bool HeadMouse::isCharging(){
     _status.is_charging = !digitalRead(PIN_BATT_STATUS);
-    log_message(LOG_DEBUG_BAT, "Bat is charging: %d", _status.is_charging);
 
     return _status.is_charging;
 }

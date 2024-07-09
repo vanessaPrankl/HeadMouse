@@ -8,20 +8,15 @@
  
 #include <Arduino.h>
 #include <Wire.h>
-#include "hm_board_config_v1_0.hpp"
 #include "default_preferences.hpp"
-#include "logging.cpp"
-#include "preferences.hpp"
+#include "logging.hpp"
 #include "headmouse.hpp"
 
 HeadMouse hm;
 
-void displaySensorDetails(void);
-void displayCalStatus(void);
-void displaySensorStatus(void);
-
 /* INIT *****************************************************************/
 void setup() {
+  err error = ERR_GENERIC;
   HmPreferences preferences;
   preferences.mode = HM_DEF_MODE;
   preferences.sensititvity = HM_DEF_SENSITIVITY;
@@ -34,14 +29,23 @@ void setup() {
   preferences.buttons[2].action = HM_DEF_ACTION_BTN_3;
   preferences.buttons[3].action = HM_DEF_ACTION_BTN_4;
 
-  hm.init(preferences);
+  log_init_serial();
+  log_message(LOG_INFO, "Headmouse V1 - Serial interface up and running");
+
+  error = hm.init(preferences);
+  if(error == ERR_NONE)  log_message(LOG_INFO, "Setup done");
+  else{
+    log_message(LOG_ERROR, "Setup failed, error code: %d\n...", error);
+  }
  
 }
 
 
 /* MAIN ******************************************************************/
 void loop() {
+    
     hm.updateDevStatus();
-    hm.updateMovements();
+    sleep(1);    
+    //hm.updateMovements();
     //hm.updateBtnActions();
 }

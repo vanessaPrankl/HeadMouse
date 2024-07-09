@@ -5,10 +5,10 @@
 #include "./include/preferences.hpp"
 #include "./include/error.hpp"
 #include "./include/led.hpp"
+#include "./include/hm_board_config_v1_0.hpp"
 #include "Adafruit_Sensor.h"
 
-
-typedef class HeadMouse {
+class HeadMouse {
     private:
     /* Attributes */
     HmStatus _status;

@@ -8,9 +8,6 @@ void log_init_serial(){
             /* Start serial interface if logging is active */
     Serial.begin(SERIAL_BAUD_RATE);
     while (!Serial) delay(10);  /* Wait for serial port to open */
-    Serial.println("HeadMouse V1"); 
- 
-    
 }
 
 void log_message(LogLevel level, const char *format, ...) {
