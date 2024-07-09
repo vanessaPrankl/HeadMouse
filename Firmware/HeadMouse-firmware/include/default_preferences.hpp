@@ -3,13 +3,13 @@
 #include "preferences.hpp"
 #include "hm_board_config_v1_0.hpp"
 
-/* LOG-LEVELS ***************************************************/
+/* LOG-LEVELS ***************************************************
 #define LOG_LEVEL_DEBUG     1
 #define LOG_LEVEL_DEBUG_BAT 1
 #define LOG_LEVEL_DEBUG_IMU 1
 #define LOG_LEVEL_INFO      1
 #define LOG_LEVEL_WARNING   1
-#define LOG_LEVEL_ERROR     1
+#define LOG_LEVEL_ERROR     1*/
 
 /* DEVICE CONFIG DEFAULTS ********************************************/
 constexpr devMode HM_DEF_MODE = RELATIVE;
