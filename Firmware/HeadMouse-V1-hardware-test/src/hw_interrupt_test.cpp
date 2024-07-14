@@ -1,9 +1,11 @@
 /* BLE MOUSE TEST *******************************************************/
 /* 
-/* Description: This is a test firmware for the BLE-mouse in relative cursor 
-/*              position mode.
+/* Description: This is a test firmware for the hardware timer and pin 
+/*              change interrupts of ESP32-S3. The program detects button
+/*              click or press at two pins and prints the according action
+/*              on terminal. 
 /* Author: Vanessa Prankl
-/* Date: 04.04.2024
+/* Date: 17.07.2024
 /* 
 /************************************************************************/
 
