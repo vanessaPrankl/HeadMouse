@@ -20,10 +20,6 @@ void setup() {
   HmPreferences preferences;
   preferences.mode = HM_DEF_MODE;
   preferences.sensititvity = HM_DEF_SENSITIVITY;
-  preferences.buttons[0].pin = PIN_BTN_1;
-  preferences.buttons[1].pin = PIN_BTN_2;
-  preferences.buttons[2].pin = PIN_BTN_3;
-  preferences.buttons[3].pin = 234;
   preferences.buttons[0].action = HM_DEF_ACTION_BTN_1;
   preferences.buttons[1].action = HM_DEF_ACTION_BTN_2;
   preferences.buttons[2].action = HM_DEF_ACTION_BTN_3;
@@ -48,5 +44,5 @@ void loop() {
     hm.updateDevStatus();
     sleep(1);    
     //hm.updateMovements();
-    //hm.updateBtnActions();
+    hm.updateBtnActions();
 }

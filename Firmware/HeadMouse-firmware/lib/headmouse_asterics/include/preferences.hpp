@@ -38,23 +38,13 @@ enum btnAction {
 };
 
 /*! *********************************************************
-* @brief Struct to store button pins on uC and associated actions
-* @param pin uC pin which button is attached to
-* @param action Device action associated with button
-*************************************************************/
-struct button {
-    uint8_t pin = 0;
-    btnAction action = NONE;
-};
-
-/*! *********************************************************
 * @brief Struct to store active preferences of HeadMouse.
 * @param mode Mouse control mode
 * @param sensititvity Level of movement sensitivity
-* @param buttons Array of [4] buttons with associated actions
+* @param btn_actions Array of [4] button actions
 *************************************************************/
 struct HmPreferences{
     devMode mode = ABSOLUTE;
     devSensitivity sensititvity = SENSITIVITY_4;
-    button buttons[4];
+    btnAction btn_actions[4] = {NONE, NONE, NONE, NONE};
 };

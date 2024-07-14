@@ -6,6 +6,7 @@
 #include "Adafruit_Sensor.h"
 #include "Adafruit_BNO055.h"
 #include "logging.hpp"
+#include "ESP32TimerInterrupt.h"
 
 namespace _headmouse{
 
@@ -29,11 +30,9 @@ void HeadMouse::_initPins(){
     pinMode(PIN_LED_STATUS_G, OUTPUT);
 
     /* Init Buttons */
-    pinMode(PIN_BTN_1, INPUT_PULLUP);
-    pinMode(PIN_BTN_2, INPUT_PULLUP);
-    pinMode(PIN_BTN_3, INPUT_PULLUP);
-    pinMode(PIN_BTN_4, INPUT_PULLUP);  
-    
+    buttons->initPins();
+    /* Init button interrupts */
+    buttons->enableButtonInterrupts();
     
     /* Init battery charging status input */
     pinMode(PIN_BATT_STATUS, INPUT_PULLUP);
@@ -47,7 +46,6 @@ void HeadMouse::_initPins(){
     } 
 }
 
-
 /*! *********************************************************
 * @brief Set led action 
 * @param led_type Battery or status led
@@ -60,12 +58,10 @@ void  HeadMouse::_setLed(ledType led_type, ledState led_state){
 
     /* Select led to control */
     if(led_type == LED_STATUS){
-        _led_bat = led_state;
         pin_led_green = PIN_LED_STATUS_G;
         pin_led_red = PIN_LED_STATUS_R;
     }
     else{   /* LED_BATTERY */
-        _led_status = led_state;
         pin_led_green = PIN_LED_BAT_G;
         pin_led_red = PIN_LED_BAT_R;
     }
