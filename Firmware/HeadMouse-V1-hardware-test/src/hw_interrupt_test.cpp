@@ -27,8 +27,19 @@ constexpr uint16_t BLINK_LED_MS = 500;
 ESP32Timer BtnTimer(0);
 ESP32Timer LedBlinkTimer(1);
 
-volatile bool button_click = false;
-volatile bool button_press = false;
+struct button {
+  const uint8_t pin;
+  bool active;
+  bool click;
+  bool press;
+
+  button(uint8_t p, bool a = false, bool c = false, bool pr = false) 
+        : pin(p), active(a), click(c), press(pr) {}
+};
+
+volatile button buttons[2] = {{PIN_BTN_3, false, false, false}, 
+                              {PIN_BTN_4, false, false, false}};
+
 volatile uint32_t count = 0;
 
 void initButtons();
@@ -36,6 +47,8 @@ void initLeds();
 bool callbackTimerLed(void *);
 bool callbackTimerBtn(void *);
 void callbackBtnPress();
+void enableButtonInterrupts();
+void disableButtonInterrupts();
 
 /* INIT *****************************************************************/
 void setup() {
@@ -50,6 +63,9 @@ void setup() {
   if (BtnTimer.attachInterruptInterval(BTN_DEBOUNCE_MS * 1000, callbackTimerBtn));
   BtnTimer.stopTimer();
   if (LedBlinkTimer.attachInterruptInterval(BLINK_LED_MS * 1000, callbackTimerLed));
+
+  /* Init button interrupts */
+  enableButtonInterrupts();
 
   /* Init I2C */
   Wire.begin(PIN_I2C_SDA, PIN_I2C_SCL, 400000);
@@ -68,24 +84,27 @@ void loop() {
     count_buf = count;
     Serial.println(count);
 
-    if(button_press){
-    Serial.print("\nPressed");
+    for(int i = 0; i<2; i++){
+      if (buttons[i].press){
+        Serial.print("\nPressed: ");
+        Serial.print(buttons[i].pin);
+      }
     }
   }
  
-  if(button_click){
-    Serial.print("\nClicked!");
-    button_click = false;
+  for(int i = 0; i<2; i++){
+    if (buttons[i].click){
+      Serial.print("\nClicked: ");
+      Serial.print(buttons[i].pin);
+      buttons[i].click = false;
+    }
   }
 }
 
 void initButtons(){
   /* Button for mouse left click */
+  pinMode(PIN_BTN_3, INPUT_PULLUP);
   pinMode(PIN_BTN_4, INPUT_PULLUP);
-
-  /* Init pin change interrupt for click detection */
-  attachInterrupt(PIN_BTN_4, callbackBtnPress, FALLING);
-
 }
 
 void initLeds(){
@@ -110,36 +129,74 @@ bool IRAM_ATTR callbackTimerLed(void * timerNo){
 }
 
 bool IRAM_ATTR callbackTimerBtn(void * timerNo){
+  int index = 0;
+
+  /* Detect which button is active */
+  for(int i = 0; i<2; i++){
+    if (buttons[i].active){
+      index = i;
+      break;
+    }
+  }
+
   /* Button still pressed? */
-  if(!digitalRead(PIN_BTN_4)){
+  if(!digitalRead(buttons[index].pin)){
     count++;
-    if((count >= 20) && (!button_press)) button_press = true;  /* Detect button press if it has been pressed for at least 500ms */
+    if((count >= 20) && (!buttons[index].press)) buttons[index].press = true;  /* Detect button press if it has been pressed for at least 500ms */
     if(count >= 10000){ /* Timeout to prevent overflow */
       count = 0;
-      button_press = false;
+      buttons[index].press = false;
       BtnTimer.stopTimer();
+      enableButtonInterrupts();
     }
   }/* Button not pressed any more */
   else if(count == 0){
     /* Ignore this  case, invalid click/press duration */
     BtnTimer.stopTimer();
+    enableButtonInterrupts();
   }
   else if(count < 20){ /* Only detect click if 25-500ms have passed since button release */
-      button_click = true;
+      buttons[index].click = true;
       count = 0;
       BtnTimer.stopTimer();
+      enableButtonInterrupts();
   } 
   else{ /* Complete button press */
-    button_press = false;
+    buttons[index].press = false;
     count = 0;
     BtnTimer.stopTimer();
+    enableButtonInterrupts();
   }
 
   return true;
 }
 
-void IRAM_ATTR callbackBtnPress(){
+void IRAM_ATTR callbackBtn3Press(){
+  disableButtonInterrupts();  /* Prevent multiple button actions to be detected */
+  buttons[0].active = true;
   BtnTimer.restartTimer();
+}
+
+void IRAM_ATTR callbackBtn4Press(){
+  disableButtonInterrupts();  /* Prevent multiple button actions to be detected */
+  buttons[1].active = true;
+  BtnTimer.restartTimer();
+}
+
+void enableButtonInterrupts() {
+  /* Reset button activity first */
+  buttons[0].active = false;
+  buttons[1].active = false;
+
+  /* Then start pin change interrupts again */
+  attachInterrupt(digitalPinToInterrupt(PIN_BTN_3), callbackBtn3Press, FALLING);
+  attachInterrupt(digitalPinToInterrupt(PIN_BTN_4), callbackBtn4Press, FALLING);
+}
+
+// Function to disable interrupts for the button pins
+void disableButtonInterrupts() {
+  detachInterrupt(digitalPinToInterrupt(PIN_BTN_3));
+  detachInterrupt(digitalPinToInterrupt(PIN_BTN_4));
 }
 
 #endif

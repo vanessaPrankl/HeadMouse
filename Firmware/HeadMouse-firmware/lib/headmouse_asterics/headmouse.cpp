@@ -34,6 +34,7 @@ void HeadMouse::_initPins(){
     pinMode(PIN_BTN_3, INPUT_PULLUP);
     pinMode(PIN_BTN_4, INPUT_PULLUP);  
     
+    
     /* Init battery charging status input */
     pinMode(PIN_BATT_STATUS, INPUT_PULLUP);
 
