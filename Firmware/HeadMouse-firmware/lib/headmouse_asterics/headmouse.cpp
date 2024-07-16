@@ -306,8 +306,10 @@ void HeadMouse::updateBtnActions(){
     static bool is_press_buf[BUTTON_COUNT] = {0};
 
     for(int i=0; i<BUTTON_COUNT; i++){
-        if(_buttons->is_click[i])
-        log_message(LOG_DEBUG, "Button %d clicked ",  i);
+        if(_buttons->is_click[i]){
+            _buttons->is_click[i] = false;
+            log_message(LOG_DEBUG, "Button %d clicked ",  i);
+        }
     }
     for(int i=0; i<BUTTON_COUNT; i++){
         if(_buttons->is_press[i] && !is_press_buf[i]){
