@@ -2,14 +2,9 @@
 #include "button.hpp"
 #include "logging.hpp"
 #include "hm_board_config_v1_0.hpp"
-#include "ESP32TimerInterrupt.h"
-/* PUT SOMEWHERE ELSE */
-namespace _isr{
-    ESP32Timer BtnTimer(0);
-    ESP32Timer LedBlinkTimer(1);
-}
+#include "hw_isr.hpp"
 
-using namespace _isr;
+using namespace isr;
 
 // Define the static instance pointer
 Buttons* Buttons::instance = nullptr;

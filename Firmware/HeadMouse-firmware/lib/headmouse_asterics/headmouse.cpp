@@ -29,10 +29,10 @@ void HeadMouse::_initPins(){
     pinMode(PIN_LED_STATUS_R, OUTPUT);
     pinMode(PIN_LED_STATUS_G, OUTPUT);
 
-    /* Init Buttons */
-    buttons->initPins();
+    /* Init _buttons */
+    _buttons->initPins();
     /* Init button interrupts */
-    buttons->enableButtonInterrupts();
+    _buttons->enableButtonInterrupts();
     
     /* Init battery charging status input */
     pinMode(PIN_BATT_STATUS, INPUT_PULLUP);
@@ -333,14 +333,10 @@ err HeadMouse::switchPairedDevice(){
 * @param preferences Struct containing device preferences.
 * @return ERR_xxx if something went wrong, OK otherwise.
 *************************************************************/
-err HeadMouse::setPreferences(HmPreferences preferences){
+void HeadMouse::setPreferences(HmPreferences preferences){
     setMode(preferences.mode);
     setSensitivity(preferences.sensititvity);
-    for(int i=0; i<=3; i++){
-        err error = setButtonAction(preferences.buttons[i].pin, preferences.buttons[i].action);
-        if(error != ERR_NONE) return error;
-    }
-    return ERR_NONE;
+    setButtonActions(preferences.btn_actions);
 }
 
 /*! *********************************************************
@@ -369,18 +365,10 @@ void HeadMouse::setMode(devMode mode){
 * @param action Device action associated with button
 * @return ERR_OUT_OF_RANGE if pin is no button, OK otherwise.
 *************************************************************/
-err HeadMouse::setButtonAction(pin pinNr, btnAction action){
-    /* Check if pin is actually a button */
-    if((pinNr == PIN_BTN_1) || (pinNr == PIN_BTN_2) || (pinNr == PIN_BTN_3) || (pinNr == PIN_BTN_4))
-    {
-        log_message(LOG_INFO, "...Set pin %d to action %d", pinNr, action);
-        _preferences.buttons[pinNr-1].pin = pinNr;
-        _preferences.buttons[pinNr-1].action = action;
-        return ERR_NONE; //TODO
-    }
-    else{
-        log_message(LOG_ERROR, "...Pin %d not a button", pinNr);
-        return ERR_OUT_OF_RANGE;
+void HeadMouse::setButtonActions(btnAction* actions){
+    for(int i=0; i<BUTTON_COUNT; i++){
+        _buttons->actions[i] = actions[i];
+        log_message(LOG_INFO, "...Set pin %d to action %d", i, _buttons->actions[i]);
     }
 }
 

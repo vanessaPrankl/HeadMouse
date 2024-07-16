@@ -20,10 +20,10 @@ void setup() {
   HmPreferences preferences;
   preferences.mode = HM_DEF_MODE;
   preferences.sensititvity = HM_DEF_SENSITIVITY;
-  preferences.buttons[0].action = HM_DEF_ACTION_BTN_1;
-  preferences.buttons[1].action = HM_DEF_ACTION_BTN_2;
-  preferences.buttons[2].action = HM_DEF_ACTION_BTN_3;
-  preferences.buttons[3].action = HM_DEF_ACTION_BTN_4;
+  preferences.btn_actions[0] = HM_DEF_ACTION_BTN_1;
+  preferences.btn_actions[1] = HM_DEF_ACTION_BTN_2;
+  preferences.btn_actions[2] = HM_DEF_ACTION_BTN_3;
+  preferences.btn_actions[3] = HM_DEF_ACTION_BTN_4;
 
   log_init_serial();
   log_message(LOG_INFO, "Headmouse V1 - Serial interface up and running");

@@ -13,7 +13,7 @@ class HeadMouse {
     private:
     HmStatus _status;
     HmPreferences _preferences;
-    Buttons* buttons = Buttons::getInstance(PIN_BTN_1, PIN_BTN_2, PIN_BTN_3, PIN_BTN_4);
+    Buttons* _buttons = Buttons::getInstance(PIN_BTN_1, PIN_BTN_2, PIN_BTN_3, PIN_BTN_4);
     sensors_event_t _imu_data;
 
     void _initPins();
@@ -31,10 +31,10 @@ class HeadMouse {
     err pairNewDevice();
     err switchPairedDevice();
 
-    err setPreferences(HmPreferences);
+    void setPreferences(HmPreferences);
     void setSensitivity(devSensitivity);
     void setMode(devMode);
-    err setButtonAction(pin, btnAction);
+    void setButtonActions(btnAction*);
 
     BatStatus getBatStatus();
     bool isCalibrated();
