@@ -6,7 +6,6 @@
 #include "Adafruit_Sensor.h"
 #include "Adafruit_BNO055.h"
 #include "logging.hpp"
-#include "ESP32TimerInterrupt.h"
 
 namespace _headmouse{
 
@@ -218,12 +217,7 @@ err HeadMouse::init(HmPreferences preferences){
     err error = ERR_GENERIC;
 
     /* Setup HM preferences */
-    error = setPreferences(preferences);
-    if(error != ERR_NONE) {
-        log_message(LOG_ERROR, "...Invalid preferences");
-        _status.is_error = true;
-        return error;
-    }
+    setPreferences(preferences);
     log_message(LOG_INFO, "...Preferences initialized");
 
     /* Init uC peripherals */
