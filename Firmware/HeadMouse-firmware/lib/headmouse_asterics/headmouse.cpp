@@ -309,14 +309,22 @@ err HeadMouse::updateMovements(){
 }
 
 void HeadMouse::updateBtnActions(){
-    /* TODO Create interrupt based button action detection */
+    static bool is_press_buf[BUTTON_COUNT] = {0};
 
-    bool btn_1 = digitalRead(PIN_BTN_1);
-    bool btn_2 = digitalRead(PIN_BTN_2);
-    bool btn_3 = digitalRead(PIN_BTN_3);
-    bool btn_4 = digitalRead(PIN_BTN_4);
-
-    log_message(LOG_DEBUG, "Button values [0=pressed/1=open]: %d, %d, %d, %d", btn_1, btn_2, btn_3, btn_4);
+    for(int i=0; i<BUTTON_COUNT; i++){
+        if(_buttons->is_click[i])
+        log_message(LOG_DEBUG, "Button %d clicked ",  i);
+    }
+    for(int i=0; i<BUTTON_COUNT; i++){
+        if(_buttons->is_press[i] && !is_press_buf[i]){
+            is_press_buf[i] = true;
+            log_message(LOG_DEBUG, "Button %d start press ",  i);
+        }
+        else if(!_buttons->is_press[i] && is_press_buf[i]){
+            is_press_buf[i] = false;
+            log_message(LOG_DEBUG, "Button %d stop press ",  i);
+        }
+    }
 }
 
 err HeadMouse::pairNewDevice(){
