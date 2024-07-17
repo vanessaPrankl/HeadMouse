@@ -1,5 +1,9 @@
 #pragma once
 
+#include <stdint.h>
+
+typedef uint8_t pin;
+
 enum err {
     ERR_NONE,
     ERR_CONNECTION_FAILED,

@@ -1,17 +1,13 @@
 #include <Arduino.h>
 #include "button.hpp"
 #include "logging.hpp"
-#include "hm_board_config_v1_0.hpp"
+#include "def_general.hpp"
 #include "hw_isr.hpp"
 
 using namespace isr;
 
 // Define the static instance pointer
 Buttons* Buttons::instance = nullptr;
-
-// Private constructor definition
-Buttons::Buttons(pin pin0, pin pin1, pin pin2, pin pin3)
-    : _pins{pin0, pin1, pin2, pin3} {}
 
 Buttons* Buttons::getInstance(pin pin0, pin pin1, pin pin2, pin pin3) {
     if (instance == nullptr) {
@@ -20,13 +16,18 @@ Buttons* Buttons::getInstance(pin pin0, pin pin1, pin pin2, pin pin3) {
     return instance;
 }
 
-void Buttons::initPins(){
+err Buttons::initPins(){
+    err error = ERR_GENERIC;
     for(int i=0; i++; i<BUTTON_COUNT){
         pinMode(_pins[i], INPUT_PULLUP);
     }
 
-    if (BtnTimer.attachInterruptInterval(BTN_DEBOUNCE_MS * 1000, callbackTimerBtn));
-    BtnTimer.stopTimer();
+    if (BtnTimer.attachInterruptInterval(BTN_DEBOUNCE_MS * 1000, callbackTimerBtn)){
+        error = ERR_NONE;
+    }
+    else error = ERR_GENERIC;
+    
+    return error;
 }
 
 void Buttons::enableButtonInterrupts() {

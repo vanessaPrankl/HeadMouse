@@ -45,60 +45,6 @@ void HeadMouse::_initPins(){
     } 
 }
 
-/*! *********************************************************
-* @brief Set led action 
-* @param led_type Battery or status led
-* @param led_state Led action type 
-* @return None
-*************************************************************/
-void  HeadMouse::_setLed(ledType led_type, ledState led_state){
-    pin pin_led_green;
-    pin pin_led_red;
-
-    /* Select led to control */
-    if(led_type == LED_STATUS){
-        pin_led_green = PIN_LED_STATUS_G;
-        pin_led_red = PIN_LED_STATUS_R;
-    }
-    else{   /* LED_BATTERY */
-        pin_led_green = PIN_LED_BAT_G;
-        pin_led_red = PIN_LED_BAT_R;
-    }
-
-    /* Select led action */
-    switch(led_state){
-        case RED:
-            digitalWrite(PIN_LED_BAT_R, LOW);  
-            digitalWrite(PIN_LED_BAT_G, HIGH); 
-        break;
-
-        case GREEN:
-            digitalWrite(PIN_LED_BAT_R, HIGH);  
-            digitalWrite(PIN_LED_BAT_G, LOW); 
-        break;
-
-        case ORANGE:
-            digitalWrite(PIN_LED_BAT_R, LOW);  
-            digitalWrite(PIN_LED_BAT_G, LOW); 
-        break;
-
-        case BLINK_RED:     /* TODO implement timer */
-        digitalWrite(PIN_LED_BAT_R, HIGH);  
-            digitalWrite(PIN_LED_BAT_G, LOW); 
-        break;
-
-        case BLINK_GREEN:   /* TODO implement timer */
-        digitalWrite(PIN_LED_BAT_R, HIGH);  
-            digitalWrite(PIN_LED_BAT_G, LOW); 
-        break;
-
-        case BLINK_ORANGE:  /* TODO implement timer */
-        digitalWrite(PIN_LED_BAT_R, LOW);  
-            digitalWrite(PIN_LED_BAT_G, LOW); 
-        break;
-
-    }
-}
 
 /*! *********************************************************
 * @brief Interprete battery state and set according battery 
@@ -117,7 +63,7 @@ void HeadMouse::_batStatusInterpreter(){
             first_run_is_charging = false;
             is_charging_buf = _status.is_charging;
             first_run_bat_state = true; /* Make sure new battery charge level is recognized after charging has finished */
-            _setLed(LED_BATTERY, BLINK_ORANGE);
+            _leds->set(LED_BATTERY, BLINK_ORANGE);
             log_message(LOG_INFO, "Battery charging active.");
         }
     }
@@ -128,22 +74,22 @@ void HeadMouse::_batStatusInterpreter(){
 
         switch(_status.bat_status){
             case BAT_LOW:
-                _setLed(LED_BATTERY, RED);
+                _leds->set(LED_BATTERY, RED);
                 log_message(LOG_INFO, "Battery changed to LOW.");
             break;
 
             case BAT_OK:
-                _setLed(LED_BATTERY, ORANGE);
+                _leds->set(LED_BATTERY, ORANGE);
                 log_message(LOG_INFO, "Battery changed to OK.");
             break;
 
             case BAT_HIGH:
-                _setLed(LED_BATTERY, GREEN);
+                _leds->set(LED_BATTERY, GREEN);
                 log_message(LOG_INFO, "Battery changed to HIGH.");
             break;
 
             case BAT_FULL:
-                _setLed(LED_BATTERY, GREEN);
+                _leds->set(LED_BATTERY, GREEN);
                 log_message(LOG_INFO, "Battery changed to FULL.");
             break;
 
@@ -171,7 +117,7 @@ void HeadMouse::_devStatusInterpreter(){
     if(_status.is_error){
         
         if(_status.is_error){
-            _setLed(LED_STATUS, BLINK_RED);
+            _leds->set(LED_STATUS, BLINK_RED);
             log_message(LOG_ERROR, "Error occured, restart device to reset error.");
         }
         while(1);   /* Device restart needed to reset error */
@@ -181,7 +127,7 @@ void HeadMouse::_devStatusInterpreter(){
     if(!_status.is_calibrated){
         if(first_run_is_calibrated){
             first_run_is_calibrated = false;
-            _setLed(LED_STATUS, BLINK_ORANGE);
+            _leds->set(LED_STATUS, BLINK_ORANGE);
             log_message(LOG_INFO, "IMU calibration started...");
         }
         return;
@@ -196,11 +142,11 @@ void HeadMouse::_devStatusInterpreter(){
         is_connected_buf = _status.is_connected;
 
         if(_status.is_connected){
-            _setLed(LED_STATUS, GREEN);
+            _leds->set(LED_STATUS, GREEN);
             log_message(LOG_INFO, "Device connected.");
         }
         else{
-            _setLed(LED_STATUS, BLINK_GREEN);
+            _leds->set(LED_STATUS, BLINK_GREEN);
             log_message(LOG_INFO, "Device not connected.");
         }
         
