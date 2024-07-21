@@ -2,7 +2,8 @@
 #include "logging.hpp"
 #include "hm_board_config_v1_0.hpp"
 
-constexpr uint32_t MAX_LOG_MSG_LENGTH = 256;
+
+static constexpr uint32_t MAX_LOG_MSG_LENGTH = 256;
 
 void log_init_serial(){
             /* Start serial interface if logging is active */

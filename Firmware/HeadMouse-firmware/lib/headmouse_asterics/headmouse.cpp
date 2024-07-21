@@ -28,10 +28,13 @@ void HeadMouse::_initPins(){
     pinMode(PIN_LED_STATUS_R, OUTPUT);
     pinMode(PIN_LED_STATUS_G, OUTPUT);
 
-    /* Init _buttons */
+    /* Init buttons */
     _buttons->initPins();
     /* Init button interrupts */
     _buttons->enableButtonInterrupts();
+
+    /* Init leds */
+    _leds->init();
     
     /* Init battery charging status input */
     pinMode(PIN_BATT_STATUS, INPUT_PULLUP);
@@ -254,6 +257,7 @@ void HeadMouse::updateBtnActions(){
     for(int i=0; i<BUTTON_COUNT; i++){
         if(_buttons->is_click[i]){
             _buttons->is_click[i] = false;
+            //bleMouse.click();
             log_message(LOG_DEBUG, "Button %d clicked ",  i);
         }
     }
@@ -270,9 +274,11 @@ void HeadMouse::updateBtnActions(){
 }
 
 err HeadMouse::pairNewDevice(){
+    /* TODO */
     return ERR_GENERIC;
 }
 err HeadMouse::switchPairedDevice(){
+    /* TODO */
     return ERR_GENERIC;
 }
 

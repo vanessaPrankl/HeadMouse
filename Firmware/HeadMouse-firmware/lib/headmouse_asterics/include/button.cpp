@@ -4,7 +4,12 @@
 #include "def_general.hpp"
 #include "hw_isr.hpp"
 
+
+namespace isr{
+    ESP32Timer BtnTimer(0);
+}
 using namespace isr;
+
 
 // Define the static instance pointer
 Buttons* Buttons::instance = nullptr;

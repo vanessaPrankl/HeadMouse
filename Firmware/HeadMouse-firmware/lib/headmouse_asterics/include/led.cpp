@@ -4,7 +4,21 @@
 #include "hw_isr.hpp"
 #include "def_general.hpp"
 
+
+
+namespace led{
+    volatile ledConfig _config[2] = {{RED, 0, 0}, {RED, 0, 0}};
+}
+
+using namespace led;
+
+
+namespace isr{
+    ESP32Timer LedBlinkTimer(1);
+}
 using namespace isr;
+
+
 
 // Define the static instance pointer
 Leds* Leds::instance = nullptr;
@@ -59,7 +73,7 @@ void Leds::set(ledType led, ledState state){
             digitalWrite(_config[led].pin_g, LOW); 
         break;
 
-        default: /* Ignore this case. Blinking leds are covered within LED timer ISR */
+        default:; /* Ignore this case. Blinking leds are covered within LED timer ISR */
 
     }
 }

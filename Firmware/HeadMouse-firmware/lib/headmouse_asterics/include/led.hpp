@@ -6,7 +6,6 @@ constexpr uint32_t LED_BLINK_INTERVAL_MS = 500;  // LED blink duration
 constexpr uint32_t LED_COUNT = 2;
 constexpr uint32_t LED_PIN_COUNT = 2;
 
-
 /*! *********************************************************
 * @brief Enum to define available LED states
 *************************************************************/
@@ -27,15 +26,30 @@ enum ledType {
     LED_STATUS
 };
 
-struct ledConfig{
-    ledState state;
-    pin pin_g;
-    pin pin_r;
+namespace led{
 
-    // Constructor for ledConfig
-    ledConfig(ledState state, pin g, pin r)
-        : state(state), pin_g(g), pin_r(r) {}
-};
+    struct ledConfig{
+        ledState state; 
+        pin pin_g;
+        pin pin_r;
+
+        // Constructor for ledConfig
+        ledConfig(ledState state, pin g, pin r)
+            : state(state), pin_g(g), pin_r(r) {}
+    };
+
+
+    extern volatile ledConfig _config[2];
+
+    static void initConfig(pin battery_pin_g, pin battery_pin_r, pin status_pin_g, pin status_pin_r){
+        _config[LED_BATTERY].pin_g = battery_pin_g;
+        _config[LED_BATTERY].pin_r = battery_pin_r;
+        _config[LED_STATUS].pin_g = status_pin_g;
+        _config[LED_STATUS].pin_r = status_pin_r;
+    }
+}
+
+using namespace led;
 
 
 /*! *********************************************************
@@ -43,12 +57,10 @@ struct ledConfig{
 *************************************************************/
 class Leds {
 private: 
-    static volatile ledConfig _config[2];
-    static Leds* instance; // Static instance pointer for singleton
+    static Leds* instance; // Static instance pointer for singleton   
     
     Leds(pin battery_pin_g, pin battery_pin_r, pin status_pin_g, pin status_pin_r){
-        _config[LED_BATTERY] = ledConfig(RED, battery_pin_g, battery_pin_r);
-        _config[LED_STATUS] = ledConfig(RED, status_pin_g, status_pin_r);
+        initConfig(battery_pin_g, battery_pin_r, status_pin_g, status_pin_r);
     }
 
     static bool _callbackTimerLed(void *);

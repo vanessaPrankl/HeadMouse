@@ -1,8 +1,10 @@
 #pragma once
-
-#include "ESP32TimerInterrupt.h"
+#ifndef HW_ISR_HPP
+#define HW_ISR_HPP
+#include "ESP32TimerInterrupt.hpp"
 
 namespace isr{
-    ESP32Timer BtnTimer(0); /* HW timer for button push detection */
-    ESP32Timer LedBlinkTimer(1); /* HW timer for LED blink control */
+    extern ESP32Timer BtnTimer;  // declaration of the global variable ISRTimer
+    extern ESP32Timer LedBlinkTimer;  // declaration of the global variable ISRTimer
 }
+#endif

@@ -2,15 +2,13 @@
 #pragma once
 #include <Arduino.h>
 
-/* Define following log-levels */
+/* LOG-LEVELS ***************************************************/
 #define LOG_LEVEL_DEBUG    1        // General debug information excluding other debug keywords
 #define LOG_LEVEL_DEBUG_IMU 0       // IMU debug information only
 #define LOG_LEVEL_DEBUG_BAT 0       // Battery debug informatino only
 #define LOG_LEVEL_INFO     1
 #define LOG_LEVEL_WARNING  1
 #define LOG_LEVEL_ERROR    1
-
-
 
 /*! *********************************************************
 * @brief Set HeadMouse button pins and according device actions.
