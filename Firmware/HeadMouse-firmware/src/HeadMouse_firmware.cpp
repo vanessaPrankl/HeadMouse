@@ -42,7 +42,8 @@ void setup() {
 void loop() {
     
     hm.updateDevStatus();
-    sleep(1);    
-    //hm.updateMovements();
+    //sleep(1);    
+    hm.updateMovements();
     hm.updateBtnActions();
+    
 }

@@ -4,6 +4,10 @@
 #include "def_general.hpp"
 #include "hw_isr.hpp"
 
+static constexpr uint32_t BTN_DEBOUNCE_MS = 25;    // Debounce time until button push is valid
+static constexpr uint32_t BTN_TIMEOUT_COUNT = 250000/BTN_DEBOUNCE_MS;  // Timeout count for max button press duration to prevent overflow
+static constexpr uint32_t BTN_CLICK_MAX_COUNT = 500/BTN_DEBOUNCE_MS; // Count for maximum click time of button (longer button push is rated as press)
+
 
 namespace isr{
     ESP32Timer BtnTimer(0);

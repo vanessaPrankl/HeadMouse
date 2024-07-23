@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+#include "BleMouse.h"
 
 /*! *********************************************************
 * @brief Enum to define available mouse movement modes
@@ -29,12 +30,11 @@ enum devSensitivity {
 * @brief Enum to define available button actions
 *************************************************************/
 enum btnAction {
-    MOUSE_RIGHT,
-    MOUSE_LEFT,
-    MOUSE_WHEEL,
+    NONE,
+    LEFT = MOUSE_LEFT,
+    RIGHT = MOUSE_RIGHT,
     BLE_CONNECTION,
-    SENSITIVITY,
-    NONE
+    SENSITIVITY
 };
 
 /*! *********************************************************

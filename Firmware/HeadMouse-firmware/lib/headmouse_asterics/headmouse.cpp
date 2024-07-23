@@ -279,7 +279,6 @@ err HeadMouse::updateMovements(){
     return ERR_NONE;
 }
 
-
 /************************************************************
  * @brief Update button actions.
  *
@@ -289,22 +288,26 @@ err HeadMouse::updateMovements(){
 /* TODO */
 void HeadMouse::updateBtnActions(){
     static bool is_press_buf[BUTTON_COUNT] = {0};
-
+    
     for(int i=0; i<BUTTON_COUNT; i++){
-        if(_buttons->is_click[i]){
-            _buttons->is_click[i] = false;
-            //bleMouse.click();
-            log_message(LOG_DEBUG, "Button %d clicked ",  i);
-        }
-    }
-    for(int i=0; i<BUTTON_COUNT; i++){
-        if(_buttons->is_press[i] && !is_press_buf[i]){
-            is_press_buf[i] = true;
-            log_message(LOG_DEBUG, "Button %d start press ",  i);
-        }
-        else if(!_buttons->is_press[i] && is_press_buf[i]){
-            is_press_buf[i] = false;
-            log_message(LOG_DEBUG, "Button %d stop press ",  i);
+        /* Only execute click/press if button is associated with left or right mouse button  */
+        if((_preferences.btn_actions[i]==RIGHT) || (_preferences.btn_actions[i]==LEFT)){
+            if(_buttons->is_click[i]){  /* CLICK */
+                bleMouse.click(_preferences.btn_actions[i]);
+                _buttons->is_click[i] = false;
+                log_message(LOG_DEBUG, "Button %d clicked ",  i);
+            }
+            /* Only execute press if button is associated with left or right mouse button  */
+            else if(_buttons->is_press[i] && !is_press_buf[i]){ /* PRESS */
+                bleMouse.press(_preferences.btn_actions[i]);
+                is_press_buf[i] = true;
+                log_message(LOG_DEBUG, "Button %d start press ",  i);
+            }
+            else if(!_buttons->is_press[i] && is_press_buf[i]){ /* RELEASE */
+                bleMouse.release(_preferences.btn_actions[i]);
+                is_press_buf[i] = false;
+                log_message(LOG_DEBUG, "Button %d stop press ",  i);
+            }
         }
     }
 }
@@ -389,8 +392,8 @@ void HeadMouse::setMode(devMode mode){
  *************************************************************/
 void HeadMouse::setButtonActions(btnAction* actions){
     for(int i=0; i<BUTTON_COUNT; i++){
-        _buttons->actions[i] = actions[i];
-        log_message(LOG_INFO, "...Set pin %d to action %d", i, _buttons->actions[i]);
+        _preferences.btn_actions[i] = actions[i];
+        log_message(LOG_INFO, "...Set pin %d to action %d", i, _preferences.btn_actions[i]);
     }
 }
 
@@ -436,7 +439,7 @@ bool HeadMouse::isCalibrated(){
 
     log_message(LOG_DEBUG_IMU, "Calibration Sys: %d, GYR: %d, ACC: %d, MAG: %d", system, gyro, accel, mag);
 
-    if(gyro == 3) return true;
+    if((gyro == 3)) return true;
     else return false;
 }
 
