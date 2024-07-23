@@ -12,7 +12,6 @@
 
 /*! *********************************************************
 * @brief Set HeadMouse button pins and according device actions.
-* @enum {number}
 *************************************************************/
 enum LogLevel {
     LOG_DEBUG,
@@ -23,15 +22,6 @@ enum LogLevel {
     LOG_ERROR,
 };
 
-/*! *********************************************************
-* @brief Init serial interface for logging
-*************************************************************/
 void log_init_serial();
 
-/*! *********************************************************
-* @brief Print log message and arguments to serial interface.
-* @param level According log level
-* @param format Log message and format for further arguments
-* @param ... further arguments (e.g. numbers)
-*************************************************************/
 void log_message(LogLevel level, const char *format, ...);

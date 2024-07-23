@@ -3,8 +3,6 @@
 #include "def_preferences.hpp"
 #include "hm_board_config_v1_0.hpp"
 
-
-
 /* DEVICE CONFIG DEFAULTS ********************************************/
 constexpr devMode HM_DEF_MODE = RELATIVE;
 constexpr devSensitivity HM_DEF_SENSITIVITY = SENSITIVITY_4;

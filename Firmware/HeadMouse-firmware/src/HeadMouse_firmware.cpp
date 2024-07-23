@@ -44,5 +44,5 @@ void loop() {
     hm.updateDevStatus();
     sleep(1);    
     //hm.updateMovements();
-    //hm.updateBtnActions();
+    hm.updateBtnActions();
 }

@@ -4,7 +4,7 @@
 #include "ESP32TimerInterrupt.hpp"
 
 namespace isr{
-    extern ESP32Timer BtnTimer;  // declaration of the global variable ISRTimer
-    extern ESP32Timer LedBlinkTimer;  // declaration of the global variable ISRTimer
+    extern ESP32Timer BtnTimer;  
+    extern ESP32Timer LedBlinkTimer;  
 }
 #endif

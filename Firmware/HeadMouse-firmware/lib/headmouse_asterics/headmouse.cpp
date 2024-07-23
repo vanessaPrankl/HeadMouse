@@ -17,10 +17,14 @@ using namespace _headmouse;
  
 /* PRIVATE METHODS **************************************************/
 
-/*! *********************************************************
-* @brief Initialize microcontroller pins of HeadMouse
-* @return None
-*************************************************************/
+/************************************************************
+ * @brief Initialize microcontroller pins of HeadMouse.
+ * 
+ * This function initializes the necessary microcontroller pins
+ * for LEDs, buttons, battery and the I2C bus for the IMU sensor.
+ * 
+ * @return None
+ *************************************************************/
 void HeadMouse::_initPins(){
     /* Init LEDs */
     pinMode(PIN_LED_BAT_R, OUTPUT);
@@ -49,11 +53,16 @@ void HeadMouse::_initPins(){
 }
 
 
-/*! *********************************************************
-* @brief Interprete battery state and set according battery 
-*       led action.
-* @return None
-*************************************************************/
+/************************************************************
+ * @brief Interpret battery state and set corresponding 
+ *        battery LED action.
+ *
+ * This function interprets the current battery state and updates
+ * the battery LED status accordingly. It handles different battery
+ * levels and charging status.
+ * 
+ * @return None
+ *************************************************************/
 void HeadMouse::_batStatusInterpreter(){
     static bool first_run_bat_state = true;
     static bool first_run_is_charging = true;
@@ -104,11 +113,16 @@ void HeadMouse::_batStatusInterpreter(){
     }    
 }
 
-/*! *********************************************************
-* @brief Interprete device state and set according status 
-*       led action.
-* @return None
-*************************************************************/
+/************************************************************
+ * @brief Interpret device state and set corresponding status
+ *        LED action.
+ *
+ * This function interprets the current device state, such as error
+ * status, calibration status, and connection status, and updates
+ * the status LED accordingly.
+ *
+ * @return None
+ *************************************************************/
 void HeadMouse::_devStatusInterpreter(){
     static bool first_run_is_calibrated = true;
     static bool first_run_is_connected = true;
@@ -158,10 +172,15 @@ void HeadMouse::_devStatusInterpreter(){
 
 /* PUBLIC METHODS */
 
-/*! *********************************************************
-* @brief Initialize HeadMouse hardware components 
-* @return ERR_xxx if something went wrong, OK otherwise.
-*************************************************************/
+/************************************************************
+ * @brief Initialize HeadMouse hardware components.
+ *
+ * This function initializes the various hardware components of
+ * the HeadMouse, including pins, BLE communication, and the IMU.
+ * 
+ * @param preferences Struct containing device preferences.
+ * @return ERR_xxx if something went wrong, OK otherwise.
+ *************************************************************/
 err HeadMouse::init(HmPreferences preferences){
     err error = ERR_GENERIC;
 
@@ -191,11 +210,15 @@ err HeadMouse::init(HmPreferences preferences){
 }
 
 
-/*! *********************************************************
-* @brief Update current device status.
-*       (battery, IMU calibration, charging active, BLE connection)
-* @return Device status struct
-*************************************************************/
+/************************************************************
+ * @brief Update current device status.
+ *
+ * This function updates the current status of the device,
+ * including battery status, IMU calibration, charging status,
+ * and BLE connection.
+ *
+ * @return Device status struct.
+ *************************************************************/
 HmStatus HeadMouse::updateDevStatus(){
     _status.bat_status = getBatStatus();
     _status.is_calibrated = isCalibrated();
@@ -211,9 +234,14 @@ HmStatus HeadMouse::updateDevStatus(){
     return _status;
 }
 
-/*! *********************************************************
-* @brief Update IMU data and translate it into mouse movements
-*************************************************************/
+/************************************************************
+ * @brief Update IMU data and translate it into mouse movements.
+ *
+ * This function updates the IMU data and translates the head
+ * movements into mouse cursor movements.
+ *
+ * @return ERR_xxx if something went wrong, OK otherwise.
+ *************************************************************/
 err HeadMouse::updateMovements(){
     static int first_run = true;
     int move_mouse_y = 0;
@@ -251,6 +279,14 @@ err HeadMouse::updateMovements(){
     return ERR_NONE;
 }
 
+
+/************************************************************
+ * @brief Update button actions.
+ *
+ * This function checks the button states and performs the
+ * corresponding actions based on clicks or presses.
+ *************************************************************/
+/* TODO */
 void HeadMouse::updateBtnActions(){
     static bool is_press_buf[BUTTON_COUNT] = {0};
 
@@ -273,10 +309,30 @@ void HeadMouse::updateBtnActions(){
     }
 }
 
+/************************************************************
+ * @brief Pair new device.
+ *
+ * This function handles the pairing of a new device via BLE.
+ * 
+ * @note NOT IMPLEMENTED YET!
+ *
+ * @return ERR_xxx if something went wrong, OK otherwise.
+ *************************************************************/
 err HeadMouse::pairNewDevice(){
     /* TODO */
     return ERR_GENERIC;
 }
+
+/************************************************************
+ * @brief Switch paired device.
+ *
+ * This function handles switching between previously paired
+ * devices via BLE.
+ * 
+ * @note NOT IMPLEMENTED YET!
+ *
+ * @return ERR_xxx if something went wrong, OK otherwise.
+ *************************************************************/
 err HeadMouse::switchPairedDevice(){
     /* TODO */
     return ERR_GENERIC;
@@ -284,43 +340,53 @@ err HeadMouse::switchPairedDevice(){
 
 /* SETTER */
 
-/*! *********************************************************
-* @brief Set HeadMouse device preferences
-* @param preferences Struct containing device preferences.
-* @return ERR_xxx if something went wrong, OK otherwise.
-*************************************************************/
+/************************************************************
+ * @brief Set HeadMouse device preferences.
+ *
+ * This function sets the various preferences for the HeadMouse
+ * device, including mode, sensitivity, and button actions.
+ *
+ * @param preferences Struct containing device preferences.
+ *************************************************************/
 void HeadMouse::setPreferences(HmPreferences preferences){
     setMode(preferences.mode);
     setSensitivity(preferences.sensititvity);
     setButtonActions(preferences.btn_actions);
 }
 
-/*! *********************************************************
-* @brief Set HeadMouse motion sensitivity
-* @param sensitivity Sensititvity level for head motion detection
-* @return None
-*************************************************************/
+/************************************************************
+ * @brief Set HeadMouse motion sensitivity.
+ *
+ * This function sets the sensitivity level for head motion
+ * detection.
+ *
+ * @param sensitivity Sensititvity level for head motion detection.
+ *************************************************************/
 void HeadMouse::setSensitivity(devSensitivity sensititvity){
     _preferences.sensititvity = sensititvity;
     log_message(LOG_INFO, "...Sensitivity set to %d", _preferences.sensititvity);
 }
 
-/*! *********************************************************
-* @brief Set HeadMouse operation mode
-* @param mode Device operation mode
-* @return None
-*************************************************************/
+/************************************************************
+ * @brief Set HeadMouse operation mode.
+ *
+ * This function sets the operation mode of the HeadMouse device.
+ *
+ * @param mode Device operation mode.
+ *************************************************************/
 void HeadMouse::setMode(devMode mode){
     _preferences.mode = mode;
     log_message(LOG_INFO, "...Mode set to %d", _preferences.mode);
 }
 
-/*! *********************************************************
-* @brief Set HeadMouse button pins and according device actions.
-* @param pinNr uC pin number of button
-* @param action Device action associated with button
-* @return ERR_OUT_OF_RANGE if pin is no button, OK otherwise.
-*************************************************************/
+/************************************************************
+ * @brief Set HeadMouse button pins and corresponding actions.
+ *
+ * This function sets the microcontroller pins for the buttons and
+ * assigns the corresponding actions for each button.
+ *
+ * @param actions Array of actions associated with each button.
+ *************************************************************/
 void HeadMouse::setButtonActions(btnAction* actions){
     for(int i=0; i<BUTTON_COUNT; i++){
         _buttons->actions[i] = actions[i];
@@ -331,11 +397,15 @@ void HeadMouse::setButtonActions(btnAction* actions){
 
 /* GETTER */
 
-/*! *********************************************************
-* @brief Read current battery voltage and convert it to 
-*        according battery status.
-* @return Battery status
-*************************************************************/
+/************************************************************
+ * @brief Read current battery voltage and convert to battery
+ *        status.
+ *
+ * This function reads the current battery voltage and converts it
+ * to a corresponding battery status.
+ *
+ * @return Battery status.
+ *************************************************************/
 BatStatus HeadMouse::getBatStatus(){
     int32_t adc_value = analogRead(PIN_VBATT_MEASURE);
     float_t voltage = 2 * adc_value * 3.3 / 4095; // "2*" because of 50:50 voltage divider
@@ -348,11 +418,14 @@ BatStatus HeadMouse::getBatStatus(){
     return _status.bat_status;
 }
 
-/*! *********************************************************
-* @brief Check if gyro calibration of IMU has been finished.
-* @note If IMU communication fails, there is no handle in this function.
-* @return TRUE, if finished, FALSE otherwise.
-*************************************************************/
+/************************************************************
+ * @brief Check if IMU calibration is complete.
+ *
+ * This function checks if the gyro calibration of the IMU has
+ * been completed.
+ *
+ * @return TRUE if calibration is complete, FALSE otherwise.
+ *************************************************************/
 bool HeadMouse::isCalibrated(){
     /* Get the four calibration values (0..3) */
     /* Any sensor data reporting 0 should be ignored, */
@@ -367,10 +440,14 @@ bool HeadMouse::isCalibrated(){
     else return false;
 }
 
-/*! *********************************************************
-* @brief Check if device is connected to host via bluetooth.
-* @return TRUE, if connected, FALSE otherwise.
-*************************************************************/
+/************************************************************
+ * @brief Check if device is connected to host via Bluetooth.
+ *
+ * This function checks if the device is currently connected to a
+ * host via Bluetooth.
+ *
+ * @return TRUE if connected, FALSE otherwise.
+ *************************************************************/
 bool HeadMouse::isConnected(){
     if(bleMouse.isConnected()){
        return true;
@@ -378,11 +455,16 @@ bool HeadMouse::isConnected(){
     else return false;
 }
 
-/*! *********************************************************
-* @brief Check if device battery is currently charging.
-* @note Charging means that the power supply is connected and the battery is not full.
-* @return TRUE, if charging, FALSE otherwise.
-*************************************************************/
+/************************************************************
+ * @brief Check if device battery is currently charging.
+ *
+ * This function checks if the device battery is currently being
+ * charged.
+ *
+ * @note Charging means that the power supply is connected and the
+ *       battery is not full.
+ * @return TRUE if charging, FALSE otherwise.
+ *************************************************************/
 bool HeadMouse::isCharging(){
     _status.is_charging = !digitalRead(PIN_BATT_STATUS);
 
