@@ -5,8 +5,6 @@
 
 static constexpr uint32_t MAX_LOG_MSG_LENGTH = 256;
 
-
-
 /************************************************************
  * @brief Initialize the serial interface for logging.
  *
@@ -14,7 +12,7 @@ static constexpr uint32_t MAX_LOG_MSG_LENGTH = 256;
  * baud rate and waitsfor the serial port to open before proceeding.
 *************************************************************/
 void log_init_serial(){
-            /* Start serial interface if logging is active */
+    /* Start serial interface if logging is active */
     Serial.begin(SERIAL_BAUD_RATE);
     while (!Serial) delay(10);  /* Wait for serial port to open */
 }
@@ -32,11 +30,15 @@ void log_init_serial(){
  * @param ... The variable number of arguments to format the message.
 *************************************************************/
 void log_message(LogLevel level, const char *format, ...) {
+#ifdef LOG_OVER_SERIAL
+
     static char buffer[MAX_LOG_MSG_LENGTH] = {0};
     va_list args;
     va_start(args, format);
     vsnprintf(buffer, MAX_LOG_MSG_LENGTH, format, args);
     va_end(args);
+
+    
 
     buffer[MAX_LOG_MSG_LENGTH - 1] = '\0';
 
@@ -86,4 +88,5 @@ void log_message(LogLevel level, const char *format, ...) {
         default:
             break;
     }
+#endif
 }

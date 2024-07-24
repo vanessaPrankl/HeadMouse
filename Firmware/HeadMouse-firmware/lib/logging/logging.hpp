@@ -3,12 +3,13 @@
 #include <Arduino.h>
 
 /* LOG-LEVELS ***************************************************/
-#define LOG_LEVEL_DEBUG    1        // General debug information excluding other debug keywords
-#define LOG_LEVEL_DEBUG_IMU 0       // IMU debug information only
-#define LOG_LEVEL_DEBUG_BAT 0       // Battery debug informatino only
-#define LOG_LEVEL_INFO     1
-#define LOG_LEVEL_WARNING  1
-#define LOG_LEVEL_ERROR    1
+//#define LOG_OVER_SERIAL 
+//#define LOG_LEVEL_DEBUG            // General debug information excluding other debug keywords
+//#define LOG_LEVEL_DEBUG_IMU       // IMU debug information only
+//#define LOG_LEVEL_DEBUG_BAT       // Battery debug informatino only
+//#define LOG_LEVEL_INFO     
+//#define LOG_LEVEL_WARNING  
+//#define LOG_LEVEL_ERROR    
 
 /*! *********************************************************
 * @brief Set HeadMouse button pins and according device actions.

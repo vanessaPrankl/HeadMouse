@@ -25,7 +25,9 @@ void setup() {
   preferences.btn_actions[2] = HM_DEF_ACTION_BTN_3;
   preferences.btn_actions[3] = HM_DEF_ACTION_BTN_4;
 
+#ifdef LOG_OVER_SERIAL
   log_init_serial();
+#endif
   log_message(LOG_INFO, "Headmouse V1 - Serial interface up and running");
 
   log_message(LOG_INFO, "Starting setup...");
@@ -42,7 +44,7 @@ void setup() {
 void loop() {
     
     hm.updateDevStatus();
-    //sleep(1);    
+    //delayMicroseconds(100000);    /* Debug only */
     hm.updateMovements();
     hm.updateBtnActions();
     

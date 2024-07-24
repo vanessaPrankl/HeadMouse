@@ -246,7 +246,7 @@ err HeadMouse::updateMovements(){
     static int first_run = true;
     int move_mouse_y = 0;
     int move_mouse_x = 0;
-    sensors_event_t _imu_data;
+    static sensors_event_t imu_data;
     sensors_event_t new_imu_data;
 
     /* Get a new sensor event */
@@ -258,17 +258,18 @@ err HeadMouse::updateMovements(){
         _imu_data.orientation.z = new_imu_data.orientation.z;
     }
 
-    log_message(LOG_DEBUG_IMU, "IMU orientation data: X: %.2f, Y: %.2f, Z: %.2f\n", new_imu_data.orientation.x, new_imu_data.orientation.y, new_imu_data.orientation.z);
-
-    //displayCalStatus();
+    log_message(LOG_DEBUG_IMU, "new IMU orientation data: X: %.2f, Y: %.2f, Z: %.2f\n", new_imu_data.orientation.x, new_imu_data.orientation.y, new_imu_data.orientation.z);
+    log_message(LOG_DEBUG_IMU, "sensitivity: %d", _preferences.sensititvity);
 
     /* Process data */
-    move_mouse_x = (int)(_preferences.sensititvity*new_imu_data.orientation.x) - (int)(_preferences.sensititvity*_imu_data.orientation.x);
-    move_mouse_y = (int)(_preferences.sensititvity*_imu_data.orientation.y) - (int)(_preferences.sensititvity*new_imu_data.orientation.y);
+    move_mouse_x = (int)(_preferences.sensititvity*new_imu_data.orientation.x) - (int)(_preferences.sensititvity*imu_data.orientation.x);
+    move_mouse_y = (int)(_preferences.sensititvity*imu_data.orientation.y) - (int)(_preferences.sensititvity*new_imu_data.orientation.y);
+
+    log_message(LOG_DEBUG_IMU, "move x: %d, move y %d", move_mouse_x, move_mouse_y);
 
     /* Store orientation values into buffer for later on comparison */
-    _imu_data.orientation.x = new_imu_data.orientation.x;
-    _imu_data.orientation.y = new_imu_data.orientation.y;
+    imu_data.orientation.x = new_imu_data.orientation.x;
+    imu_data.orientation.y = new_imu_data.orientation.y;
 
     /* Move mouse cursor */
     if(_status.is_connected){

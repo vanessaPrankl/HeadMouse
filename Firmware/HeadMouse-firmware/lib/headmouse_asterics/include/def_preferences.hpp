@@ -15,15 +15,15 @@ enum devMode {
 *************************************************************/
 enum devSensitivity {
     SENSITIVITY_0 = 0,
-    SENSITIVITY_1 = 10,
-    SENSITIVITY_2 = 20,
-    SENSITIVITY_3 = 30,
-    SENSITIVITY_4 = 40,
-    SENSITIVITY_5 = 50,
-    SENSITIVITY_6 = 60,
-    SENSITIVITY_7 = 70,
-    SENSITIVITY_8 = 80,
-    SENSITIVITY_9 = 90
+    SENSITIVITY_1 = 5,
+    SENSITIVITY_2 = 10,
+    SENSITIVITY_3 = 15,
+    SENSITIVITY_4 = 20,
+    SENSITIVITY_5 = 25,
+    SENSITIVITY_6 = 30,
+    SENSITIVITY_7 = 35,
+    SENSITIVITY_8 = 40,
+    SENSITIVITY_9 = 45
 };
 
 /*! *********************************************************
