@@ -7,6 +7,8 @@
 #include "Adafruit_BNO055.h"
 #include "logging.hpp"
 
+static constexpr uint32_t MOVE_MOUSE_OFFSET = 2;
+
 namespace _headmouse{
 
 Adafruit_BNO055 bno = Adafruit_BNO055(BNO055_SENSOR_ID, BNO055_I2C_ADDRESS, &Wire);
@@ -258,22 +260,37 @@ err HeadMouse::updateMovements(){
         _imu_data.orientation.z = new_imu_data.orientation.z;
     }
 
-    log_message(LOG_DEBUG_IMU, "new IMU orientation data: X: %.2f, Y: %.2f, Z: %.2f\n", new_imu_data.orientation.x, new_imu_data.orientation.y, new_imu_data.orientation.z);
-    log_message(LOG_DEBUG_IMU, "sensitivity: %d", _preferences.sensititvity);
+    log_message(LOG_DEBUG_IMU, "new IMU orientation data: X: %.2f, Y: %.2f, Z: %.2f", new_imu_data.orientation.x, new_imu_data.orientation.y, new_imu_data.orientation.z);
+    //log_message(LOG_DEBUG_IMU, "sensitivity: %d", _preferences.sensititvity);
 
     /* Process data */
-    move_mouse_x = (int)(_preferences.sensititvity*new_imu_data.orientation.x) - (int)(_preferences.sensititvity*imu_data.orientation.x);
-    move_mouse_y = (int)(_preferences.sensititvity*imu_data.orientation.y) - (int)(_preferences.sensititvity*new_imu_data.orientation.y);
-
-    log_message(LOG_DEBUG_IMU, "move x: %d, move y %d", move_mouse_x, move_mouse_y);
+    if((new_imu_data.orientation.x > 359) && (imu_data.orientation.x < 1)){ // Guard edge cases
+        move_mouse_x = (int)(_preferences.sensititvity*(new_imu_data.orientation.x-360)) - (int)(_preferences.sensititvity*imu_data.orientation.x);
+    }
+    else if((new_imu_data.orientation.x < 1) && (imu_data.orientation.x > 359)){
+        move_mouse_x = (int)(_preferences.sensititvity*new_imu_data.orientation.x) - (int)(_preferences.sensititvity*(imu_data.orientation.x-360));
+    }
+    else{
+        move_mouse_x = (int)(_preferences.sensititvity*new_imu_data.orientation.x) - (int)(_preferences.sensititvity*imu_data.orientation.x);
+    }
+    move_mouse_y = (int)(_preferences.sensititvity*imu_data.orientation.z) - (int)(_preferences.sensititvity*new_imu_data.orientation.z);   /* IMU z-axis is translated into display y-axis */
+    
+    /* Add offset to stabalize mouse when head is not moving */
+    if((move_mouse_x >= -MOVE_MOUSE_OFFSET) && (move_mouse_x <= MOVE_MOUSE_OFFSET)) move_mouse_x = 0;
+    if((move_mouse_y >= -MOVE_MOUSE_OFFSET) && (move_mouse_y <= MOVE_MOUSE_OFFSET)) move_mouse_y = 0;
 
     /* Store orientation values into buffer for later on comparison */
     imu_data.orientation.x = new_imu_data.orientation.x;
-    imu_data.orientation.y = new_imu_data.orientation.y;
+    imu_data.orientation.z = new_imu_data.orientation.z;
 
     /* Move mouse cursor */
-    if(_status.is_connected){
-        bleMouse.move((unsigned char)(move_mouse_x), (unsigned char)(move_mouse_y),0);  
+    if(_status.is_connected){       
+        if((move_mouse_x != 0) || (move_mouse_y != 0)){
+            bleMouse.move((unsigned char)(move_mouse_x), (unsigned char)(move_mouse_y),0);  
+            //log_message(LOG_DEBUG_IMU, "move x: %d, move y %d", move_mouse_x, move_mouse_y);
+        }
+    }
+    else{
         return ERR_CONNECTION_FAILED;
     }
 
@@ -438,7 +455,7 @@ bool HeadMouse::isCalibrated(){
     system = gyro = accel = mag = 0;
     bno.getCalibration(&system, &gyro, &accel, &mag);
 
-    log_message(LOG_DEBUG_IMU, "Calibration Sys: %d, GYR: %d, ACC: %d, MAG: %d", system, gyro, accel, mag);
+    //log_message(LOG_DEBUG_IMU, "Calibration Sys: %d, GYR: %d, ACC: %d, MAG: %d", system, gyro, accel, mag);
 
     if((gyro == 3)) return true;
     else return false;
