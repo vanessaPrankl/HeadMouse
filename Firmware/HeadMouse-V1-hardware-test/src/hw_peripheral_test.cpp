@@ -47,7 +47,7 @@ void button_test(){
   bool button_3 = digitalRead(PIN_BTN_3);
   bool button_4 = digitalRead(PIN_BTN_4);
 
-  Serial.print("Button values: ");
+  Serial.print("Button values [0=pressed/1=open]: ");
   Serial.print(button_1);
   Serial.print(", ");
   Serial.print(button_2);
@@ -58,33 +58,34 @@ void button_test(){
 }
 
 void battery_measurement_test(){
-  bool battery_charging = digitalRead(PIN_BATT_STATUS);
+  bool battery_charging = !digitalRead(PIN_BATT_STATUS);
   int32_t adc_value = analogRead(PIN_VBATT_MEASURE);
-  float_t battery_voltage = adc_value * 3.3 / 4095;
+  float_t battery_voltage = 2 * adc_value * 3.3 / 4095; // "2*" because of 50:50 voltage divider
 
-  Serial.print("Battery charging status: ");
-  Serial.println(!battery_charging);
-  Serial.print("Battery voltage: ");
+  Serial.print("Battery charging status [0=ON/1=OFF]: ");
+  Serial.println(battery_charging);
+  if(battery_charging){ /* Turn green led on */
+    digitalWrite(PIN_LED_BAT_R, LOW);  
+    digitalWrite(PIN_LED_BAT_G, HIGH); 
+  }
+  else{ /* Turn red led on */
+    digitalWrite(PIN_LED_BAT_R, HIGH);  
+    digitalWrite(PIN_LED_BAT_G, LOW); 
+  }
+  
+  Serial.print("Battery voltage [V]: ");
   Serial.println(battery_voltage);
 }
 
 void led_test(){
-  digitalWrite(PIN_LED_BAT_R, HIGH);  
-  digitalWrite(PIN_LED_BAT_G, LOW); 
   digitalWrite(PIN_LED_STATUS_R, HIGH);  
   digitalWrite(PIN_LED_STATUS_G, LOW);  
 
-  delay(500);         
-
-  digitalWrite(PIN_LED_BAT_R, LOW);  
-  digitalWrite(PIN_LED_BAT_G, HIGH);  
+  delay(500);          
   digitalWrite(PIN_LED_STATUS_R, LOW);  
   digitalWrite(PIN_LED_STATUS_G, HIGH);
 
-  delay(500);         
-
-  digitalWrite(PIN_LED_BAT_R, LOW);  
-  digitalWrite(PIN_LED_BAT_G, LOW);  
+  delay(500);           
   digitalWrite(PIN_LED_STATUS_R, LOW);  
   digitalWrite(PIN_LED_STATUS_G, LOW);
 }
@@ -106,7 +107,7 @@ void setup() {
   pinMode(PIN_BTN_3, INPUT_PULLUP);
   pinMode(PIN_BTN_4, INPUT_PULLUP);  
   
-  /* Init battery measurements */
+  /* Init battery charging status input */
   pinMode(PIN_BATT_STATUS, INPUT_PULLUP);
 
   /* Init I2C (IMUs) */
