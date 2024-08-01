@@ -29,7 +29,6 @@ public:
   BleMouse(std::string deviceName = "ESP32 Bluetooth Mouse", std::string deviceManufacturer = "Espressif", uint8_t batteryLevel = 100);
   void begin(void);
   void end(void);
-  void beVisible(void);
   void click(uint8_t b = MOUSE_LEFT);
   void move(signed char x, signed char y, signed char wheel = 0, signed char hWheel = 0);
   void press(uint8_t b = MOUSE_LEFT);   // press LEFT by default
@@ -43,6 +42,7 @@ public:
 protected:
   virtual void onStarted(BLEServer *pServer) { };
 };
+
 
 #endif // CONFIG_BT_ENABLED
 #endif // ESP32_BLE_MOUSE_H

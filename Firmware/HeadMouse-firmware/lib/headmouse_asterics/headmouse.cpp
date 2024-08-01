@@ -160,7 +160,6 @@ void HeadMouse::_devStatusInterpreter(){
 
         if(_status.is_connected){
             _leds->set(LED_STATUS, GREEN);
-            bleMouse.beVisible();   /* Enable hostswitching while paired */
             log_message(LOG_INFO, "Device connected.");
         }
         else if(first_run_is_connected){
@@ -169,7 +168,6 @@ void HeadMouse::_devStatusInterpreter(){
         }
         /* Connection lost => reconnect */
         else if((_status.is_connected==false) && (is_connected_buf==true) && (!first_run_is_connected)){   
-            bleMouse.beVisible();
             _leds->set(LED_STATUS, BLINK_GREEN);
             log_message(LOG_INFO, "Device connection lost, reconnecting...");
         }

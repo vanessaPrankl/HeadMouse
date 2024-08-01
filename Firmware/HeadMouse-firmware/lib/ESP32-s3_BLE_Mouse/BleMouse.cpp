@@ -62,10 +62,7 @@ static const uint8_t _hidReportDescriptor[] = {
   END_COLLECTION(0)          // END_COLLECTION
 };
 
-BleMouse::BleMouse(std::string deviceName, std::string deviceManufacturer, uint8_t batteryLevel) : 
-    _buttons(0),
-    hid(0)
-{
+BleMouse::BleMouse(std::string deviceName, std::string deviceManufacturer, uint8_t batteryLevel) : _buttons(0), hid(0){
   this->deviceName = deviceName;
   this->deviceManufacturer = deviceManufacturer;
   this->batteryLevel = batteryLevel;
@@ -141,10 +138,6 @@ void BleMouse::setBatteryLevel(uint8_t level) {
       this->hid->setBatteryLevel(this->batteryLevel);
 }
 
-void BleMouse::beVisible(){
-  pAdvertising->start();
-}
-
 void BleMouse::taskServer(void* pvParameter) {
   BleMouse* bleMouseInstance = (BleMouse *) pvParameter; //static_cast<BleMouse *>(pvParameter);
   BLEDevice::init(bleMouseInstance->deviceName);
@@ -178,4 +171,5 @@ void BleMouse::taskServer(void* pvParameter) {
 
   ESP_LOGD(LOG_TAG, "Advertising started!");
   vTaskDelay(portMAX_DELAY); //delay(portMAX_DELAY);
+
 }
