@@ -19,6 +19,8 @@
   static const char* LOG_TAG = "BLEDevice";
 #endif
 
+BLEAdvertising* BleMouse::pAdvertising = nullptr;
+
 static const uint8_t _hidReportDescriptor[] = {
   USAGE_PAGE(1),       0x01, // USAGE_PAGE (Generic Desktop)
   USAGE(1),            0x02, // USAGE (Mouse)
@@ -77,6 +79,7 @@ void BleMouse::begin(void)
 
 void BleMouse::end(void)
 {
+  pAdvertising->stop();
 }
 
 void BleMouse::click(uint8_t b)
@@ -138,9 +141,14 @@ void BleMouse::setBatteryLevel(uint8_t level) {
       this->hid->setBatteryLevel(this->batteryLevel);
 }
 
+void BleMouse::beVisible(){
+  pAdvertising->start();
+}
+
 void BleMouse::taskServer(void* pvParameter) {
   BleMouse* bleMouseInstance = (BleMouse *) pvParameter; //static_cast<BleMouse *>(pvParameter);
   BLEDevice::init(bleMouseInstance->deviceName);
+ 
   BLEServer *pServer = BLEDevice::createServer();
   pServer->setCallbacks(bleMouseInstance->connectionStatus);
 
@@ -162,7 +170,7 @@ void BleMouse::taskServer(void* pvParameter) {
 
   bleMouseInstance->onStarted(pServer);
 
-  BLEAdvertising *pAdvertising = pServer->getAdvertising();
+  pAdvertising = pServer->getAdvertising();
   pAdvertising->setAppearance(HID_MOUSE);
   pAdvertising->addServiceUUID(bleMouseInstance->hid->hidService()->getUUID());
   pAdvertising->start();

@@ -150,25 +150,32 @@ void HeadMouse::_devStatusInterpreter(){
             log_message(LOG_INFO, "IMU calibration started...");
         }
         return;
-    }
-    else if(_status.is_calibrated && !is_calibrated_buf){
+    }   /* Calibration status changed from false to true */
+    else if(_status.is_calibrated && !is_calibrated_buf){ 
         is_calibrated_buf = true;
         log_message(LOG_INFO, "IMU calibration finished.");
     }
     /* Check BLE connection after IMU calibration has finished */
-    if(is_calibrated_buf && ((_status.is_connected != is_connected_buf) || first_run_is_connected)){
-        first_run_is_connected = false;
-        is_connected_buf = _status.is_connected;
+    if(_status.is_calibrated && ((_status.is_connected != is_connected_buf) || first_run_is_connected)){
 
         if(_status.is_connected){
             _leds->set(LED_STATUS, GREEN);
+            bleMouse.beVisible();   /* Enable hostswitching while paired */
             log_message(LOG_INFO, "Device connected.");
         }
-        else{
+        else if(first_run_is_connected){
             _leds->set(LED_STATUS, BLINK_GREEN);
-            log_message(LOG_INFO, "Device not connected.");
+            log_message(LOG_INFO, "Connecting...");
         }
-        
+        /* Connection lost => reconnect */
+        else if((_status.is_connected==false) && (is_connected_buf==true) && (!first_run_is_connected)){   
+            bleMouse.beVisible();
+            _leds->set(LED_STATUS, BLINK_GREEN);
+            log_message(LOG_INFO, "Device connection lost, reconnecting...");
+        }
+
+        first_run_is_connected = false;
+        is_connected_buf = _status.is_connected;        
     }      
 }
 
@@ -291,6 +298,8 @@ err HeadMouse::updateMovements(){
         }
     }
     else{
+        //bleMouse.end();
+        //bleMouse.begin();
         return ERR_CONNECTION_FAILED;
     }
 
@@ -430,6 +439,8 @@ void HeadMouse::setButtonActions(btnAction* actions){
 BatStatus HeadMouse::getBatStatus(){
     int32_t adc_value = analogRead(PIN_VBATT_MEASURE);
     float_t voltage = 2 * adc_value * 3.3 / 4095; // "2*" because of 50:50 voltage divider
+    log_message(LOG_DEBUG_BAT, "Battery voltage is: %.2fV", voltage);
+
     if(voltage >= BAT_FULL_V)       _status.bat_status = BAT_FULL;
     else if(voltage >= BAT_HIGH_V)  _status.bat_status = BAT_HIGH;
     else if(voltage >= BAT_OK_V)    _status.bat_status = BAT_OK;

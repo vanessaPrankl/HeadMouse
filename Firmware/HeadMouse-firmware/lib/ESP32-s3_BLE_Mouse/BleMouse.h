@@ -21,13 +21,15 @@ private:
   BleConnectionStatus* connectionStatus;
   BLEHIDDevice* hid;
   BLECharacteristic* inputMouse;
+  static BLEAdvertising *pAdvertising;
+  static void taskServer(void* pvParameter);
   void buttons(uint8_t b);
   void rawAction(uint8_t msg[], char msgSize);
-  static void taskServer(void* pvParameter);
 public:
   BleMouse(std::string deviceName = "ESP32 Bluetooth Mouse", std::string deviceManufacturer = "Espressif", uint8_t batteryLevel = 100);
   void begin(void);
   void end(void);
+  void beVisible(void);
   void click(uint8_t b = MOUSE_LEFT);
   void move(signed char x, signed char y, signed char wheel = 0, signed char hWheel = 0);
   void press(uint8_t b = MOUSE_LEFT);   // press LEFT by default
