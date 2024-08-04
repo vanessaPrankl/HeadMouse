@@ -27,8 +27,6 @@ class HeadMouse {
     HmStatus updateDevStatus();
     err updateMovements();
     void updateBtnActions();
-    err pairNewDevice();
-    err switchPairedDevice();
 
     void setPreferences(HmPreferences);
     void setSensitivity(devSensitivity);

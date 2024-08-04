@@ -20,6 +20,7 @@
 #endif
 
 BLEAdvertising* BleMouse::pAdvertising = nullptr;
+BLEServer* BleMouse::pServer = nullptr;
 
 static const uint8_t _hidReportDescriptor[] = {
   USAGE_PAGE(1),       0x01, // USAGE_PAGE (Generic Desktop)
@@ -77,6 +78,12 @@ void BleMouse::begin(void)
 void BleMouse::end(void)
 {
   pAdvertising->stop();
+}
+
+void BleMouse::connectNewDevice(void){
+  if (pServer->getConnectedCount()) {
+    pServer->disconnect(pServer->getConnId());
+  }
 }
 
 void BleMouse::click(uint8_t b)
@@ -142,7 +149,7 @@ void BleMouse::taskServer(void* pvParameter) {
   BleMouse* bleMouseInstance = (BleMouse *) pvParameter; //static_cast<BleMouse *>(pvParameter);
   BLEDevice::init(bleMouseInstance->deviceName);
  
-  BLEServer *pServer = BLEDevice::createServer();
+  pServer = BLEDevice::createServer();
   pServer->setCallbacks(bleMouseInstance->connectionStatus);
 
   bleMouseInstance->hid = new BLEHIDDevice(pServer);

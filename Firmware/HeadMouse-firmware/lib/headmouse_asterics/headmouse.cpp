@@ -334,36 +334,15 @@ void HeadMouse::updateBtnActions(){
                 log_message(LOG_DEBUG, "Button %d stop press ",  i);
             }
         }
+        else if(_preferences.btn_actions[i] == CONN_NEW_DEVICE){
+            if(_buttons->is_click[i]){
+                bleMouse.connectNewDevice();
+                log_message(LOG_INFO, "Connecting new device...");
+                _buttons->is_click[i] = false;
+            }
+        }
+        
     }
-}
-
-/************************************************************
- * @brief Pair new device.
- *
- * This function handles the pairing of a new device via BLE.
- * 
- * @note NOT IMPLEMENTED YET!
- *
- * @return ERR_xxx if something went wrong, OK otherwise.
- *************************************************************/
-err HeadMouse::pairNewDevice(){
-    /* TODO */
-    return ERR_GENERIC;
-}
-
-/************************************************************
- * @brief Switch paired device.
- *
- * This function handles switching between previously paired
- * devices via BLE.
- * 
- * @note NOT IMPLEMENTED YET!
- *
- * @return ERR_xxx if something went wrong, OK otherwise.
- *************************************************************/
-err HeadMouse::switchPairedDevice(){
-    /* TODO */
-    return ERR_GENERIC;
 }
 
 /* SETTER */
