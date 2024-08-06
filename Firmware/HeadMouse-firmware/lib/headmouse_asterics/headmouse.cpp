@@ -281,12 +281,20 @@ err HeadMouse::updateMovements(){
     move_mouse_y = (int)(_preferences.sensititvity*imu_data.orientation.z) - (int)(_preferences.sensititvity*new_imu_data.orientation.z);   /* IMU z-axis is translated into display y-axis */
     
     /* Add offset to stabalize mouse when head is not moving */
-    if((move_mouse_x >= -MOVE_MOUSE_OFFSET) && (move_mouse_x <= MOVE_MOUSE_OFFSET)) move_mouse_x = 0;
-    if((move_mouse_y >= -MOVE_MOUSE_OFFSET) && (move_mouse_y <= MOVE_MOUSE_OFFSET)) move_mouse_y = 0;
+    if((move_mouse_x >= -MOVE_MOUSE_OFFSET) && (move_mouse_x <= MOVE_MOUSE_OFFSET)){
+        move_mouse_x = 0;    /* Don't update imu data buffer here, so information does not get lost */
+    }
+    else{
+        imu_data.orientation.x = new_imu_data.orientation.x;     /* Store orientation values into buffer for later on comparison */
+    }
+    /* Add offset to stabalize mouse when head is not moving */
+    if((move_mouse_y >= -MOVE_MOUSE_OFFSET) && (move_mouse_y <= MOVE_MOUSE_OFFSET)){
+        move_mouse_y = 0;   /* Don't update imu data buffer here, so information does not get lost */
+    } 
+    else{
+        imu_data.orientation.z = new_imu_data.orientation.z;     /* Store orientation values into buffer for later on comparison */
+    }
 
-    /* Store orientation values into buffer for later on comparison */
-    imu_data.orientation.x = new_imu_data.orientation.x;
-    imu_data.orientation.z = new_imu_data.orientation.z;
 
     /* Move mouse cursor */
     if(_status.is_connected){       
