@@ -19,6 +19,9 @@
   static const char* LOG_TAG = "BLEDevice";
 #endif
 
+BLEAdvertising* BleMouse::pAdvertising = nullptr;
+BLEServer* BleMouse::pServer = nullptr;
+
 static const uint8_t _hidReportDescriptor[] = {
   USAGE_PAGE(1),       0x01, // USAGE_PAGE (Generic Desktop)
   USAGE(1),            0x02, // USAGE (Mouse)
@@ -60,10 +63,7 @@ static const uint8_t _hidReportDescriptor[] = {
   END_COLLECTION(0)          // END_COLLECTION
 };
 
-BleMouse::BleMouse(std::string deviceName, std::string deviceManufacturer, uint8_t batteryLevel) : 
-    _buttons(0),
-    hid(0)
-{
+BleMouse::BleMouse(std::string deviceName, std::string deviceManufacturer, uint8_t batteryLevel) : _buttons(0), hid(0){
   this->deviceName = deviceName;
   this->deviceManufacturer = deviceManufacturer;
   this->batteryLevel = batteryLevel;
@@ -77,6 +77,13 @@ void BleMouse::begin(void)
 
 void BleMouse::end(void)
 {
+  pAdvertising->stop();
+}
+
+void BleMouse::connectNewDevice(void){
+  if (pServer->getConnectedCount()) {
+    pServer->disconnect(pServer->getConnId());
+  }
 }
 
 void BleMouse::click(uint8_t b)
@@ -141,7 +148,8 @@ void BleMouse::setBatteryLevel(uint8_t level) {
 void BleMouse::taskServer(void* pvParameter) {
   BleMouse* bleMouseInstance = (BleMouse *) pvParameter; //static_cast<BleMouse *>(pvParameter);
   BLEDevice::init(bleMouseInstance->deviceName);
-  BLEServer *pServer = BLEDevice::createServer();
+ 
+  pServer = BLEDevice::createServer();
   pServer->setCallbacks(bleMouseInstance->connectionStatus);
 
   bleMouseInstance->hid = new BLEHIDDevice(pServer);
@@ -162,7 +170,7 @@ void BleMouse::taskServer(void* pvParameter) {
 
   bleMouseInstance->onStarted(pServer);
 
-  BLEAdvertising *pAdvertising = pServer->getAdvertising();
+  pAdvertising = pServer->getAdvertising();
   pAdvertising->setAppearance(HID_MOUSE);
   pAdvertising->addServiceUUID(bleMouseInstance->hid->hidService()->getUUID());
   pAdvertising->start();
@@ -170,4 +178,5 @@ void BleMouse::taskServer(void* pvParameter) {
 
   ESP_LOGD(LOG_TAG, "Advertising started!");
   vTaskDelay(portMAX_DELAY); //delay(portMAX_DELAY);
+
 }

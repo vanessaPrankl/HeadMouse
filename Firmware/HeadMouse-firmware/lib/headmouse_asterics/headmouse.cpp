@@ -43,7 +43,7 @@ void HeadMouse::_initPins(){
     _leds->init();
     
     /* Init battery charging status input */
-    pinMode(PIN_BATT_STATUS, INPUT_PULLUP);
+    pinMode(PIN_BATT_STATUS, INPUT);
 
     /* Init I2C connection for IMU */
     pinMode(PIN_I2C_SDA, INPUT); // Disable internal pull-up, external pull-ups set
@@ -102,11 +102,6 @@ void HeadMouse::_batStatusInterpreter(){
                 log_message(LOG_INFO, "Battery changed to HIGH.");
             break;
 
-            case BAT_FULL:
-                _leds->set(LED_BATTERY, GREEN);
-                log_message(LOG_INFO, "Battery changed to FULL.");
-            break;
-
             default:
                 _status.is_error = true;
                 log_message(LOG_WARNING, "Battery state unknown.");
@@ -150,25 +145,30 @@ void HeadMouse::_devStatusInterpreter(){
             log_message(LOG_INFO, "IMU calibration started...");
         }
         return;
-    }
-    else if(_status.is_calibrated && !is_calibrated_buf){
+    }   /* Calibration status changed from false to true */
+    else if(_status.is_calibrated && !is_calibrated_buf){ 
         is_calibrated_buf = true;
         log_message(LOG_INFO, "IMU calibration finished.");
     }
     /* Check BLE connection after IMU calibration has finished */
-    if(is_calibrated_buf && ((_status.is_connected != is_connected_buf) || first_run_is_connected)){
-        first_run_is_connected = false;
-        is_connected_buf = _status.is_connected;
+    if(_status.is_calibrated && ((_status.is_connected != is_connected_buf) || first_run_is_connected)){
 
         if(_status.is_connected){
             _leds->set(LED_STATUS, GREEN);
             log_message(LOG_INFO, "Device connected.");
         }
-        else{
+        else if(first_run_is_connected){
             _leds->set(LED_STATUS, BLINK_GREEN);
-            log_message(LOG_INFO, "Device not connected.");
+            log_message(LOG_INFO, "Connecting...");
         }
-        
+        /* Connection lost => reconnect */
+        else if((_status.is_connected==false) && (is_connected_buf==true) && (!first_run_is_connected)){   
+            _leds->set(LED_STATUS, BLINK_GREEN);
+            log_message(LOG_INFO, "Device connection lost, reconnecting...");
+        }
+
+        first_run_is_connected = false;
+        is_connected_buf = _status.is_connected;        
     }      
 }
 
@@ -222,10 +222,10 @@ err HeadMouse::init(HmPreferences preferences){
  * @return Device status struct.
  *************************************************************/
 HmStatus HeadMouse::updateDevStatus(){
-    _status.bat_status = getBatStatus();
     _status.is_calibrated = isCalibrated();
     _status.is_charging = isCharging();
     _status.is_connected = isConnected();
+    updateBatStatus();
 
     log_message(LOG_DEBUG, "Status: \nisCharging: %d\nBatStatus: %d, \nisCalibrated: %d, \nisConnected: %d", 
     _status.is_charging, _status.bat_status, _status.is_calibrated, _status.is_connected);
@@ -276,12 +276,20 @@ err HeadMouse::updateMovements(){
     move_mouse_y = (int)(_preferences.sensititvity*imu_data.orientation.z) - (int)(_preferences.sensititvity*new_imu_data.orientation.z);   /* IMU z-axis is translated into display y-axis */
     
     /* Add offset to stabalize mouse when head is not moving */
-    if((move_mouse_x >= -MOVE_MOUSE_OFFSET) && (move_mouse_x <= MOVE_MOUSE_OFFSET)) move_mouse_x = 0;
-    if((move_mouse_y >= -MOVE_MOUSE_OFFSET) && (move_mouse_y <= MOVE_MOUSE_OFFSET)) move_mouse_y = 0;
+    if((move_mouse_x >= -MOVE_MOUSE_OFFSET) && (move_mouse_x <= MOVE_MOUSE_OFFSET)){
+        move_mouse_x = 0;    /* Don't update imu data buffer here, so information does not get lost */
+    }
+    else{
+        imu_data.orientation.x = new_imu_data.orientation.x;     /* Store orientation values into buffer for later on comparison */
+    }
+    /* Add offset to stabalize mouse when head is not moving */
+    if((move_mouse_y >= -MOVE_MOUSE_OFFSET) && (move_mouse_y <= MOVE_MOUSE_OFFSET)){
+        move_mouse_y = 0;   /* Don't update imu data buffer here, so information does not get lost */
+    } 
+    else{
+        imu_data.orientation.z = new_imu_data.orientation.z;     /* Store orientation values into buffer for later on comparison */
+    }
 
-    /* Store orientation values into buffer for later on comparison */
-    imu_data.orientation.x = new_imu_data.orientation.x;
-    imu_data.orientation.z = new_imu_data.orientation.z;
 
     /* Move mouse cursor */
     if(_status.is_connected){       
@@ -291,6 +299,8 @@ err HeadMouse::updateMovements(){
         }
     }
     else{
+        //bleMouse.end();
+        //bleMouse.begin();
         return ERR_CONNECTION_FAILED;
     }
 
@@ -327,36 +337,15 @@ void HeadMouse::updateBtnActions(){
                 log_message(LOG_DEBUG, "Button %d stop press ",  i);
             }
         }
+        else if(_preferences.btn_actions[i] == CONN_NEW_DEVICE){
+            if(_buttons->is_click[i]){
+                bleMouse.connectNewDevice();
+                log_message(LOG_INFO, "Connecting new device...");
+                _buttons->is_click[i] = false;
+            }
+        }
+        
     }
-}
-
-/************************************************************
- * @brief Pair new device.
- *
- * This function handles the pairing of a new device via BLE.
- * 
- * @note NOT IMPLEMENTED YET!
- *
- * @return ERR_xxx if something went wrong, OK otherwise.
- *************************************************************/
-err HeadMouse::pairNewDevice(){
-    /* TODO */
-    return ERR_GENERIC;
-}
-
-/************************************************************
- * @brief Switch paired device.
- *
- * This function handles switching between previously paired
- * devices via BLE.
- * 
- * @note NOT IMPLEMENTED YET!
- *
- * @return ERR_xxx if something went wrong, OK otherwise.
- *************************************************************/
-err HeadMouse::switchPairedDevice(){
-    /* TODO */
-    return ERR_GENERIC;
 }
 
 /* SETTER */
@@ -427,16 +416,61 @@ void HeadMouse::setButtonActions(btnAction* actions){
  *
  * @return Battery status.
  *************************************************************/
-BatStatus HeadMouse::getBatStatus(){
+void HeadMouse::updateBatStatus(){
+    BatStatus bat_status_new = BAT_LOW;
+
+    /* Get battery voltage level */
     int32_t adc_value = analogRead(PIN_VBATT_MEASURE);
     float_t voltage = 2 * adc_value * 3.3 / 4095; // "2*" because of 50:50 voltage divider
-    if(voltage >= BAT_FULL_V)       _status.bat_status = BAT_FULL;
-    else if(voltage >= BAT_HIGH_V)  _status.bat_status = BAT_HIGH;
-    else if(voltage >= BAT_OK_V)    _status.bat_status = BAT_OK;
-    else if(voltage >= BAT_LOW_V)   _status.bat_status = BAT_LOW;
-    else                            _status.bat_status = BAT_CRITICAL;
+    log_message(LOG_DEBUG_BAT, "Battery voltage is: %.2fV", voltage);
 
-    return _status.bat_status;
+    /* Determine new battery level status */
+    if(!_status.is_charging){ /* Not charging -> bat level decreasing */
+        switch(_status.bat_status){ 
+            case BAT_LOW:
+                if(voltage >= BAT_HIGH_V)                           bat_status_new = BAT_HIGH;
+                else if(voltage >= BAT_OK_V + BAT_HYSTERESIS_V)     bat_status_new = BAT_OK;
+                else                                                bat_status_new = BAT_LOW;
+            break;
+            case BAT_OK:
+                if(voltage >= BAT_HIGH_V + BAT_HYSTERESIS_V)        bat_status_new = BAT_HIGH;
+                else if(voltage >= BAT_OK_V)                        bat_status_new = BAT_OK;
+                else                                                bat_status_new = BAT_LOW;
+            break;
+            case BAT_HIGH:
+                if(voltage >= BAT_HIGH_V)                           bat_status_new = BAT_HIGH;
+                else if(voltage >= BAT_OK_V)                        bat_status_new = BAT_OK;
+                else                                                bat_status_new = BAT_LOW;
+            break;
+            default: 
+                _status.is_error = true;
+        }
+    }
+    else{  
+        switch(_status.bat_status){  /* Charging -> bat level increasing */
+            case BAT_LOW:
+                if(voltage >= BAT_HIGH_V)                           bat_status_new = BAT_HIGH;
+                else if(voltage >= BAT_OK_V)                        bat_status_new = BAT_OK;
+                else                                                bat_status_new = BAT_LOW;
+            break;
+            case BAT_OK:
+                if(voltage >= BAT_HIGH_V)                           bat_status_new = BAT_HIGH;
+                else if(voltage >= BAT_OK_V - BAT_HYSTERESIS_V)     bat_status_new = BAT_OK;
+                else                                                bat_status_new = BAT_LOW;
+            break;
+            case BAT_HIGH:
+                if(voltage >= BAT_HIGH_V - BAT_HYSTERESIS_V)        bat_status_new = BAT_HIGH;
+                else if(voltage >= BAT_OK_V)                        bat_status_new = BAT_OK;
+                else                                                bat_status_new = BAT_LOW;
+            break;
+            default: 
+                _status.is_error = true;
+        }
+    }
+
+    if(bat_status_new != _status.bat_status){   /* Only store new battery status if it has changed */
+        _status.bat_status = bat_status_new;
+    }
 }
 
 /************************************************************

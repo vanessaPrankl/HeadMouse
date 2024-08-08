@@ -33,7 +33,7 @@ enum btnAction {
     NONE,
     LEFT = MOUSE_LEFT,
     RIGHT = MOUSE_RIGHT,
-    BLE_CONNECTION,
+    CONN_NEW_DEVICE,
     SENSITIVITY
 };
 
