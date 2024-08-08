@@ -43,7 +43,7 @@ void HeadMouse::_initPins(){
     _leds->init();
     
     /* Init battery charging status input */
-    pinMode(PIN_BATT_STATUS, INPUT_PULLUP);
+    pinMode(PIN_BATT_STATUS, INPUT);
 
     /* Init I2C connection for IMU */
     pinMode(PIN_I2C_SDA, INPUT); // Disable internal pull-up, external pull-ups set
@@ -100,11 +100,6 @@ void HeadMouse::_batStatusInterpreter(){
             case BAT_HIGH:
                 _leds->set(LED_BATTERY, GREEN);
                 log_message(LOG_INFO, "Battery changed to HIGH.");
-            break;
-
-            case BAT_FULL:
-                _leds->set(LED_BATTERY, GREEN);
-                log_message(LOG_INFO, "Battery changed to FULL.");
             break;
 
             default:
@@ -227,10 +222,10 @@ err HeadMouse::init(HmPreferences preferences){
  * @return Device status struct.
  *************************************************************/
 HmStatus HeadMouse::updateDevStatus(){
-    _status.bat_status = getBatStatus();
     _status.is_calibrated = isCalibrated();
     _status.is_charging = isCharging();
     _status.is_connected = isConnected();
+    updateBatStatus();
 
     log_message(LOG_DEBUG, "Status: \nisCharging: %d\nBatStatus: %d, \nisCalibrated: %d, \nisConnected: %d", 
     _status.is_charging, _status.bat_status, _status.is_calibrated, _status.is_connected);
@@ -421,18 +416,61 @@ void HeadMouse::setButtonActions(btnAction* actions){
  *
  * @return Battery status.
  *************************************************************/
-BatStatus HeadMouse::getBatStatus(){
+void HeadMouse::updateBatStatus(){
+    BatStatus bat_status_new = BAT_LOW;
+
+    /* Get battery voltage level */
     int32_t adc_value = analogRead(PIN_VBATT_MEASURE);
     float_t voltage = 2 * adc_value * 3.3 / 4095; // "2*" because of 50:50 voltage divider
     log_message(LOG_DEBUG_BAT, "Battery voltage is: %.2fV", voltage);
 
-    if(voltage >= BAT_FULL_V)       _status.bat_status = BAT_FULL;
-    else if(voltage >= BAT_HIGH_V)  _status.bat_status = BAT_HIGH;
-    else if(voltage >= BAT_OK_V)    _status.bat_status = BAT_OK;
-    else if(voltage >= BAT_LOW_V)   _status.bat_status = BAT_LOW;
-    else                            _status.bat_status = BAT_CRITICAL;
+    /* Determine new battery level status */
+    if(!_status.is_charging){ /* Not charging -> bat level decreasing */
+        switch(_status.bat_status){ 
+            case BAT_LOW:
+                if(voltage >= BAT_HIGH_V)                           bat_status_new = BAT_HIGH;
+                else if(voltage >= BAT_OK_V + BAT_HYSTERESIS_V)     bat_status_new = BAT_OK;
+                else                                                bat_status_new = BAT_LOW;
+            break;
+            case BAT_OK:
+                if(voltage >= BAT_HIGH_V + BAT_HYSTERESIS_V)        bat_status_new = BAT_HIGH;
+                else if(voltage >= BAT_OK_V)                        bat_status_new = BAT_OK;
+                else                                                bat_status_new = BAT_LOW;
+            break;
+            case BAT_HIGH:
+                if(voltage >= BAT_HIGH_V)                           bat_status_new = BAT_HIGH;
+                else if(voltage >= BAT_OK_V)                        bat_status_new = BAT_OK;
+                else                                                bat_status_new = BAT_LOW;
+            break;
+            default: 
+                _status.is_error = true;
+        }
+    }
+    else{  
+        switch(_status.bat_status){  /* Charging -> bat level increasing */
+            case BAT_LOW:
+                if(voltage >= BAT_HIGH_V)                           bat_status_new = BAT_HIGH;
+                else if(voltage >= BAT_OK_V)                        bat_status_new = BAT_OK;
+                else                                                bat_status_new = BAT_LOW;
+            break;
+            case BAT_OK:
+                if(voltage >= BAT_HIGH_V)                           bat_status_new = BAT_HIGH;
+                else if(voltage >= BAT_OK_V - BAT_HYSTERESIS_V)     bat_status_new = BAT_OK;
+                else                                                bat_status_new = BAT_LOW;
+            break;
+            case BAT_HIGH:
+                if(voltage >= BAT_HIGH_V - BAT_HYSTERESIS_V)        bat_status_new = BAT_HIGH;
+                else if(voltage >= BAT_OK_V)                        bat_status_new = BAT_OK;
+                else                                                bat_status_new = BAT_LOW;
+            break;
+            default: 
+                _status.is_error = true;
+        }
+    }
 
-    return _status.bat_status;
+    if(bat_status_new != _status.bat_status){   /* Only store new battery status if it has changed */
+        _status.bat_status = bat_status_new;
+    }
 }
 
 /************************************************************

@@ -33,7 +33,7 @@ class HeadMouse {
     void setMode(devMode);
     void setButtonActions(btnAction*);
 
-    BatStatus getBatStatus();
+    void updateBatStatus();
     bool isCalibrated();
     bool isConnected();
     bool isCharging();
