@@ -341,4 +341,9 @@
   (pad "26" smd rect (at -0.750001 -1.5367) (size 0.3048 0.5334) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp 1593639a-891b-4c38-9355-7b1dc60790e7))
   (pad "27" smd rect (at -1.25 -1.5367) (size 0.3048 0.5334) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp 250a3b2d-db62-4758-8384-b6de5d0e2241))
   (pad "28" smd rect (at -1.749999 -1.5367) (size 0.3048 0.5334) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp bd3b3300-b908-4e5b-9b23-e1eeb4d56d05))
+  (model "${KIPRJMOD}/.step/headmouse.3dshapes/BNO055.step"
+    (offset (xyz 0 0 0))
+    (scale (xyz 1 1 1))
+    (rotate (xyz -90 0 180))
+  )
 )
