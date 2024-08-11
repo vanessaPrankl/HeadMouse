@@ -3,20 +3,23 @@
 /************************************************************
 * Battery level voltage defintions
 *************************************************************/
+constexpr float BAT_HYSTERESIS_V = 0.1;
 constexpr float BAT_FULL_V = 4.2;
 constexpr float BAT_HIGH_V = 3.9;
 constexpr float BAT_OK_V = 3.5;
 constexpr float BAT_LOW_V = 3.3;
 
+
+
 /*! *********************************************************
 * @brief Enum to define battery levels
 *************************************************************/
 enum BatStatus {
-    BAT_FULL,
-    BAT_HIGH,
+    BAT_CRITICAL,
+    BAT_LOW,
     BAT_OK,
-    BAT_LOW, 
-    BAT_CRITICAL
+    BAT_HIGH,
+    BAT_FULL
 };
 
 /*! *********************************************************

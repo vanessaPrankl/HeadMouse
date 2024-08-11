@@ -27,15 +27,13 @@ class HeadMouse {
     HmStatus updateDevStatus();
     err updateMovements();
     void updateBtnActions();
-    err pairNewDevice();
-    err switchPairedDevice();
 
     void setPreferences(HmPreferences);
     void setSensitivity(devSensitivity);
     void setMode(devMode);
     void setButtonActions(btnAction*);
 
-    BatStatus getBatStatus();
+    void updateBatStatus();
     bool isCalibrated();
     bool isConnected();
     bool isCharging();
