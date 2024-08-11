@@ -1,22 +1,20 @@
-/* HARDWARE TEST HEADMOUSE V1 *******************************************/
+/* BLE MOUSE TEST *******************************************************/
 /* 
-/* Description: This is an IMU test firmware for HeadMouse board version 1.
+/* Description: This is a test firmware for the BLE-mouse in absolute cursor 
+/*              position mode.
 /* Author: Vanessa Prankl
-/* Date: 06.02.202
-/*
-/* IMUs under test: MC6470, LSM6DSO, BNO055
+/* Date: 04.04.2024
 /* 
 /************************************************************************/
 #include "program_selector.h"
-
-#ifdef IMU_BNO055_TEST
+#ifdef ABSOLUTE_MOUSE_TEST 
 #include <Arduino.h>
 #include <Wire.h>
+#include "pin_config_board_v1.h"
+#include "BleMouse.h"
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BNO055.h>
 #include <utility/imumaths.h>
-#include "pin_config_board_v1.h"
-
 
 /* Set the delay between fresh samples */
 #define BNO055_SAMPLERATE_DELAY_MS (50)
@@ -24,6 +22,89 @@
 // Check I2C device address and correct line below (by default address is 0x29 or 0x28)
 //                                   id, address
 Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x28, &Wire);
+
+BleMouse bleMouse("HeadMouse V1", "FH Technikum Wien", 100);
+
+void displaySensorDetails(void);
+void displayCalStatus(void);
+void displaySensorStatus(void);
+
+/* INIT *****************************************************************/
+void setup() {
+
+  Serial.begin(115200);
+  while (!Serial) delay(10);  // wait for serial port to open!
+
+  Serial.println("Orientation Sensor Test"); 
+
+  bleMouse.begin();
+
+  pinMode(PIN_I2C_SDA, INPUT); // Disable internal pull-up
+  pinMode(PIN_I2C_SCL, INPUT); // Disable internal pull-up
+  Wire.setPins(PIN_I2C_SDA, PIN_I2C_SCL);
+
+  /* Initialise the sensor */
+  if(bno.begin())
+  {
+    Serial.print("BNO055 ready!");
+  }
+  else{
+    Serial.print("Cannot connect to BNO05\n");      
+  }
+  delay(1000);
+
+  /* Display some basic information on this sensor */
+  displaySensorDetails();
+
+  /* Optional: Display current status */
+  displaySensorStatus();
+ 
+}
+
+
+/* MAIN ******************************************************************/
+void loop() {
+  static int first_run = true;
+  int move_mouse_y = 0;
+  int move_mouse_x = 0;
+  static sensors_event_t event_buf;
+
+  sensors_event_t event;
+
+  /* Get a new sensor event */
+  bno.getEvent(&event);
+  if(first_run){
+    first_run = false;
+    event_buf.orientation.x = event.orientation.x;
+    event_buf.orientation.y = event.orientation.y;
+    event_buf.orientation.z = event.orientation.z;
+  }
+
+  /* Display the floating point data 
+  Serial.print("\nX: ");
+  Serial.print(event.orientation.x, 4);
+  Serial.print("\tY: ");
+  Serial.print(event.orientation.y, 4);
+  Serial.print("\tZ: ");
+  Serial.print(event.orientation.z, 4);*/
+
+  //displayCalStatus();
+
+  /* Process data */
+  move_mouse_x = (int)(50*event.orientation.x) - (int)(50*event_buf.orientation.x);
+  move_mouse_y = (int)(50*event_buf.orientation.y) - (int)(50*event.orientation.y);
+
+  /* Move mouse cursor */
+  if(bleMouse.isConnected()){
+    bleMouse.move((unsigned char)(move_mouse_x), (unsigned char)(move_mouse_y),0);  
+  }
+
+  /* Store orientation values into buffer for later on comparison */
+  event_buf.orientation.x = event.orientation.x;
+  event_buf.orientation.y = event.orientation.y;
+  //event_buf.orientation.z = event.orientation.z;
+
+}
 
 /**************************************************************************/
 /*
@@ -101,70 +182,6 @@ void displayCalStatus(void)
   Serial.print(accel, DEC);
   Serial.print(" M:");
   Serial.print(mag, DEC);
-}
-
-/**************************************************************************/
-/*
-    Arduino setup function (automatically called at startup)
-*/
-/**************************************************************************/
-void setup(void)
-{
-  Serial.begin(115200);
-
-  pinMode(PIN_I2C_SDA, INPUT); // Disable internal pull-up
-  pinMode(PIN_I2C_SCL, INPUT); // Disable internal pull-up
-  Wire.setPins(PIN_I2C_SDA, PIN_I2C_SCL);
-
-  while (!Serial) delay(10);  // wait for serial port to open!
-
-  Serial.println("Orientation Sensor Test"); 
-
-  /* Initialise the sensor */
-  if(bno.begin())
-  {
-    Serial.print("BNO055 ready!");
-  }
-  else{
-    Serial.print("Cannot connect to BNO05\n");      
-  }
-  delay(1000);
-
-  /* Display some basic information on this sensor */
-  displaySensorDetails();
-
-  /* Optional: Display current status */
-  displaySensorStatus();
-
-  // bno.setExtCrystalUse(true);
-}
-
-/**************************************************************************/
-/*
-    Arduino loop function, called once 'setup' is complete (your own code
-    should go here)
-*/
-/**************************************************************************/
-void loop(void)
-{
-  /* Get a new sensor event */
-  sensors_event_t event;
-
-  bno.getEvent(&event);
-
-  /* Display the floating point data */
-  Serial.print("\nX: ");
-  Serial.print(event.orientation.x, 4);
-  Serial.print("\tY: ");
-  Serial.print(event.orientation.y, 4);
-  Serial.print("\tZ: ");
-  Serial.print(event.orientation.z, 4);
-
-  displayCalStatus();
-
-
-  /* Wait the specified delay before requesting nex data */
-  delay(BNO055_SAMPLERATE_DELAY_MS);
 }
 
 #endif
