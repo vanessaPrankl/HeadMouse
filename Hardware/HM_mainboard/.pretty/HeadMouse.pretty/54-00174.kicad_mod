@@ -42,4 +42,9 @@
   (pad "3" thru_hole oval (at 11.5 3.3) (size 2.7 2) (drill oval 1.7 1) (layers "*.Cu" "*.Mask") (tstamp cca220b8-5020-456f-be14-92041b19daac))
   (pad "4" thru_hole oval (at 3.5 3.3) (size 2.7 2) (drill oval 1.7 1) (layers "*.Cu" "*.Mask") (tstamp b15bf456-df0d-4780-bd5e-12556884812f))
   (pad "5" thru_hole oval (at 3.5 -3.3) (size 2.7 2) (drill oval 1.7 1) (layers "*.Cu" "*.Mask") (tstamp 44315cd9-9ba4-44da-b080-d272ebcf5769))
+  (model "${KIPRJMOD}/.step/headmouse.3dshapes/54-00174.STEP"
+    (offset (xyz 18 3 -5))
+    (scale (xyz 1 1 1))
+    (rotate (xyz -90 0 90))
+  )
 )
