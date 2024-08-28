@@ -6,9 +6,8 @@
 /* 
 /************************************************************************/
 #pragma once
-#include <Arduino.h>
-
-typedef uint8_t pin;
+#include <stdint.h>
+#include "def_general.hpp"
 
 /* LEDs */
 constexpr pin PIN_LED_BAT_R = 6;
