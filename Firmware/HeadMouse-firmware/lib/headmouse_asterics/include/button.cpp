@@ -49,11 +49,13 @@ Buttons* Buttons::getInstance(pin pin_btn_0, pin pin_btn_1, pin pin_btn_2, pin p
  *************************************************************/
 err Buttons::initPins(){
     err error = ERR_GENERIC;
-    for(int i=0; i++; i<BUTTON_COUNT){
+    for(int i=0; i<BUTTON_COUNT; i++){
         pinMode(_pins[i], INPUT_PULLUP);
+        log_message(LOG_DEBUG, "Pin %d initialized as input with pullup", i);
     }
 
     if (BtnTimer.attachInterruptInterval(BTN_DEBOUNCE_MS * 1000, callbackTimerBtn)){
+        BtnTimer.stopTimer();
         error = ERR_NONE;
     }
     else error = ERR_GENERIC;
@@ -70,7 +72,7 @@ err Buttons::initPins(){
  *************************************************************/
 void Buttons::enableButtonInterrupts() {
     /* Reset button activity first */
-    for(int i=0; i++; i<BUTTON_COUNT){
+    for(int i=0; i<BUTTON_COUNT; i++){
         is_active[i] = false;
     }
 
@@ -79,6 +81,7 @@ void Buttons::enableButtonInterrupts() {
     attachInterrupt(digitalPinToInterrupt(_pins[1]), callbackBtnPress1, FALLING);
     attachInterrupt(digitalPinToInterrupt(_pins[2]), callbackBtnPress2, FALLING);
     attachInterrupt(digitalPinToInterrupt(_pins[3]), callbackBtnPress3, FALLING);
+   
 }
 
 /************************************************************
@@ -88,7 +91,7 @@ void Buttons::enableButtonInterrupts() {
  * detecting button presses.
  *************************************************************/
 void Buttons::disableButtonInterrupts() {
-    for(int i=0; i++; i<BUTTON_COUNT){
+    for(int i=0; i<BUTTON_COUNT; i++){
         detachInterrupt(digitalPinToInterrupt(_pins[i]));
     }  
 }
@@ -172,7 +175,7 @@ bool IRAM_ATTR Buttons::callbackTimerBtn(void* timerNo) {
     int index = 0;
 
     /* Detect which button is active */
-    for (int i = 0; i < BUTTON_COUNT; ++i) {
+    for (int i = 0; i < BUTTON_COUNT; i++) {
         if (instance->is_active[i]) {
             index = i;
             break;

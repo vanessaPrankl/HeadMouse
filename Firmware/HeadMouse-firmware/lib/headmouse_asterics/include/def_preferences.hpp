@@ -2,6 +2,23 @@
 #include <stdint.h>
 #include "BleMouse.h"
 
+namespace preferences{
+    /*! *********************************************************
+    * @brief Type to define sensitivity levels
+    *************************************************************/
+    typedef uint32_t devSensitivity;
+
+    constexpr char* STORE_MODE = "mode";
+    constexpr char* STORE_SENSITIVITY = "sensitivity";
+    constexpr char* STORE_BTN[4] = {"button0", "button1", "button2", "button3"};
+    constexpr devSensitivity SENSITIVITY_STEP = 10;
+    constexpr devSensitivity SENSITIVITY_MIN = 0;
+    constexpr devSensitivity SENSITIVITY_MAX = SENSITIVITY_STEP * 4;
+    constexpr devSensitivity PREF_SENSITIVITY[5] = {SENSITIVITY_MIN, SENSITIVITY_STEP*1, SENSITIVITY_STEP*2, SENSITIVITY_STEP*3, SENSITIVITY_STEP*4};
+}
+
+using namespace preferences;
+
 /*! *********************************************************
 * @brief Enum to define available mouse movement modes
 *************************************************************/
@@ -10,21 +27,6 @@ enum devMode {
     RELATIVE
 };
 
-/*! *********************************************************
-* @brief Enum to define available sensitivity levels
-*************************************************************/
-enum devSensitivity {
-    SENSITIVITY_0 = 0,
-    SENSITIVITY_1 = 5,
-    SENSITIVITY_2 = 10,
-    SENSITIVITY_3 = 15,
-    SENSITIVITY_4 = 20,
-    SENSITIVITY_5 = 25,
-    SENSITIVITY_6 = 30,
-    SENSITIVITY_7 = 35,
-    SENSITIVITY_8 = 40,
-    SENSITIVITY_9 = 45
-};
 
 /*! *********************************************************
 * @brief Enum to define available button actions
@@ -33,8 +35,8 @@ enum btnAction {
     NONE,
     LEFT = MOUSE_LEFT,
     RIGHT = MOUSE_RIGHT,
-    CONN_NEW_DEVICE,
-    SENSITIVITY
+    SENSITIVITY,
+    DEVICE_CONN_AND_CONFIG
 };
 
 /*! *********************************************************
@@ -45,6 +47,6 @@ enum btnAction {
 *************************************************************/
 struct HmPreferences{
     devMode mode = ABSOLUTE;
-    devSensitivity sensititvity = SENSITIVITY_4;
+    devSensitivity sensititvity = PREF_SENSITIVITY[4];
     btnAction btn_actions[4] = {NONE, NONE, NONE, NONE};
 };

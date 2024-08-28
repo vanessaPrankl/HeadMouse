@@ -8,6 +8,7 @@
 #include "./include/button.hpp"
 #include "Adafruit_Sensor.h"
 
+
 class HeadMouse {
     private:
     HmStatus _status;
@@ -17,6 +18,7 @@ class HeadMouse {
     sensors_event_t _imu_data;
 
     void _initPins();
+    void _initPreferences(HmPreferences);
     void _batStatusInterpreter();
     void _devStatusInterpreter();
    

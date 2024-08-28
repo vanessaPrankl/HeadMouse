@@ -42,10 +42,8 @@ void setup() {
 
 /* MAIN ******************************************************************/
 void loop() {
-    
     hm.updateDevStatus();
-    //delayMicroseconds(100000);    /* Debug only */
     hm.updateMovements();
     hm.updateBtnActions();
-    
+    //delayMicroseconds(100000);    /* Debug only */
 }

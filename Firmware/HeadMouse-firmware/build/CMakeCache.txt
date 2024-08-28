@@ -18,12 +18,6 @@
 CMAKE_BUILD_TYPE:STRING=Debug
 
 //No help, variable specified on the command line.
-CMAKE_CXX_COMPILER:FILEPATH=C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/11.2 2022.02/bin/arm-none-eabi-g++.exe
-
-//No help, variable specified on the command line.
-CMAKE_C_COMPILER:FILEPATH=C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/11.2 2022.02/bin/arm-none-eabi-gcc.exe
-
-//No help, variable specified on the command line.
 CMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE
 
 //Value Computed by CMake.
@@ -48,12 +42,10 @@ CMAKE_COMMAND:INTERNAL=C:/Users/vanes/Desktop/cmake-3.25.1-windows-x86_64/cmake-
 CMAKE_CPACK_COMMAND:INTERNAL=C:/Users/vanes/Desktop/cmake-3.25.1-windows-x86_64/cmake-3.25.1-windows-x86_64/bin/cpack.exe
 //Path to ctest program executable.
 CMAKE_CTEST_COMMAND:INTERNAL=C:/Users/vanes/Desktop/cmake-3.25.1-windows-x86_64/cmake-3.25.1-windows-x86_64/bin/ctest.exe
-//Path to cache edit program executable.
-CMAKE_EDIT_COMMAND:INTERNAL=C:/Users/vanes/Desktop/cmake-3.25.1-windows-x86_64/cmake-3.25.1-windows-x86_64/bin/cmake-gui.exe
 //Name of external makefile project generator.
 CMAKE_EXTRA_GENERATOR:INTERNAL=
 //Name of generator.
-CMAKE_GENERATOR:INTERNAL=Unix Makefiles
+CMAKE_GENERATOR:INTERNAL=Visual Studio 17 2022
 //Generator instance identifier.
 CMAKE_GENERATOR_INSTANCE:INTERNAL=
 //Name of generator platform.

@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <utility/imumaths.h>
+#include <Preferences.h>
 #include "headmouse.hpp"
 #include "BleMouse.h"
 #include "Adafruit_Sensor.h"
@@ -10,12 +11,13 @@
 static constexpr uint32_t MOVE_MOUSE_OFFSET = 2;
 
 namespace _headmouse{
-
-Adafruit_BNO055 bno = Adafruit_BNO055(BNO055_SENSOR_ID, BNO055_I2C_ADDRESS, &Wire);
-BleMouse bleMouse(DEVICE_NAME, DEVICE_MANUFACTURER, BAT_LEVEL_DUMMY);
+    Preferences nonVolatileMemory;
+    Adafruit_BNO055 bno = Adafruit_BNO055(BNO055_SENSOR_ID, BNO055_I2C_ADDRESS, &Wire);
+    BleMouse bleMouse(DEVICE_NAME, DEVICE_MANUFACTURER, BAT_LEVEL_DUMMY);
 }
 
 using namespace _headmouse;
+using namespace preferences;
  
 /* PRIVATE METHODS **************************************************/
 
@@ -28,15 +30,8 @@ using namespace _headmouse;
  * @return None
  *************************************************************/
 void HeadMouse::_initPins(){
-    /* Init LEDs */
-    pinMode(PIN_LED_BAT_R, OUTPUT);
-    pinMode(PIN_LED_BAT_G, OUTPUT);
-    pinMode(PIN_LED_STATUS_R, OUTPUT);
-    pinMode(PIN_LED_STATUS_G, OUTPUT);
-
     /* Init buttons */
     _buttons->initPins();
-    /* Init button interrupts */
     _buttons->enableButtonInterrupts();
 
     /* Init leds */
@@ -53,6 +48,61 @@ void HeadMouse::_initPins(){
         log_message(LOG_ERROR, "Cannot init I2C bus.");
     } 
 }
+
+/************************************************************
+ * @brief Initialize device preferences at HeadMouse startup.
+ * 
+ * This function initializes the necessary HeadMouse device 
+ * preferences for operating mode, sensitivity and button 
+ * to mouse action associations. If already stored on the device
+ * the available device config will be loaded. Otherwise standard
+ * config will be used and stored in non-volatile storage of the 
+ * device. 
+ * 
+ * @return None
+ *************************************************************/
+void HeadMouse::_initPreferences(HmPreferences preferences){
+    nonVolatileMemory.begin("device_config", false);  // Open preferences namespace in read/write mode
+    
+    /* Read already stored config or store to permanent device storage if not already done */
+    if(nonVolatileMemory.isKey(STORE_MODE)){
+        _preferences.mode = (devMode)(nonVolatileMemory.getUInt(STORE_MODE, 0));
+        log_message(LOG_INFO, "...MODE Preferences loaded from memory: %d", _preferences.mode);
+    } else{ 
+        _preferences.mode = preferences.mode;
+        nonVolatileMemory.putUInt(STORE_MODE, _preferences.mode);
+        log_message(LOG_INFO, "...MODE default preferences set: %d", _preferences.mode);
+    }
+
+    if(nonVolatileMemory.isKey(STORE_SENSITIVITY)){
+        devSensitivity sensitivity = nonVolatileMemory.getUInt(STORE_SENSITIVITY, 0);
+        if((sensitivity >= SENSITIVITY_MIN) && (sensitivity <= SENSITIVITY_MAX)){
+            _preferences.sensititvity = sensitivity;
+            log_message(LOG_INFO, "... SENSITIVITY Preferences loaded from memory: %d", _preferences.sensititvity);
+        }
+        else{
+            _preferences.sensititvity = preferences.sensititvity;
+            nonVolatileMemory.putUInt(STORE_SENSITIVITY, _preferences.sensititvity);
+            log_message(LOG_INFO, "... Stored SENSITIVITY out of range (%d), setting default value: %d...", sensitivity, _preferences.sensititvity);
+        }
+    } else{ 
+        _preferences.sensititvity = preferences.sensititvity;
+        nonVolatileMemory.putUInt(STORE_SENSITIVITY, _preferences.sensititvity);
+        log_message(LOG_INFO, "...SENSITIVITY default preferences set: %d", _preferences.sensititvity);
+    }
+
+    for(int i=0; i<BUTTON_COUNT; i++){
+        if(nonVolatileMemory.isKey(STORE_BTN[i])){
+            _preferences.btn_actions[i] = (btnAction)(nonVolatileMemory.getUInt(STORE_BTN[i], 0));
+            log_message(LOG_INFO, "...BTN%d preferences loaded from memory: %d", i, _preferences.btn_actions[i]);
+        } else{ 
+            _preferences.btn_actions[i] = preferences.btn_actions[i];
+            nonVolatileMemory.putUInt(STORE_BTN[i], _preferences.btn_actions[i]);
+            log_message(LOG_INFO, "...BTN%d default preferences set: %d", i, _preferences.btn_actions[i]);
+        }
+            
+    }
+   }
 
 
 /************************************************************
@@ -187,7 +237,13 @@ err HeadMouse::init(HmPreferences preferences){
     err error = ERR_GENERIC;
 
     /* Setup HM preferences */
-    setPreferences(preferences);
+    _preferences.mode = preferences.mode;    // Testing only 
+    _preferences.sensititvity = preferences.sensititvity;
+    _preferences.btn_actions[0] = preferences.btn_actions[0];
+    _preferences.btn_actions[1] = preferences.btn_actions[1];
+    _preferences.btn_actions[2] = preferences.btn_actions[2];
+    _preferences.btn_actions[3] = preferences.btn_actions[3];
+    //_initPreferences(preferences);
     log_message(LOG_INFO, "...Preferences initialized");
 
     /* Init uC peripherals */
@@ -318,33 +374,53 @@ void HeadMouse::updateBtnActions(){
     static bool is_press_buf[BUTTON_COUNT] = {0};
     
     for(int i=0; i<BUTTON_COUNT; i++){
-        /* Only execute click/press if button is associated with left or right mouse button  */
+        /* Check for left/right mouse button action */
         if((_preferences.btn_actions[i]==RIGHT) || (_preferences.btn_actions[i]==LEFT)){
             if(_buttons->is_click[i]){  /* CLICK */
                 bleMouse.click(_preferences.btn_actions[i]);
                 _buttons->is_click[i] = false;
-                log_message(LOG_DEBUG, "Button %d clicked ",  i);
+                log_message(LOG_INFO, "Button %d clicked ",  i);
             }
-            /* Only execute press if button is associated with left or right mouse button  */
-            else if(_buttons->is_press[i] && !is_press_buf[i]){ /* PRESS */
+            /* Check if button is pressed/released */
+            if(_buttons->is_press[i] && !is_press_buf[i]){ /* PRESS */
                 bleMouse.press(_preferences.btn_actions[i]);
                 is_press_buf[i] = true;
-                log_message(LOG_DEBUG, "Button %d start press ",  i);
+                log_message(LOG_INFO, "Button %d start press ",  i);
             }
             else if(!_buttons->is_press[i] && is_press_buf[i]){ /* RELEASE */
                 bleMouse.release(_preferences.btn_actions[i]);
                 is_press_buf[i] = false;
-                log_message(LOG_DEBUG, "Button %d stop press ",  i);
+                log_message(LOG_INFO, "Button %d stop press ",  i);
             }
         }
-        else if(_preferences.btn_actions[i] == CONN_NEW_DEVICE){
+        else if(_preferences.btn_actions[i] == SENSITIVITY){
             if(_buttons->is_click[i]){
-                bleMouse.connectNewDevice();
-                log_message(LOG_INFO, "Connecting new device...");
+                if(_preferences.sensititvity == SENSITIVITY_MAX){
+                    _preferences.sensititvity = SENSITIVITY_MIN;
+                }
+                else{ _preferences.sensititvity += SENSITIVITY_STEP;}
+                
+                setSensitivity(_preferences.sensititvity);
                 _buttons->is_click[i] = false;
             }
         }
-        
+        else if(_preferences.btn_actions[i] == DEVICE_CONN_AND_CONFIG){
+            if(_buttons->is_click[i]){
+                bleMouse.connectNewDevice();
+                log_message(LOG_INFO, "BLE advertising started...");
+                _buttons->is_click[i] = false;
+            }
+            /* Check if button is pressed/released */
+            if(_buttons->is_press[i] && !is_press_buf[i]){ /* PRESS */
+                /* TODO: Enter Wifi config mode here*/
+                log_message(LOG_INFO, "Button %d startpress  - config mode work in progress ",  i);
+                is_press_buf[i] = true;
+            }
+            else if(!_buttons->is_press[i] && is_press_buf[i]){ /* RELEASE */
+                is_press_buf[i] = false;
+                log_message(LOG_INFO, "Button %d stop press ",  i);
+            }
+        }
     }
 }
 
@@ -374,7 +450,9 @@ void HeadMouse::setPreferences(HmPreferences preferences){
  *************************************************************/
 void HeadMouse::setSensitivity(devSensitivity sensititvity){
     _preferences.sensititvity = sensititvity;
-    log_message(LOG_INFO, "...Sensitivity set to %d", _preferences.sensititvity);
+    nonVolatileMemory.putUInt(STORE_SENSITIVITY, _preferences.sensititvity);
+
+    log_message(LOG_INFO, "Sensitivity set to %d", _preferences.sensititvity);
 }
 
 /************************************************************
@@ -386,6 +464,7 @@ void HeadMouse::setSensitivity(devSensitivity sensititvity){
  *************************************************************/
 void HeadMouse::setMode(devMode mode){
     _preferences.mode = mode;
+    nonVolatileMemory.putUInt(STORE_MODE, _preferences.mode);
     log_message(LOG_INFO, "...Mode set to %d", _preferences.mode);
 }
 
@@ -400,6 +479,7 @@ void HeadMouse::setMode(devMode mode){
 void HeadMouse::setButtonActions(btnAction* actions){
     for(int i=0; i<BUTTON_COUNT; i++){
         _preferences.btn_actions[i] = actions[i];
+        nonVolatileMemory.putUInt(STORE_BTN[i], _preferences.btn_actions[i]);
         log_message(LOG_INFO, "...Set pin %d to action %d", i, _preferences.btn_actions[i]);
     }
 }
