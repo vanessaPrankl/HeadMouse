@@ -8,8 +8,6 @@
 #include "Adafruit_BNO055.h"
 #include "logging.hpp"
 
-static constexpr uint32_t MOVE_MOUSE_OFFSET = 2;
-
 namespace _headmouse{
     Preferences nonVolatileMemory;
     Adafruit_BNO055 bno = Adafruit_BNO055(BNO055_SENSOR_ID, BNO055_I2C_ADDRESS, &Wire);
@@ -301,12 +299,15 @@ HmStatus HeadMouse::updateDevStatus(){
  * @return ERR_xxx if something went wrong, OK otherwise.
  *************************************************************/
 err HeadMouse::updateMovements(){
-    static int first_run = true;
-    int move_mouse_y = 0;
-    int move_mouse_x = 0;
+    static bool first_run = true;
+    int64_t mouse_change_x = 0;
+    int64_t mouse_change_y = 0;
+    int mouse_move_x = 0;
+    int mouse_move_y = 0;
     static sensors_event_t imu_data;
     sensors_event_t new_imu_data;
-
+    int32_t sensitivity_level = 0;
+    
     /* Get a new sensor event */
     bno.getEvent(&new_imu_data);
     if(first_run){
@@ -316,47 +317,99 @@ err HeadMouse::updateMovements(){
         _imu_data.orientation.z = new_imu_data.orientation.z;
     }
 
-    log_message(LOG_DEBUG_IMU, "new IMU orientation data: X: %.2f, Y: %.2f, Z: %.2f", new_imu_data.orientation.x, new_imu_data.orientation.y, new_imu_data.orientation.z);
+    /* Determine currently active sensitivity level */
+    switch(_preferences.sensititvity){
+        case PREF_SENSITIVITY[0]: 
+            sensitivity_level = 0;
+        break;
+            case PREF_SENSITIVITY[1]: 
+            sensitivity_level = 1;
+        break;
+            case PREF_SENSITIVITY[2]: 
+            sensitivity_level = 2;
+        break;
+            case PREF_SENSITIVITY[3]: 
+            sensitivity_level = 3;
+        break;
+            case PREF_SENSITIVITY[4]: 
+            sensitivity_level = 4;
+        break;
+    }
+
+    //log_message(LOG_DEBUG_IMU, "new IMU orientation data: X: %.2f, Y: %.2f, Z: %.2f", new_imu_data.orientation.x, new_imu_data.orientation.y, new_imu_data.orientation.z);
     //log_message(LOG_DEBUG_IMU, "sensitivity: %d", _preferences.sensititvity);
 
-    /* Process data */
-    if((new_imu_data.orientation.x > 359) && (imu_data.orientation.x < 1)){ // Guard edge cases
-        move_mouse_x = (int)(_preferences.sensititvity*(new_imu_data.orientation.x-360)) - (int)(_preferences.sensititvity*imu_data.orientation.x);
+    /* X-AXIS DATA PROCESSING *******************/
+    /* Process Euler Angle data */
+    if((new_imu_data.orientation.x > 359.5) && (imu_data.orientation.x < 0.5)){         // Guard edge case
+        mouse_change_x = (int64_t)(SCALING_FACTOR*((new_imu_data.orientation.x - 360.0) - imu_data.orientation.x));
     }
-    else if((new_imu_data.orientation.x < 1) && (imu_data.orientation.x > 359)){
-        move_mouse_x = (int)(_preferences.sensititvity*new_imu_data.orientation.x) - (int)(_preferences.sensititvity*(imu_data.orientation.x-360));
-    }
-    else{
-        move_mouse_x = (int)(_preferences.sensititvity*new_imu_data.orientation.x) - (int)(_preferences.sensititvity*imu_data.orientation.x);
-    }
-    move_mouse_y = (int)(_preferences.sensititvity*imu_data.orientation.z) - (int)(_preferences.sensititvity*new_imu_data.orientation.z);   /* IMU z-axis is translated into display y-axis */
-    
-    /* Add offset to stabalize mouse when head is not moving */
-    if((move_mouse_x >= -MOVE_MOUSE_OFFSET) && (move_mouse_x <= MOVE_MOUSE_OFFSET)){
-        move_mouse_x = 0;    /* Don't update imu data buffer here, so information does not get lost */
+    else if((new_imu_data.orientation.x < 0.5) && (imu_data.orientation.x > 359.5)){    // Guard edge case
+        mouse_change_x = (int64_t)(SCALING_FACTOR*(new_imu_data.orientation.x - (imu_data.orientation.x - 360.0)));
     }
     else{
-        imu_data.orientation.x = new_imu_data.orientation.x;     /* Store orientation values into buffer for later on comparison */
+        mouse_change_x = (int64_t)(SCALING_FACTOR*(new_imu_data.orientation.x - imu_data.orientation.x));
     }
-    /* Add offset to stabalize mouse when head is not moving */
-    if((move_mouse_y >= -MOVE_MOUSE_OFFSET) && (move_mouse_y <= MOVE_MOUSE_OFFSET)){
-        move_mouse_y = 0;   /* Don't update imu data buffer here, so information does not get lost */
+
+    /* Add jitter-offset to stabalize mouse when head is not moving */
+    if((mouse_change_x >= -JITTER_OFFSET) && (mouse_change_x <= JITTER_OFFSET)){
+        mouse_move_x = 0;  
+    }
+    /* Enter slow-motion mode if mouse is moving slowly to improve positioning accuracy */
+    else if((mouse_change_x >= -SLOW_MOTION_OFFSET) && (mouse_change_x <= SLOW_MOTION_OFFSET)){
+        for(int i=0; i<SENSITIVITY_STEP_COUNT; i++){
+            if((mouse_change_x > SLOWMO_ANGLE_DEFLECTION[i]) && (mouse_change_x <= SLOWMO_ANGLE_DEFLECTION[i+1])){
+                mouse_move_x = (int)((mouse_change_x * SLOWMO_SENSITIVITY[i][sensitivity_level]) / SCALING_FACTOR);
+                break;
+            }
+            else if((mouse_change_x > -SLOWMO_ANGLE_DEFLECTION[i+1]) && (mouse_change_x <= -SLOWMO_ANGLE_DEFLECTION[i])){
+                mouse_move_x = (int)((mouse_change_x * SLOWMO_SENSITIVITY[i][sensitivity_level]) / SCALING_FACTOR);
+                break;
+            }
+        }
+    }
+    /* Normal operation: adjust mouse movement to chosen sensitivity level */
+    else{   
+        mouse_move_x = (int)((mouse_change_x * _preferences.sensititvity) / SCALING_FACTOR);
+    }
+    /* Y-AXIS DATA PROCESSING *******************/
+    /* Process Euler Angle data - IMU z-axis is translated into display y-axis; No special edge case guard needed */
+    mouse_change_y = (int64_t)(SCALING_FACTOR*(imu_data.orientation.z - new_imu_data.orientation.z));  
+
+    /* Add jitter-offset to stabalize mouse when head is not moving */
+    if((mouse_change_y >= -JITTER_OFFSET) && (mouse_change_y <= JITTER_OFFSET)){
+        mouse_move_y = 0;  
     } 
-    else{
-        imu_data.orientation.z = new_imu_data.orientation.z;     /* Store orientation values into buffer for later on comparison */
+    /* Enter slow-motion mode if mouse is moving slowly to improve positioning accuracy */
+    else if((mouse_change_y >= -SLOW_MOTION_OFFSET) && (mouse_change_y <= SLOW_MOTION_OFFSET)){
+        for(int i=0; i<SENSITIVITY_STEP_COUNT; i++){
+            if((mouse_change_y > SLOWMO_ANGLE_DEFLECTION[i]) && (mouse_change_y <= SLOWMO_ANGLE_DEFLECTION[i+1])){
+                mouse_move_y = (int)((mouse_change_y * SLOWMO_SENSITIVITY[i][sensitivity_level]) / SCALING_FACTOR);
+                break;
+            }
+            else if((mouse_change_y > -SLOWMO_ANGLE_DEFLECTION[i+1]) && (mouse_change_y <= -SLOWMO_ANGLE_DEFLECTION[i])){
+                mouse_move_y = (int)((mouse_change_y * SLOWMO_SENSITIVITY[i][sensitivity_level]) / SCALING_FACTOR);
+                break;
+            }
+        }
     }
-
-
+    /* Normal operation: adjust mouse movement to chosen sensitivity level */
+    else{       
+        mouse_move_y =  (int)((mouse_change_y * _preferences.sensititvity) / SCALING_FACTOR);
+    }
+    
+    /* Update imu data buffer for later on comparison */
+    imu_data.orientation.x = new_imu_data.orientation.x;
+    imu_data.orientation.z = new_imu_data.orientation.z;    
+    
     /* Move mouse cursor */
     if(_status.is_connected){       
-        if((move_mouse_x != 0) || (move_mouse_y != 0)){
-            bleMouse.move((unsigned char)(move_mouse_x), (unsigned char)(move_mouse_y),0);  
-            //log_message(LOG_DEBUG_IMU, "move x: %d, move y %d", move_mouse_x, move_mouse_y);
+        if((mouse_move_x != 0) || (mouse_move_y != 0)){
+            bleMouse.move((unsigned char)(mouse_move_x), (unsigned char)(mouse_move_y),0);  
+            log_message(LOG_DEBUG_IMU, "move x: %d", mouse_move_x);
         }
     }
     else{
-        //bleMouse.end();
-        //bleMouse.begin();
         return ERR_CONNECTION_FAILED;
     }
 
