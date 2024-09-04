@@ -13,29 +13,29 @@ namespace preferences{
     constexpr char* STORE_BTN[4] = {"button0", "button1", "button2", "button3"};
 
     constexpr int SCALING_FACTOR = 1000;   // Used to bring calculations from float to int with necessary accuracy
-    constexpr int JITTER_OFFSET = (int)(0.03*SCALING_FACTOR);       // [RAD]*scaling factor
-    constexpr int SLOW_MOTION_OFFSET = (int)(0.15*SCALING_FACTOR);   // [RAD]*scaling factor
-    constexpr devSensitivity SENSITIVITY_STEP = 10;
+    constexpr int JITTER_OFFSET = (int)(0.02*SCALING_FACTOR);       // [RAD]*scaling factor
+    constexpr int SLOW_MOTION_OFFSET = (int)(0.07*SCALING_FACTOR);   // [RAD]*scaling factor
+    constexpr devSensitivity SENSITIVITY_STEP = 7;
     constexpr devSensitivity SENSITIVITY_STEP_COUNT = 5;
-    constexpr devSensitivity SENSITIVITY_MIN = 30;
+    constexpr devSensitivity SENSITIVITY_MIN = 20;
     constexpr devSensitivity SENSITIVITY_MAX = SENSITIVITY_MIN + SENSITIVITY_STEP * (SENSITIVITY_STEP_COUNT-1);
     constexpr devSensitivity PREF_SENSITIVITY[SENSITIVITY_STEP_COUNT] = {SENSITIVITY_MIN, SENSITIVITY_MIN+SENSITIVITY_STEP, SENSITIVITY_MIN+SENSITIVITY_STEP*2, SENSITIVITY_MIN+SENSITIVITY_STEP*3, SENSITIVITY_MAX};
 
     constexpr int SLOWMO_ANGLE_DEFLECTION[6] = {
-30,
-54,
-78,
-102,
-126,
-150
+                                                20,
+                                                30,
+                                                40,
+                                                50,
+                                                60,
+                                                70
                                                 };
     constexpr int SLOWMO_SENSITIVITY[5][5] = {
-    {20, 22, 22, 32, 42},
-    {20, 23, 24, 34, 44},
-    {20, 24, 26, 36, 46},
-    {20, 25, 29, 39, 49},
-    {20, 27, 33, 43, 53}
-    };
+                                                {20, 20, 20, 20, 20},
+                                                {20, 21, 22, 23, 24},
+                                                {20, 23, 25, 27, 28},
+                                                {20, 24, 27, 31, 34},
+                                                {20, 25, 31, 36, 40}
+                                                };
 }
 
 using namespace preferences;

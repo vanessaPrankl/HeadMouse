@@ -348,7 +348,7 @@ err HeadMouse::updateMovements(){
         mouse_change_x = (int64_t)(SCALING_FACTOR*(new_imu_data.orientation.x - (imu_data.orientation.x - 360.0)));
     }
     else{
-        mouse_change_x = (int64_t)(SCALING_FACTOR*(new_imu_data.orientation.x - imu_data.orientation.x));
+        mouse_change_x = (int64_t)(SCALING_FACTOR*(new_imu_data.orientation.x - imu_data.orientation.x)); 
     }
 
     /* Add jitter-offset to stabalize mouse when head is not moving */
