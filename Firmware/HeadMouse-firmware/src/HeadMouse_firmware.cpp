@@ -12,6 +12,7 @@
 #include "logging.hpp"
 #include "headmouse.hpp"
 
+
 HeadMouse hm;
 
 /* INIT *****************************************************************/
@@ -42,8 +43,9 @@ void setup() {
 
 /* MAIN ******************************************************************/
 void loop() {
+  if(hm.isMeasurementAvailable()){
     hm.updateDevStatus();
     hm.updateMovements();
     hm.updateBtnActions();
-    //delayMicroseconds(100000);    /* Debug only */
+  }
 }

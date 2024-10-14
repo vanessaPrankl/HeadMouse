@@ -12,23 +12,16 @@ namespace preferences{
     constexpr char* STORE_SENSITIVITY = "sensitivity";
     constexpr char* STORE_BTN[4] = {"button0", "button1", "button2", "button3"};
 
-    constexpr int SCALING_FACTOR = 1000;   // Used to bring calculations from float to int with necessary accuracy
-    constexpr int JITTER_OFFSET = (int)(0.02*SCALING_FACTOR);       // [RAD]*scaling factor
-    constexpr int SLOW_MOTION_OFFSET = (int)(0.07*SCALING_FACTOR);   // [RAD]*scaling factor
+    constexpr int SCALING_FACTOR = 1000000;   // Used to bring calculations from float to int with necessary accuracy
+    constexpr int JITTER_OFFSET = (int)(0.00003*SCALING_FACTOR);       // [RAD]*scaling factor
+    constexpr int SLOW_MOTION_OFFSET = (int)(0.001*SCALING_FACTOR);   // [RAD]*scaling factor
     constexpr devSensitivity SENSITIVITY_STEP = 7;
     constexpr devSensitivity SENSITIVITY_STEP_COUNT = 5;
     constexpr devSensitivity SENSITIVITY_MIN = 20;
     constexpr devSensitivity SENSITIVITY_MAX = SENSITIVITY_MIN + SENSITIVITY_STEP * (SENSITIVITY_STEP_COUNT-1);
     constexpr devSensitivity PREF_SENSITIVITY[SENSITIVITY_STEP_COUNT] = {SENSITIVITY_MIN, SENSITIVITY_MIN+SENSITIVITY_STEP, SENSITIVITY_MIN+SENSITIVITY_STEP*2, SENSITIVITY_MIN+SENSITIVITY_STEP*3, SENSITIVITY_MAX};
 
-    constexpr int SLOWMO_ANGLE_DEFLECTION[6] = {
-                                                20,
-                                                30,
-                                                40,
-                                                50,
-                                                60,
-                                                70
-                                                };
+    constexpr int SLOWMO_ANGLE_DEFLECTION[6] = {300, 440, 580, 580, 720, 860};
     constexpr int SLOWMO_SENSITIVITY[5][5] = {
                                                 {20, 20, 20, 20, 20},
                                                 {20, 21, 22, 23, 24},

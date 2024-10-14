@@ -7,16 +7,36 @@
 #include "Adafruit_Sensor.h"
 #include "Adafruit_BNO055.h"
 #include "logging.hpp"
+#include "hw_isr.hpp"
 
 namespace _headmouse{
     Preferences nonVolatileMemory;
     Adafruit_BNO055 bno = Adafruit_BNO055(BNO055_SENSOR_ID, BNO055_I2C_ADDRESS, &Wire);
     BleMouse bleMouse(DEVICE_NAME, DEVICE_MANUFACTURER, BAT_LEVEL_DUMMY);
+    volatile bool _measurement_available = 0;
 }
 
+namespace isr{
+    ESP32Timer ProgramCycleTimer(2);
+}
+using namespace isr;
 using namespace _headmouse;
 using namespace preferences;
- 
+
+/************************************************************
+ * @brief Timer callback function for program cycle timer.
+ *
+ * This function is called by the timer interrupt indicate a new
+ * program/IMU measurement cycle
+ *
+ * @param timerNo The timer number (unused).
+ * @return Always returns true.
+ *************************************************************/
+bool IRAM_ATTR HeadMouse::_callbackTimerProgramCycle(void * timerNo){
+    _measurement_available = true;
+    return true;
+}
+
 /* PRIVATE METHODS **************************************************/
 
 /************************************************************
@@ -221,6 +241,18 @@ void HeadMouse::_devStatusInterpreter(){
 }
 
 /* PUBLIC METHODS */
+/************************************************************
+ * @brief Check if new BNO055 measurement cycle has finished
+ * 
+ * @return TRUE if new data is available, FALSE otherwise.
+ *************************************************************/
+bool HeadMouse::isMeasurementAvailable(){
+    if(_measurement_available){
+        return true;
+        _measurement_available = false;
+    }
+    else return false;
+}
 
 /************************************************************
  * @brief Initialize HeadMouse hardware components.
@@ -247,6 +279,15 @@ err HeadMouse::init(HmPreferences preferences){
     /* Init uC peripherals */
     _initPins();
     log_message(LOG_INFO, "...Pins initialized");
+
+    if(ProgramCycleTimer.attachInterruptInterval(PROGRAM_CYCLE_INTERVAL_MS*1000, _callbackTimerProgramCycle))
+    {    
+        log_message(LOG_INFO, "...Program cycle timer initialized"); 
+    }
+    else{
+        log_message(LOG_INFO, "... Cannot init Program cycle timer, aborting..."); 
+        return ERR_GENERIC;
+    }
 
     /* Start ble task manager for bluetooth mouse communication */
     bleMouse.begin();  
@@ -307,15 +348,27 @@ err HeadMouse::updateMovements(){
     static sensors_event_t imu_data;
     sensors_event_t new_imu_data;
     int32_t sensitivity_level = 0;
+    imu::Quaternion quat;
+    static imu::Vector<3> euler;
+    imu::Vector<3> new_euler;
     
     /* Get a new sensor event */
-    bno.getEvent(&new_imu_data);
+    quat = bno.getQuat();
+    new_euler = quat.toEuler();
+    
+    //bno.getEvent(&new_imu_data);
     if(first_run){
         first_run = false;
+        euler = new_euler;
+
+        /*
         _imu_data.orientation.x = new_imu_data.orientation.x;
         _imu_data.orientation.y = new_imu_data.orientation.y;
         _imu_data.orientation.z = new_imu_data.orientation.z;
+        */
     }
+    //log_message(LOG_DEBUG_IMU, "new IMU orientation data: X: %.2f, Y: %.2f, Z: %.2f", euler.x(), euler.y(), euler.z());
+
 
     /* Determine currently active sensitivity level */
     switch(_preferences.sensititvity){
@@ -336,9 +389,84 @@ err HeadMouse::updateMovements(){
         break;
     }
 
-    //log_message(LOG_DEBUG_IMU, "new IMU orientation data: X: %.2f, Y: %.2f, Z: %.2f", new_imu_data.orientation.x, new_imu_data.orientation.y, new_imu_data.orientation.z);
+    /* X-AXIS DATA PROCESSING *******************/
+    /* Process Euler Angle data */
+    if(((new_euler.x() >= 3.14) && (euler.x() < -3.14)) || (new_euler.x() < -3.14) && (euler.x() >= 3.14)){         // Guard edge case
+        mouse_change_x = (int64_t)(SCALING_FACTOR*(new_euler.x() + euler.x()));
+        log_message(LOG_DEBUG_IMU, "mouse change x: %d", mouse_change_x);
+    }
+    else if(((new_euler.x() < -0) && (euler.x() >= 0)) || ((new_euler.x() > -0) && (euler.x() <= 0))){    // Guard edge case
+        mouse_change_x = (int64_t)(SCALING_FACTOR*(new_euler.x() + euler.x()));
+        log_message(LOG_DEBUG_IMU, "mouse change x: %d", mouse_change_x);
+    }
+    else{
+        mouse_change_x = (int64_t)(SCALING_FACTOR*(euler.x() - new_euler.x())); 
+        log_message(LOG_DEBUG_IMU, "mouse change x: %d", mouse_change_x);
+    }
+
+    /* Add jitter-offset to stabalize mouse when head is not moving */
+    if((mouse_change_x >= -JITTER_OFFSET) && (mouse_change_x <= JITTER_OFFSET)){
+        mouse_move_x = 0;  
+    }
+    /* Enter slow-motion mode if mouse is moving slowly to improve positioning accuracy */
+    else if((mouse_change_x >= -SLOW_MOTION_OFFSET) && (mouse_change_x <= SLOW_MOTION_OFFSET)){
+        for(int i=0; i<SENSITIVITY_STEP_COUNT; i++){
+            if((mouse_change_x > SLOWMO_ANGLE_DEFLECTION[i]) && (mouse_change_x <= SLOWMO_ANGLE_DEFLECTION[i+1])){
+                mouse_move_x = (int)((mouse_change_x * SLOWMO_SENSITIVITY[i][sensitivity_level]) / 20000);
+                break;
+            }
+            else if((mouse_change_x > -SLOWMO_ANGLE_DEFLECTION[i+1]) && (mouse_change_x <= -SLOWMO_ANGLE_DEFLECTION[i])){
+                mouse_move_x = (int)((mouse_change_x * SLOWMO_SENSITIVITY[i][sensitivity_level]) / 20000);
+                break;
+            }
+        }
+    }
+    /* Normal operation: adjust mouse movement to chosen sensitivity level */
+    else{   
+        mouse_move_x = (int)((mouse_change_x * _preferences.sensititvity) / 20000);
+    }
+    log_message(LOG_DEBUG_IMU, "move x: %d", mouse_move_x);
     //log_message(LOG_DEBUG_IMU, "sensitivity: %d", _preferences.sensititvity);
 
+    /* Y-AXIS DATA PROCESSING *******************/
+    /* Process Euler Angle data */
+    if(((new_euler.z() >= 3.14) && (euler.z() < -3.14)) || (new_euler.z() < -3.14) && (euler.z() >= 3.14)){         // Guard edge case
+        mouse_change_y = (int64_t)(SCALING_FACTOR*(new_euler.z() + euler.z()));
+        log_message(LOG_DEBUG_IMU, "mouse change y: %d", mouse_change_y);
+    }
+    else if(((new_euler.z() < -0) && (euler.z() >= 0)) || ((new_euler.z() > -0) && (euler.z() <= 0))){    // Guard edge case
+        mouse_change_y = (int64_t)(SCALING_FACTOR*(new_euler.z() + euler.z()));
+        log_message(LOG_DEBUG_IMU, "mouse change y: %d", mouse_change_y);
+    }
+    else{
+        mouse_change_y = (int64_t)(SCALING_FACTOR*(new_euler.z() - euler.z())); 
+        log_message(LOG_DEBUG_IMU, "mouse change y: %d", mouse_change_y);
+    }
+
+    /* Add jitter-offset to stabalize mouse when head is not moving */
+    if((mouse_change_y >= -JITTER_OFFSET) && (mouse_change_y <= JITTER_OFFSET)){
+        mouse_move_y = 0;  
+    }
+    /* Enter slow-motion mode if mouse is moving slowly to improve positioning accuracy */
+    else if((mouse_change_y >= -SLOW_MOTION_OFFSET) && (mouse_change_y <= SLOW_MOTION_OFFSET)){
+        for(int i=0; i<SENSITIVITY_STEP_COUNT; i++){
+            if((mouse_change_y > SLOWMO_ANGLE_DEFLECTION[i]) && (mouse_change_y <= SLOWMO_ANGLE_DEFLECTION[i+1])){
+                mouse_move_y = (int)((mouse_change_y * SLOWMO_SENSITIVITY[i][sensitivity_level]) / 20000);
+                break;
+            }
+            else if((mouse_change_y > -SLOWMO_ANGLE_DEFLECTION[i+1]) && (mouse_change_y <= -SLOWMO_ANGLE_DEFLECTION[i])){
+                mouse_move_y = (int)((mouse_change_y * SLOWMO_SENSITIVITY[i][sensitivity_level]) / 20000);
+                break;
+            }
+        }
+    }
+    /* Normal operation: adjust mouse movement to chosen sensitivity level */
+    else{   
+        mouse_move_y = (int)((mouse_change_y * _preferences.sensititvity) / 20000);
+    }
+    log_message(LOG_DEBUG_IMU, "move y: %d", mouse_move_y);
+    //log_message(LOG_DEBUG_IMU, "sensitivity: %d", _preferences.sensititvity);
+#ifdef GRAD
     /* X-AXIS DATA PROCESSING *******************/
     /* Process Euler Angle data */
     if((new_imu_data.orientation.x > 359.5) && (imu_data.orientation.x < 0.5)){         // Guard edge case
@@ -397,21 +525,23 @@ err HeadMouse::updateMovements(){
     else{       
         mouse_move_y =  (int)((mouse_change_y * _preferences.sensititvity) / SCALING_FACTOR);
     }
-    
+    #endif  
     /* Update imu data buffer for later on comparison */
-    imu_data.orientation.x = new_imu_data.orientation.x;
-    imu_data.orientation.z = new_imu_data.orientation.z;    
-    
+    euler.x() = new_euler.x();
+    euler.z() = new_euler.z();  
+
     /* Move mouse cursor */
     if(_status.is_connected){       
         if((mouse_move_x != 0) || (mouse_move_y != 0)){
             bleMouse.move((unsigned char)(mouse_move_x), (unsigned char)(mouse_move_y),0);  
             log_message(LOG_DEBUG_IMU, "move x: %d", mouse_move_x);
+            log_message(LOG_DEBUG_IMU, "move y: %d", mouse_move_y);
         }
     }
     else{
         return ERR_CONNECTION_FAILED;
     }
+   
 
     return ERR_NONE;
 }

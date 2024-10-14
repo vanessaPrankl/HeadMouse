@@ -8,6 +8,9 @@
 #include "./include/button.hpp"
 #include "Adafruit_Sensor.h"
 
+namespace _headmouse{
+    extern volatile bool _measurement_available;
+}
 
 class HeadMouse {
     private:
@@ -21,9 +24,11 @@ class HeadMouse {
     void _initPreferences(HmPreferences);
     void _batStatusInterpreter();
     void _devStatusInterpreter();
+    static bool _callbackTimerProgramCycle(void *);
    
     public:
     HeadMouse(){}
+    bool isMeasurementAvailable();
 
     err init(HmPreferences);
     HmStatus updateDevStatus();
