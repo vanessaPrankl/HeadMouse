@@ -2,6 +2,37 @@
 #include <stdint.h>
 #include "BleMouse.h"
 
+namespace preferences{
+    /*! *********************************************************
+    * @brief Type to define sensitivity levels
+    *************************************************************/
+    typedef uint32_t devSensitivity;
+
+    constexpr char* STORE_MODE = "mode";
+    constexpr char* STORE_SENSITIVITY = "sensitivity";
+    constexpr char* STORE_BTN[4] = {"button0", "button1", "button2", "button3"};
+
+    constexpr int SCALING_FACTOR = 1000000;   // Used to bring calculations from float to int with necessary accuracy
+    constexpr int JITTER_OFFSET = (int)(0.00003*SCALING_FACTOR);       // [RAD]*scaling factor
+    constexpr int SLOW_MOTION_OFFSET = (int)(0.001*SCALING_FACTOR);   // [RAD]*scaling factor
+    constexpr devSensitivity SENSITIVITY_STEP = 7;
+    constexpr devSensitivity SENSITIVITY_STEP_COUNT = 5;
+    constexpr devSensitivity SENSITIVITY_MIN = 20;
+    constexpr devSensitivity SENSITIVITY_MAX = SENSITIVITY_MIN + SENSITIVITY_STEP * (SENSITIVITY_STEP_COUNT-1);
+    constexpr devSensitivity PREF_SENSITIVITY[SENSITIVITY_STEP_COUNT] = {SENSITIVITY_MIN, SENSITIVITY_MIN+SENSITIVITY_STEP, SENSITIVITY_MIN+SENSITIVITY_STEP*2, SENSITIVITY_MIN+SENSITIVITY_STEP*3, SENSITIVITY_MAX};
+
+    constexpr int SLOWMO_ANGLE_DEFLECTION[6] = {300, 440, 580, 580, 720, 860};
+    constexpr int SLOWMO_SENSITIVITY[5][5] = {
+                                                {20, 20, 20, 20, 20},
+                                                {20, 21, 22, 23, 24},
+                                                {20, 23, 25, 27, 28},
+                                                {20, 24, 27, 31, 34},
+                                                {20, 25, 31, 36, 40}
+                                                };
+}
+
+using namespace preferences;
+
 /*! *********************************************************
 * @brief Enum to define available mouse movement modes
 *************************************************************/
@@ -10,21 +41,6 @@ enum devMode {
     RELATIVE
 };
 
-/*! *********************************************************
-* @brief Enum to define available sensitivity levels
-*************************************************************/
-enum devSensitivity {
-    SENSITIVITY_0 = 0,
-    SENSITIVITY_1 = 5,
-    SENSITIVITY_2 = 10,
-    SENSITIVITY_3 = 15,
-    SENSITIVITY_4 = 20,
-    SENSITIVITY_5 = 25,
-    SENSITIVITY_6 = 30,
-    SENSITIVITY_7 = 35,
-    SENSITIVITY_8 = 40,
-    SENSITIVITY_9 = 45
-};
 
 /*! *********************************************************
 * @brief Enum to define available button actions
@@ -33,8 +49,8 @@ enum btnAction {
     NONE,
     LEFT = MOUSE_LEFT,
     RIGHT = MOUSE_RIGHT,
-    CONN_NEW_DEVICE,
-    SENSITIVITY
+    SENSITIVITY,
+    DEVICE_CONN_AND_CONFIG
 };
 
 /*! *********************************************************
@@ -45,6 +61,6 @@ enum btnAction {
 *************************************************************/
 struct HmPreferences{
     devMode mode = ABSOLUTE;
-    devSensitivity sensititvity = SENSITIVITY_4;
+    devSensitivity sensititvity = PREF_SENSITIVITY[4];
     btnAction btn_actions[4] = {NONE, NONE, NONE, NONE};
 };

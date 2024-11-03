@@ -1,10 +1,8 @@
 #pragma once
-#ifndef HW_ISR_HPP
-#define HW_ISR_HPP
 #include "ESP32TimerInterrupt.hpp"
 
 namespace isr{
-    extern ESP32Timer BtnTimer;  
-    extern ESP32Timer LedBlinkTimer;  
+    extern ESP32Timer BtnTimer;             /* Timer 0 */ 
+    extern ESP32Timer LedBlinkTimer;        /* Timer 1 */ 
+    extern ESP32Timer ProgramCycleTimer;    /* Timer 2 */ 
 }
-#endif

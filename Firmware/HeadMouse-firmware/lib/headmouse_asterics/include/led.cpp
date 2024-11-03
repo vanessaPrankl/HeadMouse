@@ -48,9 +48,9 @@ Leds* Leds::getInstance(pin pin_status_g, pin pin_status_r, pin pin_battery_g, p
  *
  * @return ERR_NONE if initialization is successful, otherwise ERR_GENERIC.
  *************************************************************/
-err Leds::init(){
+err Leds::  init(){
     err error = ERR_GENERIC;
-    for(int i=0; i++; i<LED_COUNT){
+    for(int i=0; i<LED_COUNT; i++){
         pinMode(_config[i].pin_r, OUTPUT);
         pinMode(_config[i].pin_g, OUTPUT);
     }
@@ -82,11 +82,6 @@ void Leds::set(ledType led, ledState state){
 
     /* Select led action (if not blinking)*/
     switch(_config[led].state){
-        case RED:
-            digitalWrite(_config[led].pin_r, LOW);  
-            digitalWrite(_config[led].pin_g, HIGH); 
-        break;
-
         case GREEN:
             digitalWrite(_config[led].pin_r, HIGH);  
             digitalWrite(_config[led].pin_g, LOW); 
@@ -97,7 +92,10 @@ void Leds::set(ledType led, ledState state){
             digitalWrite(_config[led].pin_g, LOW); 
         break;
 
-        default:; /* Ignore this case. Blinking leds are covered within LED timer ISR */
+        default:/* RED */ 
+            digitalWrite(_config[led].pin_r, LOW);  
+            digitalWrite(_config[led].pin_g, HIGH); 
+        break;
 
     }
 }
@@ -126,7 +124,7 @@ bool IRAM_ATTR Leds::_callbackTimerLed(void * timerNo){
             digitalWrite(_config[i].pin_r, toggle[i]);  
             digitalWrite(_config[i].pin_g, toggle[i]); 
         }
-        else {} /* Ignore this case */
+        else {} /* Ignore if blinking is not intended */
         
         toggle[i] = !toggle[i];
     }

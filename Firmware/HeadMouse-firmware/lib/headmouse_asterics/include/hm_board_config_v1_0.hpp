@@ -45,3 +45,6 @@ constexpr uint32_t SERIAL_BAUD_RATE = 115200;
 constexpr char DEVICE_NAME[] = "HeadMouse V1";
 constexpr char DEVICE_MANUFACTURER[] = "FH Technikum Wien";
 constexpr uint8_t BAT_LEVEL_DUMMY = 100;
+
+/* Program cycle duration */
+constexpr uint32_t PROGRAM_CYCLE_INTERVAL_MS = 10;

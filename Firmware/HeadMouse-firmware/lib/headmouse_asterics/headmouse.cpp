@@ -1,22 +1,42 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <utility/imumaths.h>
+#include <Preferences.h>
 #include "headmouse.hpp"
 #include "BleMouse.h"
 #include "Adafruit_Sensor.h"
 #include "Adafruit_BNO055.h"
 #include "logging.hpp"
-
-static constexpr uint32_t MOVE_MOUSE_OFFSET = 2;
+#include "hw_isr.hpp"
 
 namespace _headmouse{
-
-Adafruit_BNO055 bno = Adafruit_BNO055(BNO055_SENSOR_ID, BNO055_I2C_ADDRESS, &Wire);
-BleMouse bleMouse(DEVICE_NAME, DEVICE_MANUFACTURER, BAT_LEVEL_DUMMY);
+    Preferences nonVolatileMemory;
+    Adafruit_BNO055 bno = Adafruit_BNO055(BNO055_SENSOR_ID, BNO055_I2C_ADDRESS, &Wire);
+    BleMouse bleMouse(DEVICE_NAME, DEVICE_MANUFACTURER, BAT_LEVEL_DUMMY);
+    volatile bool _measurement_available = 0;
 }
 
+namespace isr{
+    ESP32Timer ProgramCycleTimer(2);
+}
+using namespace isr;
 using namespace _headmouse;
- 
+using namespace preferences;
+
+/************************************************************
+ * @brief Timer callback function for program cycle timer.
+ *
+ * This function is called by the timer interrupt indicate a new
+ * program/IMU measurement cycle
+ *
+ * @param timerNo The timer number (unused).
+ * @return Always returns true.
+ *************************************************************/
+bool IRAM_ATTR HeadMouse::_callbackTimerProgramCycle(void * timerNo){
+    _measurement_available = true;
+    return true;
+}
+
 /* PRIVATE METHODS **************************************************/
 
 /************************************************************
@@ -28,15 +48,8 @@ using namespace _headmouse;
  * @return None
  *************************************************************/
 void HeadMouse::_initPins(){
-    /* Init LEDs */
-    pinMode(PIN_LED_BAT_R, OUTPUT);
-    pinMode(PIN_LED_BAT_G, OUTPUT);
-    pinMode(PIN_LED_STATUS_R, OUTPUT);
-    pinMode(PIN_LED_STATUS_G, OUTPUT);
-
     /* Init buttons */
     _buttons->initPins();
-    /* Init button interrupts */
     _buttons->enableButtonInterrupts();
 
     /* Init leds */
@@ -53,6 +66,61 @@ void HeadMouse::_initPins(){
         log_message(LOG_ERROR, "Cannot init I2C bus.");
     } 
 }
+
+/************************************************************
+ * @brief Initialize device preferences at HeadMouse startup.
+ * 
+ * This function initializes the necessary HeadMouse device 
+ * preferences for operating mode, sensitivity and button 
+ * to mouse action associations. If already stored on the device
+ * the available device config will be loaded. Otherwise standard
+ * config will be used and stored in non-volatile storage of the 
+ * device. 
+ * 
+ * @return None
+ *************************************************************/
+void HeadMouse::_initPreferences(HmPreferences preferences){
+    nonVolatileMemory.begin("device_config", false);  // Open preferences namespace in read/write mode
+    
+    /* Read already stored config or store to permanent device storage if not already done */
+    if(nonVolatileMemory.isKey(STORE_MODE)){
+        _preferences.mode = (devMode)(nonVolatileMemory.getUInt(STORE_MODE, 0));
+        log_message(LOG_INFO, "...MODE Preferences loaded from memory: %d", _preferences.mode);
+    } else{ 
+        _preferences.mode = preferences.mode;
+        nonVolatileMemory.putUInt(STORE_MODE, _preferences.mode);
+        log_message(LOG_INFO, "...MODE default preferences set: %d", _preferences.mode);
+    }
+
+    if(nonVolatileMemory.isKey(STORE_SENSITIVITY)){
+        devSensitivity sensitivity = nonVolatileMemory.getUInt(STORE_SENSITIVITY, 0);
+        if((sensitivity >= SENSITIVITY_MIN) && (sensitivity <= SENSITIVITY_MAX)){
+            _preferences.sensititvity = sensitivity;
+            log_message(LOG_INFO, "... SENSITIVITY Preferences loaded from memory: %d", _preferences.sensititvity);
+        }
+        else{
+            _preferences.sensititvity = preferences.sensititvity;
+            nonVolatileMemory.putUInt(STORE_SENSITIVITY, _preferences.sensititvity);
+            log_message(LOG_INFO, "... Stored SENSITIVITY out of range (%d), setting default value: %d...", sensitivity, _preferences.sensititvity);
+        }
+    } else{ 
+        _preferences.sensititvity = preferences.sensititvity;
+        nonVolatileMemory.putUInt(STORE_SENSITIVITY, _preferences.sensititvity);
+        log_message(LOG_INFO, "...SENSITIVITY default preferences set: %d", _preferences.sensititvity);
+    }
+
+    for(int i=0; i<BUTTON_COUNT; i++){
+        if(nonVolatileMemory.isKey(STORE_BTN[i])){
+            _preferences.btn_actions[i] = (btnAction)(nonVolatileMemory.getUInt(STORE_BTN[i], 0));
+            log_message(LOG_INFO, "...BTN%d preferences loaded from memory: %d", i, _preferences.btn_actions[i]);
+        } else{ 
+            _preferences.btn_actions[i] = preferences.btn_actions[i];
+            nonVolatileMemory.putUInt(STORE_BTN[i], _preferences.btn_actions[i]);
+            log_message(LOG_INFO, "...BTN%d default preferences set: %d", i, _preferences.btn_actions[i]);
+        }
+            
+    }
+   }
 
 
 /************************************************************
@@ -173,6 +241,18 @@ void HeadMouse::_devStatusInterpreter(){
 }
 
 /* PUBLIC METHODS */
+/************************************************************
+ * @brief Check if new BNO055 measurement cycle has finished
+ * 
+ * @return TRUE if new data is available, FALSE otherwise.
+ *************************************************************/
+bool HeadMouse::isMeasurementAvailable(){
+    if(_measurement_available){
+        return true;
+        _measurement_available = false;
+    }
+    else return false;
+}
 
 /************************************************************
  * @brief Initialize HeadMouse hardware components.
@@ -187,12 +267,27 @@ err HeadMouse::init(HmPreferences preferences){
     err error = ERR_GENERIC;
 
     /* Setup HM preferences */
-    setPreferences(preferences);
+    _preferences.mode = preferences.mode;    // Testing only 
+    _preferences.sensititvity = preferences.sensititvity;
+    _preferences.btn_actions[0] = preferences.btn_actions[0];
+    _preferences.btn_actions[1] = preferences.btn_actions[1];
+    _preferences.btn_actions[2] = preferences.btn_actions[2];
+    _preferences.btn_actions[3] = preferences.btn_actions[3];
+    //_initPreferences(preferences);
     log_message(LOG_INFO, "...Preferences initialized");
 
     /* Init uC peripherals */
     _initPins();
     log_message(LOG_INFO, "...Pins initialized");
+
+    if(ProgramCycleTimer.attachInterruptInterval(PROGRAM_CYCLE_INTERVAL_MS*1000, _callbackTimerProgramCycle))
+    {    
+        log_message(LOG_INFO, "...Program cycle timer initialized"); 
+    }
+    else{
+        log_message(LOG_INFO, "... Cannot init Program cycle timer, aborting..."); 
+        return ERR_GENERIC;
+    }
 
     /* Start ble task manager for bluetooth mouse communication */
     bleMouse.begin();  
@@ -245,64 +340,208 @@ HmStatus HeadMouse::updateDevStatus(){
  * @return ERR_xxx if something went wrong, OK otherwise.
  *************************************************************/
 err HeadMouse::updateMovements(){
-    static int first_run = true;
-    int move_mouse_y = 0;
-    int move_mouse_x = 0;
+    static bool first_run = true;
+    int64_t mouse_change_x = 0;
+    int64_t mouse_change_y = 0;
+    int mouse_move_x = 0;
+    int mouse_move_y = 0;
     static sensors_event_t imu_data;
     sensors_event_t new_imu_data;
-
+    int32_t sensitivity_level = 0;
+    imu::Quaternion quat;
+    static imu::Vector<3> euler;
+    imu::Vector<3> new_euler;
+    
     /* Get a new sensor event */
-    bno.getEvent(&new_imu_data);
+    quat = bno.getQuat();
+    new_euler = quat.toEuler();
+    
+    //bno.getEvent(&new_imu_data);
     if(first_run){
         first_run = false;
+        euler = new_euler;
+
+        /*
         _imu_data.orientation.x = new_imu_data.orientation.x;
         _imu_data.orientation.y = new_imu_data.orientation.y;
         _imu_data.orientation.z = new_imu_data.orientation.z;
+        */
+    }
+    //log_message(LOG_DEBUG_IMU, "new IMU orientation data: X: %.2f, Y: %.2f, Z: %.2f", euler.x(), euler.y(), euler.z());
+
+
+    /* Determine currently active sensitivity level */
+    switch(_preferences.sensititvity){
+        case PREF_SENSITIVITY[0]: 
+            sensitivity_level = 0;
+        break;
+            case PREF_SENSITIVITY[1]: 
+            sensitivity_level = 1;
+        break;
+            case PREF_SENSITIVITY[2]: 
+            sensitivity_level = 2;
+        break;
+            case PREF_SENSITIVITY[3]: 
+            sensitivity_level = 3;
+        break;
+            case PREF_SENSITIVITY[4]: 
+            sensitivity_level = 4;
+        break;
     }
 
-    log_message(LOG_DEBUG_IMU, "new IMU orientation data: X: %.2f, Y: %.2f, Z: %.2f", new_imu_data.orientation.x, new_imu_data.orientation.y, new_imu_data.orientation.z);
+    /* X-AXIS DATA PROCESSING *******************/
+    /* Process Euler Angle data */
+    if(((new_euler.x() >= 3.14) && (euler.x() < -3.14)) || (new_euler.x() < -3.14) && (euler.x() >= 3.14)){         // Guard edge case
+        mouse_change_x = (int64_t)(SCALING_FACTOR*(new_euler.x() + euler.x()));
+        log_message(LOG_DEBUG_IMU, "mouse change x: %d", mouse_change_x);
+    }
+    else if(((new_euler.x() < -0) && (euler.x() >= 0)) || ((new_euler.x() > -0) && (euler.x() <= 0))){    // Guard edge case
+        mouse_change_x = (int64_t)(SCALING_FACTOR*(new_euler.x() + euler.x()));
+        log_message(LOG_DEBUG_IMU, "mouse change x: %d", mouse_change_x);
+    }
+    else{
+        mouse_change_x = (int64_t)(SCALING_FACTOR*(euler.x() - new_euler.x())); 
+        log_message(LOG_DEBUG_IMU, "mouse change x: %d", mouse_change_x);
+    }
+
+    /* Add jitter-offset to stabalize mouse when head is not moving */
+    if((mouse_change_x >= -JITTER_OFFSET) && (mouse_change_x <= JITTER_OFFSET)){
+        mouse_move_x = 0;  
+    }
+    /* Enter slow-motion mode if mouse is moving slowly to improve positioning accuracy */
+    else if((mouse_change_x >= -SLOW_MOTION_OFFSET) && (mouse_change_x <= SLOW_MOTION_OFFSET)){
+        for(int i=0; i<SENSITIVITY_STEP_COUNT; i++){
+            if((mouse_change_x > SLOWMO_ANGLE_DEFLECTION[i]) && (mouse_change_x <= SLOWMO_ANGLE_DEFLECTION[i+1])){
+                mouse_move_x = (int)((mouse_change_x * SLOWMO_SENSITIVITY[i][sensitivity_level]) / 20000);
+                break;
+            }
+            else if((mouse_change_x > -SLOWMO_ANGLE_DEFLECTION[i+1]) && (mouse_change_x <= -SLOWMO_ANGLE_DEFLECTION[i])){
+                mouse_move_x = (int)((mouse_change_x * SLOWMO_SENSITIVITY[i][sensitivity_level]) / 20000);
+                break;
+            }
+        }
+    }
+    /* Normal operation: adjust mouse movement to chosen sensitivity level */
+    else{   
+        mouse_move_x = (int)((mouse_change_x * _preferences.sensititvity) / 20000);
+    }
+    log_message(LOG_DEBUG_IMU, "move x: %d", mouse_move_x);
     //log_message(LOG_DEBUG_IMU, "sensitivity: %d", _preferences.sensititvity);
 
-    /* Process data */
-    if((new_imu_data.orientation.x > 359) && (imu_data.orientation.x < 1)){ // Guard edge cases
-        move_mouse_x = (int)(_preferences.sensititvity*(new_imu_data.orientation.x-360)) - (int)(_preferences.sensititvity*imu_data.orientation.x);
+    /* Y-AXIS DATA PROCESSING *******************/
+    /* Process Euler Angle data */
+    if(((new_euler.z() >= 3.14) && (euler.z() < -3.14)) || (new_euler.z() < -3.14) && (euler.z() >= 3.14)){         // Guard edge case
+        mouse_change_y = (int64_t)(SCALING_FACTOR*(new_euler.z() + euler.z()));
+        log_message(LOG_DEBUG_IMU, "mouse change y: %d", mouse_change_y);
     }
-    else if((new_imu_data.orientation.x < 1) && (imu_data.orientation.x > 359)){
-        move_mouse_x = (int)(_preferences.sensititvity*new_imu_data.orientation.x) - (int)(_preferences.sensititvity*(imu_data.orientation.x-360));
-    }
-    else{
-        move_mouse_x = (int)(_preferences.sensititvity*new_imu_data.orientation.x) - (int)(_preferences.sensititvity*imu_data.orientation.x);
-    }
-    move_mouse_y = (int)(_preferences.sensititvity*imu_data.orientation.z) - (int)(_preferences.sensititvity*new_imu_data.orientation.z);   /* IMU z-axis is translated into display y-axis */
-    
-    /* Add offset to stabalize mouse when head is not moving */
-    if((move_mouse_x >= -MOVE_MOUSE_OFFSET) && (move_mouse_x <= MOVE_MOUSE_OFFSET)){
-        move_mouse_x = 0;    /* Don't update imu data buffer here, so information does not get lost */
+    else if(((new_euler.z() < -0) && (euler.z() >= 0)) || ((new_euler.z() > -0) && (euler.z() <= 0))){    // Guard edge case
+        mouse_change_y = (int64_t)(SCALING_FACTOR*(new_euler.z() + euler.z()));
+        log_message(LOG_DEBUG_IMU, "mouse change y: %d", mouse_change_y);
     }
     else{
-        imu_data.orientation.x = new_imu_data.orientation.x;     /* Store orientation values into buffer for later on comparison */
-    }
-    /* Add offset to stabalize mouse when head is not moving */
-    if((move_mouse_y >= -MOVE_MOUSE_OFFSET) && (move_mouse_y <= MOVE_MOUSE_OFFSET)){
-        move_mouse_y = 0;   /* Don't update imu data buffer here, so information does not get lost */
-    } 
-    else{
-        imu_data.orientation.z = new_imu_data.orientation.z;     /* Store orientation values into buffer for later on comparison */
+        mouse_change_y = (int64_t)(SCALING_FACTOR*(new_euler.z() - euler.z())); 
+        log_message(LOG_DEBUG_IMU, "mouse change y: %d", mouse_change_y);
     }
 
+    /* Add jitter-offset to stabalize mouse when head is not moving */
+    if((mouse_change_y >= -JITTER_OFFSET) && (mouse_change_y <= JITTER_OFFSET)){
+        mouse_move_y = 0;  
+    }
+    /* Enter slow-motion mode if mouse is moving slowly to improve positioning accuracy */
+    else if((mouse_change_y >= -SLOW_MOTION_OFFSET) && (mouse_change_y <= SLOW_MOTION_OFFSET)){
+        for(int i=0; i<SENSITIVITY_STEP_COUNT; i++){
+            if((mouse_change_y > SLOWMO_ANGLE_DEFLECTION[i]) && (mouse_change_y <= SLOWMO_ANGLE_DEFLECTION[i+1])){
+                mouse_move_y = (int)((mouse_change_y * SLOWMO_SENSITIVITY[i][sensitivity_level]) / 20000);
+                break;
+            }
+            else if((mouse_change_y > -SLOWMO_ANGLE_DEFLECTION[i+1]) && (mouse_change_y <= -SLOWMO_ANGLE_DEFLECTION[i])){
+                mouse_move_y = (int)((mouse_change_y * SLOWMO_SENSITIVITY[i][sensitivity_level]) / 20000);
+                break;
+            }
+        }
+    }
+    /* Normal operation: adjust mouse movement to chosen sensitivity level */
+    else{   
+        mouse_move_y = (int)((mouse_change_y * _preferences.sensititvity) / 20000);
+    }
+    log_message(LOG_DEBUG_IMU, "move y: %d", mouse_move_y);
+    //log_message(LOG_DEBUG_IMU, "sensitivity: %d", _preferences.sensititvity);
+#ifdef GRAD
+    /* X-AXIS DATA PROCESSING *******************/
+    /* Process Euler Angle data */
+    if((new_imu_data.orientation.x > 359.5) && (imu_data.orientation.x < 0.5)){         // Guard edge case
+        mouse_change_x = (int64_t)(SCALING_FACTOR*((new_imu_data.orientation.x - 360.0) - imu_data.orientation.x));
+    }
+    else if((new_imu_data.orientation.x < 0.5) && (imu_data.orientation.x > 359.5)){    // Guard edge case
+        mouse_change_x = (int64_t)(SCALING_FACTOR*(new_imu_data.orientation.x - (imu_data.orientation.x - 360.0)));
+    }
+    else{
+        mouse_change_x = (int64_t)(SCALING_FACTOR*(new_imu_data.orientation.x - imu_data.orientation.x)); 
+    }
+
+    /* Add jitter-offset to stabalize mouse when head is not moving */
+    if((mouse_change_x >= -JITTER_OFFSET) && (mouse_change_x <= JITTER_OFFSET)){
+        mouse_move_x = 0;  
+    }
+    /* Enter slow-motion mode if mouse is moving slowly to improve positioning accuracy */
+    else if((mouse_change_x >= -SLOW_MOTION_OFFSET) && (mouse_change_x <= SLOW_MOTION_OFFSET)){
+        for(int i=0; i<SENSITIVITY_STEP_COUNT; i++){
+            if((mouse_change_x > SLOWMO_ANGLE_DEFLECTION[i]) && (mouse_change_x <= SLOWMO_ANGLE_DEFLECTION[i+1])){
+                mouse_move_x = (int)((mouse_change_x * SLOWMO_SENSITIVITY[i][sensitivity_level]) / SCALING_FACTOR);
+                break;
+            }
+            else if((mouse_change_x > -SLOWMO_ANGLE_DEFLECTION[i+1]) && (mouse_change_x <= -SLOWMO_ANGLE_DEFLECTION[i])){
+                mouse_move_x = (int)((mouse_change_x * SLOWMO_SENSITIVITY[i][sensitivity_level]) / SCALING_FACTOR);
+                break;
+            }
+        }
+    }
+    /* Normal operation: adjust mouse movement to chosen sensitivity level */
+    else{   
+        mouse_move_x = (int)((mouse_change_x * _preferences.sensititvity) / SCALING_FACTOR);
+    }
+    /* Y-AXIS DATA PROCESSING *******************/
+    /* Process Euler Angle data - IMU z-axis is translated into display y-axis; No special edge case guard needed */
+    mouse_change_y = (int64_t)(SCALING_FACTOR*(imu_data.orientation.z - new_imu_data.orientation.z));  
+
+    /* Add jitter-offset to stabalize mouse when head is not moving */
+    if((mouse_change_y >= -JITTER_OFFSET) && (mouse_change_y <= JITTER_OFFSET)){
+        mouse_move_y = 0;  
+    } 
+    /* Enter slow-motion mode if mouse is moving slowly to improve positioning accuracy */
+    else if((mouse_change_y >= -SLOW_MOTION_OFFSET) && (mouse_change_y <= SLOW_MOTION_OFFSET)){
+        for(int i=0; i<SENSITIVITY_STEP_COUNT; i++){
+            if((mouse_change_y > SLOWMO_ANGLE_DEFLECTION[i]) && (mouse_change_y <= SLOWMO_ANGLE_DEFLECTION[i+1])){
+                mouse_move_y = (int)((mouse_change_y * SLOWMO_SENSITIVITY[i][sensitivity_level]) / SCALING_FACTOR);
+                break;
+            }
+            else if((mouse_change_y > -SLOWMO_ANGLE_DEFLECTION[i+1]) && (mouse_change_y <= -SLOWMO_ANGLE_DEFLECTION[i])){
+                mouse_move_y = (int)((mouse_change_y * SLOWMO_SENSITIVITY[i][sensitivity_level]) / SCALING_FACTOR);
+                break;
+            }
+        }
+    }
+    /* Normal operation: adjust mouse movement to chosen sensitivity level */
+    else{       
+        mouse_move_y =  (int)((mouse_change_y * _preferences.sensititvity) / SCALING_FACTOR);
+    }
+    #endif  
+    /* Update imu data buffer for later on comparison */
+    euler.x() = new_euler.x();
+    euler.z() = new_euler.z();  
 
     /* Move mouse cursor */
     if(_status.is_connected){       
-        if((move_mouse_x != 0) || (move_mouse_y != 0)){
-            bleMouse.move((unsigned char)(move_mouse_x), (unsigned char)(move_mouse_y),0);  
-            //log_message(LOG_DEBUG_IMU, "move x: %d, move y %d", move_mouse_x, move_mouse_y);
+        if((mouse_move_x != 0) || (mouse_move_y != 0)){
+            bleMouse.move((unsigned char)(mouse_move_x), (unsigned char)(mouse_move_y),0);  
+            log_message(LOG_DEBUG_IMU, "move x: %d", mouse_move_x);
+            log_message(LOG_DEBUG_IMU, "move y: %d", mouse_move_y);
         }
     }
     else{
-        //bleMouse.end();
-        //bleMouse.begin();
         return ERR_CONNECTION_FAILED;
     }
+   
 
     return ERR_NONE;
 }
@@ -318,33 +557,53 @@ void HeadMouse::updateBtnActions(){
     static bool is_press_buf[BUTTON_COUNT] = {0};
     
     for(int i=0; i<BUTTON_COUNT; i++){
-        /* Only execute click/press if button is associated with left or right mouse button  */
+        /* Check for left/right mouse button action */
         if((_preferences.btn_actions[i]==RIGHT) || (_preferences.btn_actions[i]==LEFT)){
             if(_buttons->is_click[i]){  /* CLICK */
                 bleMouse.click(_preferences.btn_actions[i]);
                 _buttons->is_click[i] = false;
-                log_message(LOG_DEBUG, "Button %d clicked ",  i);
+                log_message(LOG_INFO, "Button %d clicked ",  i);
             }
-            /* Only execute press if button is associated with left or right mouse button  */
-            else if(_buttons->is_press[i] && !is_press_buf[i]){ /* PRESS */
+            /* Check if button is pressed/released */
+            if(_buttons->is_press[i] && !is_press_buf[i]){ /* PRESS */
                 bleMouse.press(_preferences.btn_actions[i]);
                 is_press_buf[i] = true;
-                log_message(LOG_DEBUG, "Button %d start press ",  i);
+                log_message(LOG_INFO, "Button %d start press ",  i);
             }
             else if(!_buttons->is_press[i] && is_press_buf[i]){ /* RELEASE */
                 bleMouse.release(_preferences.btn_actions[i]);
                 is_press_buf[i] = false;
-                log_message(LOG_DEBUG, "Button %d stop press ",  i);
+                log_message(LOG_INFO, "Button %d stop press ",  i);
             }
         }
-        else if(_preferences.btn_actions[i] == CONN_NEW_DEVICE){
+        else if(_preferences.btn_actions[i] == SENSITIVITY){
             if(_buttons->is_click[i]){
-                bleMouse.connectNewDevice();
-                log_message(LOG_INFO, "Connecting new device...");
+                if(_preferences.sensititvity == SENSITIVITY_MAX){
+                    _preferences.sensititvity = SENSITIVITY_MIN;
+                }
+                else{ _preferences.sensititvity += SENSITIVITY_STEP;}
+                
+                setSensitivity(_preferences.sensititvity);
                 _buttons->is_click[i] = false;
             }
         }
-        
+        else if(_preferences.btn_actions[i] == DEVICE_CONN_AND_CONFIG){
+            if(_buttons->is_click[i]){
+                bleMouse.connectNewDevice();
+                log_message(LOG_INFO, "BLE advertising started...");
+                _buttons->is_click[i] = false;
+            }
+            /* Check if button is pressed/released */
+            if(_buttons->is_press[i] && !is_press_buf[i]){ /* PRESS */
+                /* TODO: Enter Wifi config mode here*/
+                log_message(LOG_INFO, "Button %d startpress  - config mode work in progress ",  i);
+                is_press_buf[i] = true;
+            }
+            else if(!_buttons->is_press[i] && is_press_buf[i]){ /* RELEASE */
+                is_press_buf[i] = false;
+                log_message(LOG_INFO, "Button %d stop press ",  i);
+            }
+        }
     }
 }
 
@@ -374,7 +633,9 @@ void HeadMouse::setPreferences(HmPreferences preferences){
  *************************************************************/
 void HeadMouse::setSensitivity(devSensitivity sensititvity){
     _preferences.sensititvity = sensititvity;
-    log_message(LOG_INFO, "...Sensitivity set to %d", _preferences.sensititvity);
+    nonVolatileMemory.putUInt(STORE_SENSITIVITY, _preferences.sensititvity);
+
+    log_message(LOG_INFO, "Sensitivity set to %d", _preferences.sensititvity);
 }
 
 /************************************************************
@@ -386,6 +647,7 @@ void HeadMouse::setSensitivity(devSensitivity sensititvity){
  *************************************************************/
 void HeadMouse::setMode(devMode mode){
     _preferences.mode = mode;
+    nonVolatileMemory.putUInt(STORE_MODE, _preferences.mode);
     log_message(LOG_INFO, "...Mode set to %d", _preferences.mode);
 }
 
@@ -400,6 +662,7 @@ void HeadMouse::setMode(devMode mode){
 void HeadMouse::setButtonActions(btnAction* actions){
     for(int i=0; i<BUTTON_COUNT; i++){
         _preferences.btn_actions[i] = actions[i];
+        nonVolatileMemory.putUInt(STORE_BTN[i], _preferences.btn_actions[i]);
         log_message(LOG_INFO, "...Set pin %d to action %d", i, _preferences.btn_actions[i]);
     }
 }
